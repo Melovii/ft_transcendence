@@ -1,0 +1,9 @@
+# Keep build contexts small; the gateway only needs frontend/ and gateway/.
+.git
+node_modules
+dist
+certs
+backups
+.env
+*.md
+!frontend/README.md

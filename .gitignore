@@ -7,3 +7,7 @@ dist-ssr
 !.env.example
 .DS_Store
 *.tsbuildinfo
+
+# devops: generated TLS certs and database backups never enter git
+certs/
+backups/
