@@ -42,6 +42,24 @@ services:
       - db
     restart: "no"
 
+  # ── service template: copy this block per docs/NEW-SERVICE.md ────────────
+  # my-service:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: my-service/Dockerfile
+  #   environment:
+  #     PORT: "8080"
+  #     APP_ENV: ${APP_ENV}
+  #     LOG_FORMAT: ${LOG_FORMAT}
+  #     LOG_LEVEL: ${LOG_LEVEL}
+  #     # only the env this service actually needs:
+  #     # DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/mydb?sslmode=disable
+  #     # JWT_SECRET: ${JWT_SECRET}
+  #   networks:
+  #     - web        # always, if the gateway routes to it
+  #     # - db        # only if it owns SQL tables
+  #   restart: unless-stopped
+  # ──────────────────────────────────────────────────────────────────────────
   auth-service:
     build:
       context: ./backend
