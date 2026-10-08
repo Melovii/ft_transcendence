@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="15.9 29 696.8 696.8" role="img" aria-labelledby="owl-title owl-description">
+  <title id="owl-title">Scholar owl avatar</title>
+  <desc id="owl-description">A warm brown owl wearing round blue glasses, a graduation cap, a rust-colored bow tie, and a diamond-patterned golden vest, inside a brown and gold circular frame.</desc>
+  <defs>
+    <linearGradient id="frame-brown" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#733b20"/>
+      <stop offset=".5" stop-color="#753a1c"/>
+      <stop offset="1" stop-color="#713318"/>
+    </linearGradient>
+    <linearGradient id="frame-gold" x1="0%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0" stop-color="#ba772c"/>
+      <stop offset=".55" stop-color="#c38230"/>
+      <stop offset="1" stop-color="#b77a30"/>
+    </linearGradient>
+    <radialGradient id="background-gold" cx="49%" cy="46%" r="70%">
+      <stop offset="0" stop-color="#fdcb66"/>
+      <stop offset=".7" stop-color="#f6c055"/>
+      <stop offset="1" stop-color="#f1b747"/>
+    </radialGradient>
+    <linearGradient id="cap-top" x1="20%" y1="0%" x2="75%" y2="100%">
+      <stop offset="0" stop-color="#594132"/>
+      <stop offset="1" stop-color="#49362c"/>
+    </linearGradient>
+    <linearGradient id="cap-front" x1="0%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0" stop-color="#624335"/>
+      <stop offset="1" stop-color="#5d4437"/>
+    </linearGradient>
+    <radialGradient id="feather-tan" cx="45%" cy="39%" r="72%">
+      <stop offset="0" stop-color="#d79c6b"/>
+      <stop offset=".65" stop-color="#d39867"/>
+      <stop offset="1" stop-color="#c78b59"/>
+    </radialGradient>
+    <linearGradient id="wing-brown" x1="0%" y1="0%" x2="100%" y2="40%">
+      <stop offset="0" stop-color="#a16a3d"/>
+      <stop offset=".5" stop-color="#ad7549"/>
+      <stop offset="1" stop-color="#95603b"/>
+    </linearGradient>
+    <radialGradient id="face-cream" cx="50%" cy="48%" r="67%">
+      <stop offset="0" stop-color="#ffe7b7"/>
+      <stop offset="1" stop-color="#f7d79f"/>
+    </radialGradient>
+    <linearGradient id="brow-brown" x1="0%" y1="0%" x2="25%" y2="100%">
+      <stop offset="0" stop-color="#9c6037"/>
+      <stop offset=".6" stop-color="#8b4c29"/>
+      <stop offset="1" stop-color="#874727"/>
+    </linearGradient>
+    <linearGradient id="lens-blue" x1="0%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0" stop-color="#c7e9eb"/>
+      <stop offset="1" stop-color="#b9e8ee"/>
+    </linearGradient>
+    <linearGradient id="beak-orange" x1="0%" y1="0%" x2="100%" y2="40%">
+      <stop offset="0" stop-color="#ffb331"/>
+      <stop offset=".58" stop-color="#ffae28"/>
+      <stop offset="1" stop-color="#fba129"/>
+    </linearGradient>
+    <linearGradient id="vest-gold" x1="0%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0" stop-color="#b78b49"/>
+      <stop offset=".5" stop-color="#bf934f"/>
+      <stop offset="1" stop-color="#bc8c47"/>
+    </linearGradient>
+    <pattern id="vest-diamonds" width="35" height="35" patternUnits="userSpaceOnUse" patternTransform="translate(206 481) rotate(43)">
+      <path d="M0 0H35V35H0Z" fill="none" stroke="#77522e" stroke-width="5.5" opacity=".63"/>
+      <path d="M5 0V35M0 5H35" fill="none" stroke="#dec086" stroke-width="2" opacity=".1"/>
+    </pattern>
+    <linearGradient id="shirt-cream" x1="0%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0" stop-color="#ffefc9"/>
+      <stop offset="1" stop-color="#f7e6bd"/>
+    </linearGradient>
+    <linearGradient id="bow-rust" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0" stop-color="#bb7045"/>
+      <stop offset=".5" stop-color="#aa5832"/>
+      <stop offset="1" stop-color="#98492a"/>
+    </linearGradient>
+    <clipPath id="avatar-clip"><ellipse cx="364.3" cy="377.4" rx="298.5" ry="299.6"/></clipPath>
+    <clipPath id="vest-clip"><path d="M212 482C258 484 299 515 365 524 426 517 476 491 517 482L529 648 496 692H201Z"/></clipPath>
+    <clipPath id="left-lens-clip"><ellipse cx="289" cy="368.1" rx="51.9" ry="50.8"/></clipPath>
+    <clipPath id="right-lens-clip"><ellipse cx="446.8" cy="368" rx="50.8" ry="50.8"/></clipPath>
+  </defs>
+
+  <g id="outer-ring"><ellipse cx="364.3" cy="377.4" rx="348.4" ry="347.3" fill="url(#frame-brown)"/></g>
+  <g id="inner-ring"><ellipse cx="364.3" cy="377.4" rx="318.9" ry="319.1" fill="url(#frame-gold)"/></g>
+  <g id="avatar-background"><ellipse cx="364.3" cy="377.4" rx="298.5" ry="299.6" fill="url(#background-gold)"/></g>
+
+  <g id="portrait" clip-path="url(#avatar-clip)" stroke-linecap="round" stroke-linejoin="round">
+    <g id="wings" fill="url(#wing-brown)" stroke="#603017" stroke-width="6.5">
+      <path d="M216 472C184 490 153 538 144 583L155 618 201 652 239 557Z"/>
+      <path d="M512 473C550 489 576 539 586 586L561 626 521 654 491 554Z"/>
+      <path d="M203 494C179 518 161 552 154 587" fill="none" stroke="#cf955e" stroke-width="7"/>
+      <path d="M531 499C554 526 569 555 575 588" fill="none" stroke="#d09259" stroke-width="6"/>
+      <path d="M177 566C172 581 169 600 169 611L183 623C178 602 179 581 177 566Z" fill="#84502e" stroke="none"/>
+      <path d="M556 566C564 581 568 598 569 607L556 621C560 601 553 580 556 566Z" fill="#814929" stroke="none"/>
+    </g>
+    <g id="vest">
+      <path d="M212 482C258 484 299 515 365 524 426 517 476 491 517 482L529 648 496 692H201Z" fill="url(#vest-gold)" stroke="#623418" stroke-width="7"/>
+      <g clip-path="url(#vest-clip)"><rect x="185" y="480" width="360" height="220" fill="url(#vest-diamonds)"/></g>
+      <path d="M212 484C206 533 201 588 200 630M517 483C522 534 526 586 528 630" fill="none" stroke="#63331c" stroke-width="7"/>
+      <path id="shirt" d="M253 503 301 523 429 522 479 505C455 554 414 598 366 638 320 601 279 553 253 503Z" fill="url(#shirt-cream)" stroke="#643519" stroke-width="7"/>
+      <path d="M296 550C331 561 404 560 437 549L413 580C385 590 355 589 327 581Z" fill="#baa374" opacity=".35"/>
+      <path d="M366 639V680" fill="none" stroke="#6a401d" stroke-width="7"/>
+      <path d="M373 643V678" fill="none" stroke="#deaf65" stroke-width="3" opacity=".65"/>
+      <circle id="vest-button" cx="389.3" cy="659" r="9.6" fill="#5f2b13"/>
+    </g>
+
+    <g id="graduation-cap" stroke="#3c1e10" stroke-width="7">
+      <path id="mortarboard" d="M365 111 525 168Q533 172 525 177L370 231Q365 233 360 231L204 179Q196 175 203 171Z" fill="url(#cap-top)"/>
+      <path d="M211 174 365 120 519 172" fill="none" stroke="#836456" stroke-width="6" opacity=".7"/>
+      <path id="tassel" d="M493 189 492 235" fill="none" stroke="#5c2e12" stroke-width="7"/>
+      <path id="cap-band" d="M273 233 281 184C303 161 405 155 448 181L460 235 413 259 310 256Z" fill="url(#cap-front)"/>
+      <path d="M285 205C305 185 339 180 375 186 410 190 432 204 441 220L448 233C410 231 385 241 366 249 338 236 302 231 279 238Z" fill="#694e41" opacity=".55" stroke="none"/>
+    </g>
+    <g id="head" stroke="#663017" stroke-width="7">
+      <path d="M211 273C226 246 248 232 278 229 307 226 340 232 365 244 398 231 434 226 461 232 493 240 514 261 530 292 546 326 555 370 563 408 565 417 565 424 561 426L549 416C548 435 546 463 539 470L530 462C508 504 469 523 425 528 394 534 342 535 310 530 259 525 222 509 200 464L188 470C179 463 178 435 177 415L166 426Q160 429 163 415C170 368 186 315 211 273Z" fill="url(#feather-tan)"/>
+      <path d="M212 277C190 321 174 373 167 415L181 401C183 417 186 431 192 437L199 429C207 450 217 468 232 478L237 468C267 508 311 521 366 525 431 530 483 507 510 473L519 475 530 449 538 457 543 431 551 437 549 408 558 416C550 373 541 333 524 299 539 326 552 371 563 413L563 423 549 414C548 435 546 463 539 469L530 460C508 502 470 521 425 527 393 533 343 534 310 529 260 524 223 508 200 462L188 468C180 460 178 436 177 414L165 425C169 368 186 313 212 277Z" fill="#ae7048" opacity=".73" stroke="none"/>
+      <path d="M205 292C190 323 179 363 174 392L185 387C190 347 204 311 222 291Z" fill="#efba81" opacity=".65" stroke="none"/>
+      <path d="M518 283C535 313 546 353 551 380L541 366C534 330 523 306 508 289Z" fill="#edb57d" opacity=".72" stroke="none"/>
+    </g>
+
+    <g id="facial-discs" fill="url(#face-cream)" stroke="#a46d41" stroke-width="6">
+      <path d="M267 280C309 274 340 300 350 331 357 347 350 362 346 378 343 394 341 405 331 419 317 435 299 445 280 445 237 445 206 417 202 374 198 334 216 292 251 282Q259 280 267 280Z"/>
+      <path d="M458 280C499 278 528 309 533 352 540 397 512 436 472 443 435 450 403 433 389 408 378 389 379 365 387 342 400 307 424 282 458 280Z"/>
+    </g>
+
+    <g id="eyebrow-feathers" fill="url(#brow-brown)" stroke="#633018" stroke-width="7">
+      <path d="M366 340C357 319 343 292 313 273 287 256 256 241 232 233 209 225 192 208 181 192 173 210 181 233 204 247 192 248 179 241 172 239 168 246 180 266 195 274 216 286 240 280 267 282 312 283 345 306 366 340Z"/>
+      <path d="M366 340C379 307 399 280 431 264 455 252 481 242 504 232 523 223 539 207 548 192 555 210 543 235 524 248 537 247 549 242 556 239 563 247 546 268 532 274 511 285 484 280 461 282 419 284 385 306 366 340Z"/>
+      <path d="M184 201C200 223 224 238 251 245 296 257 330 277 347 303 321 278 283 264 249 256 220 249 194 230 184 201Z" fill="#c78957" stroke="none"/>
+      <path d="M546 200C531 222 508 238 479 247 438 260 407 276 386 307 405 279 438 260 475 248 507 237 531 219 546 200Z" fill="#be7f4c" stroke="none"/>
+    </g>
+
+    <g id="glasses">
+      <g id="lenses" fill="url(#lens-blue)">
+        <ellipse cx="289" cy="368.1" rx="51.9" ry="50.8"/>
+        <ellipse cx="446.8" cy="368" rx="50.8" ry="50.8"/>
+      </g>
+      <g id="eyes" fill="#493c30">
+        <ellipse cx="294.3" cy="364.7" rx="21.5" ry="21.8"/>
+        <ellipse cx="440.7" cy="364.8" rx="21.4" ry="21.8"/>
+      </g>
+      <g id="lens-reflections" fill="#ffffff" opacity=".52">
+        <path d="M238 414 317 327 333 341 255 429Z" clip-path="url(#left-lens-clip)"/>
+        <path d="M391 417 467 330 485 343 410 433Z" clip-path="url(#right-lens-clip)"/>
+      </g>
+      <g id="eye-highlights" fill="#fffef7">
+        <ellipse cx="304.1" cy="355.5" rx="8.8" ry="8.3" transform="rotate(-29 304.1 355.5)"/>
+        <ellipse cx="452.1" cy="355.8" rx="8.5" ry="8.1" transform="rotate(-29 452.1 355.8)"/>
+      </g>
+      <g id="glasses-frame" fill="none" stroke="#401c11" stroke-width="8">
+        <path d="M340 366C355 353 378 354 396 366"/>
+        <ellipse cx="289" cy="368.1" rx="51.9" ry="50.8"/>
+        <ellipse cx="446.8" cy="368" rx="50.8" ry="50.8"/>
+      </g>
+    </g>
+
+    <g id="beak" stroke-linejoin="round">
+      <path d="M338 404C342 387 352 377 366 377 382 377 394 390 398 407 401 419 382 446 373 459Q369 465 365 460C354 449 334 421 338 404Z" fill="url(#beak-orange)" stroke="#6b3016" stroke-width="6.5"/>
+      <path d="M344 397C340 411 346 424 356 437L370 453C381 436 389 423 391 412 387 426 378 437 370 444 357 430 346 418 344 397Z" fill="#de792c" opacity=".64"/>
+      <path d="M374 387C385 397 383 405 375 423L370 436C372 415 366 399 374 387Z" fill="#ffe576"/>
+    </g>
+
+    <g id="bow-tie" stroke="#642813" stroke-width="7">
+      <path d="M349 530C331 519 307 504 297 508 282 516 280 570 292 589 299 599 329 580 349 569Z" fill="url(#bow-rust)"/>
+      <path d="M387 530C402 519 431 504 438 509 451 519 457 571 443 589 435 597 406 581 387 570Z" fill="url(#bow-rust)"/>
+      <path d="M293 522C296 512 303 514 315 520L342 535 345 545C326 531 309 523 293 522Z" fill="#d38c5d" opacity=".64" stroke="none"/>
+      <path d="M398 535C413 523 431 515 438 518L442 528C429 525 414 534 397 544Z" fill="#d38c5d" opacity=".52" stroke="none"/>
+      <path d="M291 566C303 581 326 566 344 559L345 570C327 579 303 593 294 586Z" fill="#8c4125" opacity=".38" stroke="none"/>
+      <path d="M394 558C412 566 431 581 447 569L441 586C429 588 408 575 393 570Z" fill="#8c4125" opacity=".38" stroke="none"/>
+      <path d="M344 548C336 543 326 539 320 539M344 554 325 561M394 548C401 544 408 541 414 541M394 555 410 561" fill="none" stroke-width="5"/>
+      <path id="bow-knot" d="M359 528C367 527 378 528 386 532 392 537 393 560 387 568 381 575 357 575 349 569 343 562 343 539 349 532Q353 529 359 528Z" fill="url(#bow-rust)"/>
+      <path d="M352 540C359 535 377 535 385 540" fill="none" stroke="#cf8151" stroke-width="5" opacity=".65"/>
+      <path d="M349 555C359 560 376 560 388 555L386 565C376 570 359 570 351 565Z" fill="#914323" stroke="none" opacity=".47"/>
+    </g>
+  </g>
+</svg>

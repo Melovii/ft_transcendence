@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="8.6 20.4 662 662" role="img" aria-labelledby="orc-title orc-description">
+  <title id="orc-title">Orc warrior avatar</title>
+  <desc id="orc-description">An olive green orc with a stern expression, ivory tusks, a horned iron and leather helmet, and spiked red shoulder armor, inside a bronze and dark red circular frame.</desc>
+  <defs>
+    <linearGradient id="frame-maroon" x1="0%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0" stop-color="#601e20"/>
+      <stop offset=".5" stop-color="#692223"/>
+      <stop offset="1" stop-color="#611d20"/>
+    </linearGradient>
+    <linearGradient id="frame-bronze" x1="15%" y1="0%" x2="65%" y2="100%">
+      <stop offset="0" stop-color="#b38152"/>
+      <stop offset=".55" stop-color="#bd8b59"/>
+      <stop offset="1" stop-color="#bd8959"/>
+    </linearGradient>
+    <radialGradient id="background-red" cx="53%" cy="41%" r="76%">
+      <stop offset="0" stop-color="#a62439"/>
+      <stop offset="1" stop-color="#941a2f"/>
+    </radialGradient>
+    <linearGradient id="skin-olive" gradientUnits="userSpaceOnUse" x1="230" y1="385" x2="488" y2="397">
+      <stop offset="0" stop-color="#9d9d4e"/>
+      <stop offset=".45" stop-color="#a5a150"/>
+      <stop offset="1" stop-color="#a4a052"/>
+    </linearGradient>
+    <linearGradient id="body-olive" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#797f3d"/>
+      <stop offset=".6" stop-color="#a0a04e"/>
+      <stop offset="1" stop-color="#a5a251"/>
+    </linearGradient>
+    <linearGradient id="brow-olive" x1="0%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0" stop-color="#b0ac5b"/>
+      <stop offset="1" stop-color="#a39e4f"/>
+    </linearGradient>
+    <linearGradient id="ear-olive" x1="10%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0" stop-color="#acaa5b"/>
+      <stop offset="1" stop-color="#8b9149"/>
+    </linearGradient>
+    <linearGradient id="ivory" x1="0%" y1="70%" x2="100%" y2="25%">
+      <stop offset="0" stop-color="#ddc18f"/>
+      <stop offset=".65" stop-color="#efcf9c"/>
+      <stop offset="1" stop-color="#fce7b9"/>
+    </linearGradient>
+    <linearGradient id="leather-brown" x1="5%" y1="80%" x2="100%" y2="0%">
+      <stop offset="0" stop-color="#703c2b"/>
+      <stop offset=".6" stop-color="#8a4937"/>
+      <stop offset="1" stop-color="#a95e43"/>
+    </linearGradient>
+    <linearGradient id="iron" x1="5%" y1="100%" x2="80%" y2="0%">
+      <stop offset="0" stop-color="#899296"/>
+      <stop offset=".5" stop-color="#a1a8aa"/>
+      <stop offset="1" stop-color="#b9bec0"/>
+    </linearGradient>
+    <linearGradient id="iron-rim" x1="0%" y1="80%" x2="85%" y2="0%">
+      <stop offset="0" stop-color="#98999a"/>
+      <stop offset="1" stop-color="#bac0c1"/>
+    </linearGradient>
+    <linearGradient id="armor-red" x1="0%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0" stop-color="#b4423e"/>
+      <stop offset=".55" stop-color="#a13231"/>
+      <stop offset="1" stop-color="#972c2c"/>
+    </linearGradient>
+    <linearGradient id="armor-rim" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0" stop-color="#b2aaa0"/>
+      <stop offset=".55" stop-color="#c3bbb0"/>
+      <stop offset="1" stop-color="#a69c91"/>
+    </linearGradient>
+    <clipPath id="avatar-clip">
+      <ellipse cx="339.6" cy="351.4" rx="282.5" ry="283"/>
+    </clipPath>
+    <g id="rivet" stroke="#45413b" stroke-width="5">
+      <circle r="10.6" fill="#c0c0bb"/>
+      <circle cy="-2" r="4.4" fill="#e0dfd8" stroke="none"/>
+    </g>
+  </defs>
+
+  <g id="outer-ring">
+    <ellipse cx="339.6" cy="351.4" rx="329.8" ry="331" fill="url(#frame-maroon)"/>
+  </g>
+  <g id="inner-ring">
+    <ellipse cx="339.6" cy="351.4" rx="302.2" ry="302.2" fill="url(#frame-bronze)"/>
+  </g>
+  <g id="avatar-background">
+    <ellipse cx="339.6" cy="351.4" rx="282.5" ry="283" fill="url(#background-red)"/>
+  </g>
+
+  <g id="portrait" clip-path="url(#avatar-clip)" stroke-linecap="round" stroke-linejoin="round">
+    <g id="neck-and-shoulders" stroke="#4d3b20" stroke-width="6">
+      <path d="M230 389 C227 422 218 450 203 478 L216 553 L245 625 L284 671 L563 674 L575 554 C547 527 523 509 489 496 L467 470 L283 421 Z" fill="url(#body-olive)"/>
+      <path d="M271 501 C325 539 385 551 458 537 C441 566 418 587 383 589 C346 591 305 574 281 556 Z" fill="#737d3b" stroke="none"/>
+      <path d="M492 502 C519 513 541 529 555 544 L554 533 C534 514 513 504 495 499 Z" fill="#d1ca77" stroke="none"/>
+      <path d="M290 557 C310 575 328 581 346 590 C356 596 361 603 362 612 C344 601 326 592 309 588 C300 585 296 574 290 557 Z" fill="#c1bd65" stroke="none"/>
+      <path d="M410 605 C429 587 456 578 481 578 Q486 579 483 582 C458 588 432 599 410 605 Z" fill="#727b3b" stroke="none"/>
+      <path d="M382 621 L384 638" fill="none" stroke="#79823d" stroke-width="4"/>
+    </g>
+
+    <g id="shoulder-armor" stroke="#4d3529" stroke-width="6">
+      <path id="armor-strap" d="M229 579 L319 642 L289 674 L212 611 Z" fill="#70412f"/>
+      <path d="M252 609 L286 639" fill="none" stroke="#92583e" stroke-width="15"/>
+      <path id="rear-spike" d="M104 482 C104 465 105 451 109 443 L137 473 Z" fill="url(#ivory)"/>
+      <path d="M109 452 L113 475 L129 471 Z" fill="#fff0c7" stroke="none"/>
+      <path id="armor-rim-shape" d="M145 474 C159 460 180 457 195 470 C232 498 257 550 273 590 C265 603 256 612 245 623 L211 615 L203 580 L148 512 Z" fill="url(#armor-rim)"/>
+      <path d="M164 468 C199 473 238 532 265 588" fill="none" stroke="#e4d8c7" stroke-width="7"/>
+      <path id="red-pauldron" d="M80 502 C106 485 124 479 146 474 C164 474 178 482 194 499 C213 521 231 553 241 580 C227 595 211 608 193 620 L137 621 L82 559 Z" fill="url(#armor-red)"/>
+      <path d="M90 497 C105 487 124 482 142 481 L149 486 C128 486 109 493 94 503 Z" fill="#d46555" stroke="none"/>
+      <path id="upper-armor-spike" d="M135 501 C139 486 138 471 145 460 C152 476 166 486 167 497 C166 508 150 513 138 506 Q134 505 135 501 Z" fill="url(#ivory)"/>
+      <path d="M145 470 C147 483 155 492 158 499 C150 504 141 501 141 498 Z" fill="#f6dfb1" stroke="none"/>
+      <path id="lower-armor-spike" d="M182 544 C190 537 199 533 207 530 C208 545 206 560 200 566 C190 575 176 563 175 554 Q175 548 182 544 Z" fill="url(#ivory)"/>
+      <path d="M181 549 C189 541 198 538 202 537 C199 549 191 557 181 558 Z" fill="#f9e3b8" stroke="none"/>
+    </g>
+
+    <g id="right-ear" stroke="#4c3c20" stroke-width="6">
+      <path d="M477 311 C493 298 509 291 526 286 C519 324 522 365 490 396 L476 376 Z" fill="url(#ear-olive)"/>
+      <path d="M488 316 C497 308 509 300 517 297 C509 310 502 328 499 346 C498 361 494 373 489 380 L483 354 Z" fill="#c3bf70" stroke="none"/>
+      <path d="M511 310 C499 319 487 337 484 355 L491 381" fill="none" stroke="#596032" stroke-width="5"/>
+    </g>
+
+    <g id="face">
+      <path id="face-shape" d="M240 278 C305 261 415 269 473 284 C486 309 482 337 487 365 C494 400 494 433 483 464 C476 479 481 494 479 510 C476 533 463 543 442 548 C415 555 371 555 345 548 C306 537 272 519 247 496 C234 485 232 466 231 448 L228 407 L204 366 L218 312 Z" fill="url(#skin-olive)" stroke="#4c3a20" stroke-width="6"/>
+      <path id="left-face-shadow" d="M240 304 C255 313 278 317 292 330 L295 345 C281 349 269 352 261 364 C251 381 257 400 279 410 C292 418 285 431 282 441 C276 459 277 478 288 488 C304 503 331 501 353 493 C378 485 394 482 419 483 C448 483 470 490 477 506 L477 513 C466 539 435 551 400 550 C351 553 290 526 247 493 C235 480 234 460 233 441 L230 406 L219 364 Z" fill="#79813e"/>
+      <path id="eye-socket-left" d="M305 328 C296 342 295 360 307 375 C320 391 345 395 366 379 C378 369 382 353 376 339 Z" fill="#687434"/>
+      <path id="eye-socket-right" d="M419 334 C411 350 414 372 430 382 C446 392 467 380 477 365 C481 355 479 342 474 331 Z" fill="#697438"/>
+      <path id="left-cheek" d="M286 353 C269 349 255 365 257 382 C259 398 272 408 287 412 C272 402 269 393 271 380 C274 373 282 369 287 364 Z" fill="#b0ac58"/>
+      <path d="M258 375 C254 392 267 407 284 411 C270 400 264 390 264 379 Z" fill="#5a612d"/>
+      <path id="chin-highlight" d="M338 511 C360 501 390 498 418 499 C444 499 463 507 473 521 C449 532 430 534 404 534 C374 535 350 532 333 523 Q322 517 338 511 Z" fill="#a6a150"/>
+      <path d="M413 517 C414 522 413 527 411 531" fill="none" stroke="#5a4925" stroke-width="4"/>
+    </g>
+
+    <g id="left-ear">
+      <path d="M237 333 C222 312 184 295 150 288 C151 321 161 343 173 374 C182 400 202 431 230 411 L237 405" fill="url(#ear-olive)" stroke="#4b3a20" stroke-width="6"/>
+      <path d="M158 300 C185 307 218 325 232 345 C240 357 239 367 230 370 C225 350 212 338 194 329 C179 321 168 313 158 300 Z" fill="#c4be73"/>
+      <path d="M173 312 C196 321 219 342 227 367" fill="none" stroke="#4f421f" stroke-width="7"/>
+      <path d="M210 348 C194 359 201 385 218 387 Q225 388 224 385 C212 384 206 373 209 364 C211 358 215 356 220 356 Z" fill="#514c26"/>
+      <g id="earring" stroke="#484b3e" stroke-width="5">
+        <path d="M166 341 C174 340 182 346 181 354 C180 361 173 368 165 367 C158 365 153 360 153 353 C153 347 159 342 166 341 Z" fill="#8e9e99"/>
+        <ellipse cx="166" cy="350" rx="7.3" ry="6.3" fill="#bbc9bd" stroke="none"/>
+      </g>
+    </g>
+
+    <g id="eyes" fill="#fff2c9" stroke="#48341c" stroke-width="4.5">
+      <path id="left-eye" d="M313 326 C328 323 352 331 369 338 C372 353 363 369 349 374 C335 380 317 375 309 365 C301 354 305 337 313 326 Z"/>
+      <path id="right-eye" d="M421 336 C437 336 453 329 469 329 C477 342 474 357 466 365 C455 377 435 376 426 367 C419 359 418 347 421 336 Z"/>
+      <g id="pupils" fill="#512c14" stroke="none">
+        <ellipse cx="344" cy="346.5" rx="18.8" ry="19.5"/>
+        <ellipse cx="450.5" cy="347.5" rx="14.6" ry="17.2"/>
+      </g>
+      <g id="eye-highlights" fill="#fffff3" stroke="none">
+        <circle cx="349" cy="348" r="5.2"/>
+        <circle cx="454" cy="346" r="4.6"/>
+      </g>
+    </g>
+
+    <g id="eyebrows">
+      <path d="M281 306 C309 296 344 292 373 299 C385 302 390 315 389 327 C388 339 383 344 372 342 C353 340 333 331 317 328 C304 325 292 325 285 329 C270 333 269 315 281 306 Z" fill="url(#brow-olive)"/>
+      <path d="M414 301 C440 292 461 294 478 300 L481 326 C467 325 456 330 444 334 C430 338 416 343 410 334 C405 327 407 311 414 301 Z" fill="url(#brow-olive)"/>
+      <path d="M285 329 C306 318 337 335 367 341 C379 344 387 340 389 327 M409 326 C409 344 425 341 444 335 C459 330 470 325 482 327" fill="none" stroke="#4e3c1e" stroke-width="6"/>
+      <path d="M377 307 C385 306 389 312 389 321 C385 317 381 313 377 307 Z M414 310 C408 310 405 317 406 326 C410 322 412 315 414 310 Z" fill="#626b30"/>
+    </g>
+
+    <g id="nose">
+      <path d="M383 351 C397 342 414 350 419 363 C422 369 421 377 424 382 C433 380 439 388 433 396 Q429 400 423 396 C414 418 395 423 381 405 L375 399 C365 403 361 390 369 383 C373 378 378 377 383 379 Z" fill="#707a35"/>
+      <path d="M386 354 C398 347 412 352 416 363 C420 372 417 382 423 386 C429 381 436 385 436 390 Q435 398 427 394 C422 407 414 414 403 412 C392 411 384 403 381 396 C374 394 370 401 368 393 C366 385 373 379 381 379" fill="url(#skin-olive)" stroke="#4f3e1e" stroke-width="5"/>
+      <path d="M393 351 C406 348 416 356 417 368 L419 378" fill="none" stroke="#ceca83" stroke-width="5"/>
+      <path d="M375 390 Q382 387 388 400 C396 409 410 410 419 403" fill="none" stroke="#55552a" stroke-width="4"/>
+    </g>
+
+    <g id="tusks" fill="url(#ivory)" stroke="#4e341e" stroke-width="5.5">
+      <path id="left-tusk" d="M304 465 C298 446 303 414 313 398 C319 420 330 441 347 456 Z"/>
+      <path d="M311 407 C309 429 315 448 327 459 L307 463 C303 446 305 425 311 407 Z" fill="#ebc995" stroke="none"/>
+      <path id="middle-tooth" d="M344 457 L354 433 Q357 427 361 434 L375 452 Z"/>
+      <path id="right-tusk" d="M455 457 C469 438 477 417 483 398 C495 414 496 435 489 462 Z"/>
+      <path d="M485 407 C487 426 481 446 474 459 L487 460 C492 441 492 422 485 407 Z" fill="#ffebc2" stroke="none"/>
+    </g>
+
+    <g id="mouth">
+      <path id="lower-lip" d="M284 466 C286 457 299 464 308 463 C345 455 382 446 417 448 C445 447 471 452 489 461 C500 466 500 480 492 488 C487 494 477 495 466 491 C439 480 414 477 386 481 C361 483 337 501 313 500 C290 499 280 485 284 466 Z" fill="url(#brow-olive)"/>
+      <path d="M287 480 C300 499 325 493 344 490 C329 501 309 505 297 496 Q288 491 287 480 Z" fill="#6a7136"/>
+      <path d="M299 466 C333 463 373 447 415 449 C442 448 470 453 489 461 C500 465 501 480 493 487 C486 495 475 494 464 490 M284 466 C280 486 294 499 313 499 C323 500 333 497 342 493" fill="none" stroke="#4e3e20" stroke-width="6"/>
+      <path d="M379 480 C398 475 416 474 433 476" fill="none" stroke="#493b1d" stroke-width="5"/>
+    </g>
+
+    <g id="helmet" stroke="#423029" stroke-width="6">
+      <g id="helmet-horns">
+        <path id="right-horn" d="M448 185 C466 185 479 169 490 145 C498 130 503 158 501 174 C500 193 492 213 480 226 L461 212 Z" fill="url(#ivory)"/>
+        <path d="M493 151 C494 178 482 192 468 199 L480 216 C491 201 498 174 493 151 Z" fill="#d7b787" stroke="none"/>
+        <path id="right-horn-collar" d="M449 185 C463 188 479 206 482 223 L479 241 L461 226 L441 195 Z" fill="url(#iron)"/>
+      </g>
+      <path id="helmet-spike" d="M319 146 L338 96 L363 144 Z" fill="url(#iron-rim)"/>
+      <path d="M339 105 L341 141 L358 142 Z" fill="#d8dbd5" stroke="none"/>
+      <path id="helmet-dome" d="M201 275 C207 216 239 180 289 158 C318 143 348 142 375 150 C426 156 465 191 483 242 L489 263 L347 287 Z" fill="url(#leather-brown)"/>
+      <path id="helmet-left-shadow" d="M203 268 C214 216 247 180 290 163 C274 179 267 199 274 223 C278 238 296 241 313 241 L226 275 Z" fill="#703c2b" stroke="none"/>
+      <path id="helmet-right-highlight" d="M397 161 C431 175 460 205 476 239 L467 238 C450 202 427 180 404 171 Z" fill="#ca8460" stroke="none"/>
+      <path id="helmet-center-band" d="M300 154 C310 145 322 142 339 143 L363 143 C394 144 414 185 427 237 L363 242 C360 203 342 149 310 154 Z" fill="url(#iron)"/>
+      <path d="M327 150 C350 167 363 202 370 236 L361 237 C357 204 343 168 323 154 Z" fill="#646e73" stroke="none"/>
+      <path d="M372 148 C395 161 412 198 419 234 L425 235 C414 189 397 158 377 148 Z" fill="#d5d8d5" stroke="none"/>
+      <path d="M300 154 C310 145 322 142 339 143 L363 143 C394 144 414 185 427 237 L363 242 C360 203 342 149 310 154 Z" fill="none"/>
+      <g id="helmet-top-rivets" stroke="none">
+        <use href="#rivet" transform="translate(373 164.5) scale(.91)"/>
+        <use href="#rivet" transform="translate(391.8 207.2) scale(.93)"/>
+      </g>
+      <g id="left-horn">
+        <path id="left-horn-collar" d="M240 186 C261 182 268 194 262 214 C256 234 239 252 223 249 L209 238 Z" fill="url(#iron)"/>
+        <path d="M248 190 C257 192 258 203 253 216 C247 231 234 240 222 242" fill="none" stroke="#c9c9bc" stroke-width="6"/>
+        <path id="left-horn-shape" d="M216 237 C195 229 181 207 180 183 C178 165 183 139 189 142 C200 165 214 179 245 189 C251 203 239 224 216 237 Z" fill="url(#ivory)"/>
+        <path d="M187 153 C187 183 204 211 232 222 L215 234 C192 223 179 189 187 153 Z" fill="#ccb082" stroke="none"/>
+      </g>
+      <path id="helmet-side-fastener" d="M487 259 C498 262 506 277 497 286 L489 288 Z" fill="url(#iron-rim)"/>
+      <path id="helmet-brim" d="M198 277 C226 258 284 244 333 237 C386 231 443 234 480 246 C488 248 492 252 493 261 L494 296 C447 281 408 282 369 285 C311 286 260 296 219 313 L198 305 Z" fill="url(#iron)"/>
+      <path d="M267 249 C269 270 273 286 286 284 C354 271 422 271 487 284 L488 292 C436 278 383 282 345 285 C294 290 252 300 219 310 L201 302 L201 279 C219 267 242 257 267 249 Z" fill="#91999c" stroke="none"/>
+      <path d="M486 253 L488 287" fill="none" stroke="#d6d9d1" stroke-width="5"/>
+      <path d="M198 277 C226 258 284 244 333 237 C386 231 443 234 480 246 C488 248 492 252 493 261 L494 296 C447 281 408 282 369 285 C311 286 260 296 219 313 L198 305 Z" fill="none"/>
+      <g id="helmet-brim-rivets" stroke="none">
+        <use href="#rivet" transform="translate(246.5 279.5) scale(.91)"/>
+        <use href="#rivet" transform="translate(318.5 263.1) scale(.94)"/>
+        <use href="#rivet" transform="translate(400 259.5)"/>
+        <use href="#rivet" transform="translate(462.4 264.5) scale(.97)"/>
+      </g>
+    </g>
+  </g>
+</svg>

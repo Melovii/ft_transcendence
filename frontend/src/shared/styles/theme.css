@@ -1,0 +1,299 @@
+/*
+ * Design theme — generated from the design system variables.
+ *
+ * Every value below is a design token, so Tailwind generates its utilities straight from
+ * the design system (`bg-primary`, `text-text-muted`, `rounded-md`, `text-2xl`,
+ * `shadow-card`). Components consume those utilities and declare no raw value.
+ *
+ * Naming follows the design handoff rule: a variable's segments are lower-cased and
+ * joined with hyphens. `Color / Primary` is `--color-primary`, `Color / Shadow / Warm` is
+ * `--color-shadow-warm`, `Radius / 2XL` is `--radius-2xl`, `Stroke / Heavy` is
+ * `--stroke-heavy` and `Typography / Size / LG` is `--font-size-lg`.
+ */
+
+@theme {
+  /* Tailwind's stock palette is dropped: only design colors are available. */
+  --color-*: initial;
+
+  /* ---- Surfaces ---- */
+  --color-background: #faf4e6;
+  --color-surface: #fff;
+  --color-surface-raised: #fffdf0;
+  --color-surface-muted: #eee8dd;
+  --color-surface-sunken: #e5e0d8;
+
+  /* ---- Text ---- */
+  --color-text: #1a204c;
+  --color-text-ink: #171a32;
+  --color-text-black: #20211f;
+  --color-text-muted: #6c6a67;
+  --color-text-gray: #777887;
+  --color-text-slate: #60647b;
+  --color-text-faint: #5d6067;
+  --color-text-placeholder: #737379;
+  --color-text-disabled: #aaa49d;
+
+  /* ---- Primary (blue) ---- */
+  --color-primary: #4f95f8;
+  --color-primary-bright: #5aa9fa;
+  --color-primary-light: #7fb2f8;
+  --color-primary-soft: #93b6e6;
+  --color-primary-sky: #4e9ce8;
+  --color-primary-muted: #579ace;
+  --color-primary-deep: #4b91c8;
+  --color-primary-ink: #3f658a;
+
+  /* ---- Secondary (coral) ---- */
+  --color-secondary: #fe756a;
+  --color-secondary-deep: #f2675f;
+  --color-secondary-dark: #d9605b;
+
+  /* ---- Accents ---- */
+  --color-accent-yellow: #ffd93d;
+  --color-accent-yellow-deep: #f6d44e;
+  --color-accent-orange: #f5a443;
+  --color-accent-mint: #86e6b9;
+  --color-accent-mint-deep: #6fd3a5;
+  --color-accent-purple: #b995ff;
+  --color-accent-purple-deep: #997ffe;
+  --color-accent-red: #d35350;
+  --color-accent-brick: #914b47;
+  --color-accent-brown: #74403a;
+
+  /* ---- Semantic state ---- */
+  --color-online: #45c979;
+  --color-success: #47bd7a;
+  --color-success-bright: #63d69b;
+  --color-success-soft: #4dc783;
+  --color-success-deep: #159d61;
+  --color-error: #e94e4e;
+  --color-disabled: #dedbd4;
+  --color-cta: #ffd83d;
+
+  /* Destructive action colors come from the destructive button in the design system. */
+  --color-destructive: #da443c;
+  --color-destructive-deep: #da3835;
+
+  /* ---- Lines & overlay ---- */
+  --color-border: #d9d4c9;
+  --color-backdrop: #c6c1b5;
+  --color-border-blue: #d5e0e9;
+  --color-overlay: #1a204cc2;
+
+  /* ---- Word card affiliations ---- */
+  --color-card-danger: #4b2854;
+
+  /* ---- Shadow colors ---- */
+  --color-shadow-subtle: #0000000d;
+  --color-shadow-soft: #0000001a;
+  --color-shadow-medium: #00000026;
+  --color-shadow-strong: #00000033;
+  --color-shadow-warm-soft: #3d352d22;
+  --color-shadow-warm: #352f2827;
+  --color-shadow-warm-deep: #3a302224;
+  --color-shadow-warm-medium: #3d382f2e;
+  --color-shadow-warm-strong: #37342e35;
+  --color-shadow-primary: #2c6daa;
+  --color-shadow-success-deep: #2d865f;
+  --color-shadow-secondary: #aeaeae;
+  --color-shadow-card: #5c4a2e2e;
+  --color-shadow-team-a: #2f6fc438;
+  --color-shadow-team-b: #b8433d38;
+  --color-shadow-danger: #2a162e47;
+  --color-shadow-cta: #c9920c80;
+  --color-shadow-cta-deep: #684a1d38;
+  --color-shadow-destructive: #a81f27;
+  --color-shadow-disabled: #8a888344;
+  --color-shadow-avatar: #25203330;
+  --color-shadow-launcher: #3531292e;
+
+  --color-transparent: #00000000;
+  --color-current: currentColor;
+
+  /* ---- Typography ---- */
+  --font-sans: 'Baloo 2', sans-serif;
+
+  --font-weight-regular: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 800;
+
+  /* Sizes keep the handoff's `--font-size-*` names and are aliased into Tailwind's
+   * `--text-*` namespace so `text-lg` and `var(--font-size-lg)` are the same value. */
+  --text-xs: var(--font-size-xs);
+  --text-sm: var(--font-size-sm);
+  --text-md: var(--font-size-md);
+  --text-lg: var(--font-size-lg);
+  --text-xl: var(--font-size-xl);
+  --text-2xl: var(--font-size-2xl);
+  --text-3xl: var(--font-size-3xl);
+  --text-4xl: var(--font-size-4xl);
+  --text-display: var(--font-size-display);
+
+  --leading-tight: 1;
+  --leading-snug: 1.15;
+  --leading-base: 1.35;
+
+  /* Button labels in the design system are tracked in tightly. */
+  --tracking-tight: -0.075em;
+
+  /* ---- Spacing ----
+   * `p-1`..`p-6` are the design system's scale. Any other step (`h-10`, `pl-4`) falls back
+   * to the 4px base below, which keeps the two consistent. */
+  --spacing: 4px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 16px;
+  --spacing-4: 24px;
+  --spacing-5: 32px;
+  --spacing-6: 48px;
+
+  /* ---- Breakpoints ----
+   * `desktop` is the narrowest viewport that holds the 1920px desktop composition's
+   * content (a 1246px span, offset right of centre) without clipping it. */
+  --breakpoint-desktop: 90rem;
+
+  /* ---- Radius ---- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 27px;
+  --radius-2xl: 35px;
+  --radius-pill: 999px;
+
+  /* ---- Elevation: the composites the design system actually uses ---- */
+  --shadow-soft: 0 4px 12px var(--color-shadow-soft);
+  --shadow-card: 0 6px 10px var(--color-shadow-warm);
+  --shadow-panel: 0 6px 9px var(--color-shadow-warm-soft);
+  --shadow-word-card: 0 3px 7px var(--color-shadow-card);
+  --shadow-team-a: 0 6px 12px var(--color-shadow-team-a);
+  --shadow-team-b: 0 6px 12px var(--color-shadow-team-b);
+  --shadow-danger: 0 6px 12px var(--color-shadow-danger);
+  --shadow-toast: 0 4px 8px var(--color-shadow-medium);
+  --shadow-modal: 0 6px 14px var(--color-shadow-medium);
+  --shadow-alert: 0 1px 3px var(--color-shadow-subtle);
+  --shadow-avatar: 0 2px 5px var(--color-shadow-avatar);
+  --shadow-how-to-play: 0 7px 11px var(--color-shadow-warm-soft);
+  --shadow-document: 0 14px 24px var(--color-shadow-warm-medium);
+  --shadow-auth-dialog:
+    0 17px 27px var(--color-shadow-warm-medium), 0 3px 8px var(--color-shadow-subtle);
+  --shadow-auth-form: 0 7px 12px #4c49402e, 0 1px 3px var(--color-shadow-subtle);
+  --shadow-auth-form-compact: 0 8px 16px var(--color-shadow-warm-medium);
+  --shadow-auth-tab: 0 3px 5px #2a5b9040, 0 1px 2px #ffffff66;
+  --shadow-input-error: 0 0 6px var(--color-shadow-team-b), 0 3px 5px var(--color-shadow-soft);
+  --shadow-button-cta-large:
+    0 7px 1px var(--color-shadow-cta), 0 8px 9px var(--color-shadow-cta-deep);
+  --shadow-button-icon-secondary: 0 4px 8px var(--color-shadow-warm-soft);
+  --shadow-button-primary:
+    0 4px 0px var(--color-shadow-primary), 0 5px 7px var(--color-shadow-medium);
+  --shadow-button-success-deep:
+    0 4px 0px var(--color-shadow-success-deep), 0 5px 7px var(--color-shadow-medium);
+  --shadow-button-secondary:
+    0 4px 0px var(--color-shadow-secondary), 0 5px 7px var(--color-shadow-medium);
+  --shadow-button-neutral:
+    0 4px 0px var(--color-shadow-warm-strong), 0 5px 7px var(--color-shadow-medium);
+  --shadow-button-coral: 0 4px 0px var(--color-accent-red), 0 5px 7px var(--color-shadow-medium);
+  --shadow-button-muted: 0 4px 7px var(--color-shadow-warm-soft);
+  --shadow-button-destructive:
+    0 4px 0px var(--color-shadow-destructive), 0 5px 7px var(--color-shadow-medium);
+  --shadow-button-cta: 0 4px 0px var(--color-shadow-cta), 0 5px 7px var(--color-shadow-medium);
+  --shadow-button-disabled:
+    0 4px 0px var(--color-shadow-disabled), 0 5px 7px var(--color-shadow-soft);
+  --inset-shadow-pressed: inset 0 3px 4px var(--color-shadow-strong);
+
+  /* Hovering lifts a button by 2px, so its shadow grows by the same 2px and the button
+   * stays attached to the surface it rises from instead of floating over a gap. */
+  --shadow-button-primary-hover:
+    0 6px 0px var(--color-shadow-primary), 0 8px 12px var(--color-shadow-medium);
+  --shadow-button-neutral-hover:
+    0 6px 0px var(--color-shadow-warm-strong), 0 8px 12px var(--color-shadow-medium);
+  --shadow-button-coral-hover:
+    0 6px 0px var(--color-accent-red), 0 8px 12px var(--color-shadow-medium);
+  --shadow-button-muted-hover: 0 6px 10px var(--color-shadow-warm-medium);
+  --shadow-button-destructive-hover:
+    0 6px 0px var(--color-shadow-destructive), 0 8px 12px var(--color-shadow-medium);
+  --shadow-button-cta-hover:
+    0 6px 0px var(--color-shadow-cta), 0 8px 12px var(--color-shadow-medium);
+  --shadow-button-cta-large-hover:
+    0 9px 1px var(--color-shadow-cta), 0 11px 13px var(--color-shadow-cta-deep);
+  --shadow-button-icon-secondary-hover: 0 6px 12px var(--color-shadow-warm-soft);
+
+  /* ---- Motion ----
+   * One easing pair and one duration scale, so every component reacts the same way:
+   * `ease-pop` overshoots slightly for anything that appears, `ease-out` for state
+   * changes on an element that is already on screen. */
+  --ease-pop: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --ease-press: cubic-bezier(0.4, 0, 1, 1);
+
+  --animate-fade-in: fade-in 160ms ease-out;
+  --animate-pop-in: pop-in 200ms var(--ease-pop);
+  --animate-rise-in: rise-in 220ms var(--ease-pop);
+  --animate-card-reveal: card-reveal 380ms var(--ease-pop);
+
+  /* A word card turning over to show its affiliation. */
+  @keyframes card-reveal {
+    from {
+      transform: perspective(600px) rotateY(80deg) scale(0.96);
+    }
+    to {
+      transform: perspective(600px) rotateY(0) scale(1);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: scale(0.94) translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/*
+ * Stroke widths and layering have no Tailwind theme namespace, so they stay custom
+ * properties: `border-(length:--stroke-medium)` and `z-(--z-modal)`.
+ */
+:root {
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 23px;
+  --font-size-3xl: 27px;
+  --font-size-4xl: 32px;
+  --font-size-display: 52px;
+
+  --stroke-thin: 1px;
+  --stroke-default: 1.5px;
+  --stroke-medium: 2px;
+  --stroke-strong: 2.5px;
+  --stroke-heavy: 3px;
+
+  --z-chat: 100;
+  --z-modal: 200;
+  --z-overlay: 300;
+  --z-toast: 400;
+}

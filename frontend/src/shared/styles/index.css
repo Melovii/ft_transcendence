@@ -1,0 +1,16 @@
+/*
+ * Stylesheet entry point — the only CSS the application imports.
+ *
+ * Order matters: the cascade layers are declared first, then Tailwind's own layers, then
+ * the project theme, base defaults and custom utilities.
+ */
+
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@import './theme.css';
+@import './base.css';
+@import './utilities.css';

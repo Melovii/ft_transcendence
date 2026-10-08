@@ -1,0 +1,258 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="34.9 17.4 662.2 662.2" role="img" aria-labelledby="cyborg-cat-title cyborg-cat-description">
+  <title id="cyborg-cat-title">Cyborg cat avatar</title>
+  <desc id="cyborg-cat-description">An orange tabby with a cream muzzle, glowing red eyes, a steel half-mask and armored torso, framed by orange and yellow rings on a golden background.</desc>
+  <defs>
+    <linearGradient id="frame-orange" x1="5%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0" stop-color="#e7890c"/>
+      <stop offset=".6" stop-color="#ec8e09"/>
+      <stop offset="1" stop-color="#e48507"/>
+    </linearGradient>
+    <linearGradient id="frame-yellow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#ffe16b"/>
+      <stop offset=".6" stop-color="#ffdc5b"/>
+      <stop offset="1" stop-color="#ffe470"/>
+    </linearGradient>
+    <radialGradient id="background-gold" cx="48%" cy="43%" r="70%">
+      <stop offset="0" stop-color="#ffce27"/>
+      <stop offset="1" stop-color="#f8c21c"/>
+    </radialGradient>
+    <linearGradient id="fur-orange" x1="0%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0" stop-color="#f3aa49"/>
+      <stop offset=".6" stop-color="#f7a33f"/>
+      <stop offset="1" stop-color="#f69b3c"/>
+    </linearGradient>
+    <linearGradient id="ear-coral" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#e46a6a"/>
+      <stop offset=".5" stop-color="#ef817e"/>
+      <stop offset="1" stop-color="#f49188"/>
+    </linearGradient>
+    <linearGradient id="tail-orange" x1="10%" y1="20%" x2="100%" y2="80%">
+      <stop offset="0" stop-color="#d47c30"/>
+      <stop offset=".45" stop-color="#ee9840"/>
+      <stop offset="1" stop-color="#f6ad55"/>
+    </linearGradient>
+    <radialGradient id="muzzle-cream" cx="51%" cy="62%" r="70%">
+      <stop offset="0" stop-color="#f9efdf"/>
+      <stop offset=".7" stop-color="#f6e7d2"/>
+      <stop offset="1" stop-color="#f5dcbf"/>
+    </radialGradient>
+    <radialGradient id="muzzle-blush">
+      <stop offset="0" stop-color="#f5c6b0" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#f5c6b0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="metal-blue" x1="0%" y1="55%" x2="100%" y2="25%">
+      <stop offset="0" stop-color="#7c8e9a"/>
+      <stop offset=".56" stop-color="#98a3ad"/>
+      <stop offset="1" stop-color="#aab7bd"/>
+    </linearGradient>
+    <linearGradient id="metal-spine" x1="0%" y1="0%" x2="100%" y2="80%">
+      <stop offset="0" stop-color="#bcc9d0"/>
+      <stop offset=".56" stop-color="#95a3ae"/>
+      <stop offset="1" stop-color="#a7b5c0"/>
+    </linearGradient>
+    <linearGradient id="metal-edge" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0" stop-color="#6d7c8a"/>
+      <stop offset="1" stop-color="#8c9ba6"/>
+    </linearGradient>
+    <linearGradient id="armor-steel" x1="0%" y1="90%" x2="80%" y2="0%">
+      <stop offset="0" stop-color="#8c98a6"/>
+      <stop offset="1" stop-color="#a9b0b9"/>
+    </linearGradient>
+    <linearGradient id="nose-pink" x1="0%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0" stop-color="#f68e90"/>
+      <stop offset="1" stop-color="#e5777d"/>
+    </linearGradient>
+    <radialGradient id="eye-red" cx="52%" cy="54%" r="52%">
+      <stop offset="0" stop-color="#f82639"/>
+      <stop offset=".18" stop-color="#d8192e"/>
+      <stop offset=".46" stop-color="#570813"/>
+      <stop offset=".76" stop-color="#13090b"/>
+      <stop offset="1" stop-color="#090909"/>
+    </radialGradient>
+    <radialGradient id="small-lamp-red" cx="40%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#ff7165"/>
+      <stop offset=".48" stop-color="#f84447"/>
+      <stop offset="1" stop-color="#bd2732"/>
+    </radialGradient>
+    <radialGradient id="chest-lamp-red" cx="40%" cy="32%" r="76%">
+      <stop offset="0" stop-color="#fc5655"/>
+      <stop offset=".55" stop-color="#ef3543"/>
+      <stop offset="1" stop-color="#c32336"/>
+    </radialGradient>
+    <clipPath id="avatar-clip">
+      <ellipse cx="366" cy="348.5" rx="282.5" ry="282.8"/>
+    </clipPath>
+    <clipPath id="left-eye-clip">
+      <path d="M282 322 C307 327 347 339 375 353 C372 373 354 387 330 389 C305 391 287 379 282 361 C278 347 279 333 282 322 Z"/>
+    </clipPath>
+    <clipPath id="right-eye-clip">
+      <path d="M434 354 C455 341 484 329 507 323 C511 343 508 363 492 377 C477 390 451 385 441 368 Z"/>
+    </clipPath>
+  </defs>
+
+  <g id="outer-ring">
+    <ellipse cx="366" cy="348.5" rx="329.5" ry="331.1" fill="url(#frame-orange)"/>
+  </g>
+  <g id="inner-ring">
+    <ellipse cx="366" cy="348.5" rx="301.9" ry="303" fill="url(#frame-yellow)"/>
+  </g>
+  <g id="avatar-background">
+    <ellipse cx="366" cy="348.5" rx="282.5" ry="282.8" fill="url(#background-gold)"/>
+  </g>
+
+  <g id="portrait" clip-path="url(#avatar-clip)" stroke-linecap="round" stroke-linejoin="round">
+    <g id="tail" stroke="#713b20" stroke-width="6">
+      <path d="M166 564 C165 551 172 540 170 525 C167 501 153 483 135 472 C118 462 111 453 120 441 C131 423 155 438 171 451 C193 469 205 494 203 524 L201 579 Z" fill="url(#tail-orange)"/>
+      <path d="M125 444 C125 454 143 460 154 472 C170 488 180 507 178 526 C176 540 177 552 183 563 L195 575 L181 575 L168 564 C168 552 172 540 171 526 C168 501 154 484 135 472 C118 462 114 451 125 444 Z" fill="#b56630" stroke="none"/>
+      <path d="M153 439 C161 443 168 449 175 456 C160 458 153 469 153 478 L141 469 C140 455 145 445 153 439 Z" fill="#b56a30" stroke="none"/>
+      <path d="M181 472 C188 480 193 491 195 503 C188 503 181 506 177 513 L170 495 C171 486 176 478 181 472 Z" fill="#c27533" stroke="none"/>
+      <path d="M176 459 C196 480 201 505 197 531" fill="none" stroke="#ffd080" stroke-width="6"/>
+    </g>
+
+    <g id="body">
+      <path id="organic-arm" d="M461 533 C484 544 506 569 517 600 L527 637 L474 653 L449 573 Z" fill="url(#fur-orange)" stroke="#713c24" stroke-width="6"/>
+      <path d="M483 555 C495 572 503 588 507 610" fill="none" stroke="#ffd38b" stroke-width="6"/>
+      <g id="chest-armor" stroke="#34414d" stroke-width="6">
+        <path d="M185 593 C205 553 233 532 274 521 L332 523 L432 522 C453 526 469 537 474 549 C483 575 486 603 486 641 L208 666 Z" fill="url(#armor-steel)"/>
+        <path id="left-shoulder" d="M196 578 C207 560 221 546 236 540 C250 538 261 560 268 581 C273 597 274 612 269 632 L222 650 L184 603 Z" fill="url(#metal-edge)"/>
+        <path d="M217 600 C227 578 243 563 255 557 C266 575 272 599 270 624 L242 641 Z" fill="#aab6be" stroke="none"/>
+        <path d="M208 564 C220 550 229 544 238 543" fill="none" stroke="#bac8d1" stroke-width="5"/>
+        <path id="rib-panel" d="M264 560 L310 554 L318 613 L274 619 L271 592 Z" fill="#8696a2" stroke="none"/>
+        <path d="M270 563 L303 560 M272 589 L307 588" fill="none" stroke="#535f6d" stroke-width="5"/>
+        <path d="M280 558 L296 557 Q300 558 301 565 L280 568 Q275 565 280 558 Z" fill="#b8c5ce" stroke="#596775" stroke-width="3"/>
+        <path d="M274 584 L303 583" fill="none" stroke="#c1cbd0" stroke-width="4"/>
+        <path id="breastplate" d="M302 541 C326 541 359 548 382 549 C412 551 441 538 449 531 C460 534 469 541 471 551 L478 576 C470 602 451 623 425 631 C390 639 342 631 319 611 C302 597 294 563 302 541 Z" fill="url(#armor-steel)"/>
+        <path d="M447 534 C459 540 466 544 468 555 L473 577" fill="none" stroke="#e4e8e7" stroke-width="5"/>
+        <path d="M387 553 L395 584 M325 616 L319 635" fill="none" stroke-width="5"/>
+        <path d="M475 581 C466 589 461 608 457 624" fill="none" stroke-width="5"/>
+        <g id="chest-core">
+          <circle cx="394.8" cy="626.8" r="44.7" fill="#84929f"/>
+          <circle cx="395.7" cy="627.1" r="34" fill="#bcc6cc" stroke="#414855" stroke-width="5"/>
+          <circle cx="396.5" cy="628.3" r="28.6" fill="url(#chest-lamp-red)" stroke="#8b2937" stroke-width="4"/>
+          <ellipse cx="403.8" cy="617.7" rx="8.8" ry="8.4" fill="#ff8272" stroke="none" transform="rotate(22 403.8 617.7)"/>
+        </g>
+      </g>
+    </g>
+
+    <g id="neck" stroke="#34414a" stroke-width="6">
+      <path d="M270 489 L439 494 L441 525 C441 540 412 551 379 554 C337 556 293 543 270 525 Z" fill="url(#metal-edge)"/>
+      <path d="M342 509 L419 508 L407 549 L363 552 Z" fill="#72828f"/>
+      <path d="M351 523 C371 526 391 525 414 520 M356 536 C376 538 394 536 410 532" fill="none" stroke-width="5"/>
+      <path d="M433 509 L433 530 C427 537 420 540 414 542 L424 511 Z" fill="#c2ccd1" stroke="none"/>
+      <path d="M276 496 L276 522 L290 531 L290 503 Z" fill="#a9b7bf" stroke="none"/>
+      <ellipse cx="303.4" cy="520.9" rx="8" ry="8.8" fill="#98a8b2" stroke="#3d4a56" stroke-width="5"/>
+    </g>
+
+    <g id="ears">
+      <path id="right-ear-fur" d="M414 209 C439 179 470 157 496 146 Q503 141 507 150 C521 187 523 233 513 280 L489 287 L453 251 Z" fill="url(#fur-orange)" stroke="#72351e" stroke-width="6"/>
+      <path d="M425 208 C448 181 473 161 495 152 C475 177 463 200 455 222 Z" fill="#ffd484"/>
+      <path id="right-inner-ear" d="M457 223 C468 190 486 160 503 147 C518 182 523 232 513 278 Z" fill="url(#ear-coral)" stroke="#74371f" stroke-width="6"/>
+      <path d="M463 223 C474 190 487 168 499 155 C487 187 479 210 476 238 Z" fill="#d95f5c"/>
+    </g>
+
+    <g id="face">
+      <path id="head-fur" d="M202 299 C218 247 261 216 307 208 C343 198 383 198 416 207 C469 219 506 246 522 296 C531 321 525 341 534 366 C544 389 548 407 535 433 C519 466 485 489 447 502 C408 516 365 517 324 508 C280 499 241 478 216 445 C185 407 182 359 202 299 Z" fill="url(#fur-orange)" stroke="#733820" stroke-width="6"/>
+      <path id="fur-highlight" d="M365 207 C414 203 461 225 488 251 C508 270 519 297 523 320 C515 293 506 275 486 255 C456 227 413 213 369 212 Z" fill="#ffcf78"/>
+      <g id="tabby-markings" fill="#b96b2b">
+        <path d="M365 204 C384 222 389 251 401 279 Q408 289 409 273 C411 245 393 218 382 204 Z"/>
+        <path d="M400 207 C415 226 422 248 429 265 Q438 282 439 262 C437 242 432 226 426 213 Z"/>
+        <path d="M451 304 C438 301 430 315 433 330 C441 325 444 313 451 304 Z" fill="#ce7a2f"/>
+      </g>
+      <path id="cream-muzzle" d="M396 325 C400 342 405 340 409 329 C418 349 419 360 429 355 C441 382 460 397 482 400 C504 404 514 413 539 421 C534 448 496 480 457 497 C418 514 369 518 324 507 C307 486 296 457 298 427 L316 393 L371 358 Z" fill="url(#muzzle-cream)"/>
+      <ellipse cx="433" cy="438" rx="54" ry="42" fill="url(#muzzle-blush)"/>
+      <path id="jaw-shadow" d="M312 480 C349 493 382 497 416 492 C460 487 498 470 523 447 C508 469 478 489 448 499 C410 512 365 515 324 505 Z" fill="#c9a68c"/>
+    </g>
+
+    <g id="right-eye-shadow">
+      <path d="M431 353 C454 339 487 325 511 320 C520 345 514 372 492 386 C468 400 440 385 431 353 Z" fill="#de8b34"/>
+    </g>
+
+    <g id="eyes">
+      <g id="right-eye" clip-path="url(#right-eye-clip)">
+        <rect x="432" y="320" width="80" height="69" fill="url(#eye-red)"/>
+        <path d="M466 337 C461 341 461 349 461 356 C461 364 464 368 468 365 C473 361 473 348 471 340" fill="none" stroke="#ff3543" stroke-width="5.5"/>
+        <path d="M467 343 L466 358" fill="none" stroke="#ff7270" stroke-width="3"/>
+      </g>
+      <path id="right-eyelid" d="M436 353 C458 339 486 328 510 321" fill="none" stroke="#803d21" stroke-width="8"/>
+    </g>
+
+    <g id="left-ear">
+      <path id="left-metal-ear" d="M202 302 C190 263 189 208 205 167 C212 149 217 141 226 147 C263 159 291 187 314 217 L299 270 L259 309 Z" fill="url(#metal-edge)" stroke="#303c44" stroke-width="7"/>
+      <path d="M222 153 C258 165 288 195 306 220 L296 225 C275 193 250 173 224 163 C215 179 207 206 204 235 L199 229 C202 198 211 168 222 153 Z" fill="#c4cdd0"/>
+      <path id="left-inner-ear" d="M220 290 C209 260 215 192 228 168 C231 158 265 197 286 237 C257 248 237 265 220 290 Z" fill="url(#ear-coral)" stroke="#4e4241" stroke-width="6"/>
+      <path d="M226 177 C221 210 222 244 225 272 C215 256 215 216 226 177 Z" fill="#ef9b94"/>
+    </g>
+
+    <g id="cybernetic-face" stroke="#34404b" stroke-width="6">
+      <path id="metal-face-shell" d="M202 300 C206 287 213 280 220 290 C237 265 255 247 286 237 L310 214 L326 207 C336 204 347 202 357 202 C381 226 393 267 397 308 C402 350 390 387 367 408 C350 424 324 435 298 429 C296 455 308 486 323 507 C278 499 239 479 212 450 C184 421 178 381 188 338 Z" fill="url(#metal-blue)"/>
+      <path id="mask-edge-shadow" d="M244 267 C231 298 233 322 238 344 C241 361 236 389 249 406 C262 426 285 431 298 429 C296 455 308 486 321 504 C285 497 252 481 227 460 C201 437 188 411 187 380 C184 353 193 324 202 300 C212 285 225 274 244 267 Z" fill="url(#metal-edge)" stroke="none"/>
+      <path id="jaw-metal-highlight" d="M246 408 C259 424 281 430 298 429 C299 444 301 460 309 477 C277 471 252 452 235 432 Z" fill="#a5afb6" stroke="none"/>
+      <path id="forehead-spine" d="M311 214 L326 207 Q342 202 357 202 C381 226 393 267 397 308 C402 350 390 387 367 408 C349 424 324 435 299 429 L297 417 C323 425 346 414 361 400 C380 383 386 358 377 339 L352 307 C351 274 337 236 326 220 Z" fill="url(#metal-spine)" stroke="none"/>
+      <path d="M315 214 C335 239 350 276 352 307" fill="none" stroke-width="5"/>
+      <path d="M327 211 C338 224 345 241 350 257" fill="none" stroke="#dce7e9" stroke-width="5"/>
+      <path d="M354 232 C363 228 370 233 374 241 C375 247 367 251 359 251 Q353 251 351 244 Q348 237 354 232 Z" fill="#c5d3d9" stroke="none"/>
+      <ellipse cx="320.8" cy="246.1" rx="8.8" ry="8.1" fill="#d9e5e7" stroke="none"/>
+
+      <g id="vent-panel">
+        <path d="M191 327 L238 341 C243 360 236 389 249 407 L190 402" fill="none" stroke-width="5"/>
+        <path d="M190 348 L204 351 L205 387 L190 384 Z" fill="#8999a2" stroke-width="4.5"/>
+        <path d="M205 347 L216 350 L218 392 L207 391 Z" fill="#9eacb3" stroke-width="5"/>
+        <path d="M218 352 L230 354 L232 394 L219 392 Z" fill="#99a6ad" stroke-width="5"/>
+        <path d="M194 336 L212 341" fill="none" stroke="#b8c6cc" stroke-width="4"/>
+      </g>
+
+      <g id="left-eye-socket">
+        <path d="M271 319 C302 319 351 337 380 352 C379 373 365 391 344 396 C317 403 294 394 280 379 C269 367 266 343 271 319 Z" fill="#5d6d79" stroke="none"/>
+        <g id="left-eye" clip-path="url(#left-eye-clip)" stroke="none">
+          <rect x="277" y="320" width="101" height="73" fill="url(#eye-red)"/>
+          <path d="M327 317 C324 326 321 339 321 352 C321 364 325 370 330 367 C337 365 338 349 335 336 L332 317" fill="none" stroke="#f52b3a" stroke-width="7"/>
+          <path d="M330 322 C328 335 326 345 326 354 C326 362 328 365 331 362" fill="none" stroke="#ff7169" stroke-width="4.5"/>
+        </g>
+        <path d="M312 394 L320 383" fill="none" stroke="#44535f" stroke-width="5"/>
+      </g>
+
+      <g id="left-eyelid">
+        <path d="M267 321 C272 301 287 288 303 291 C330 293 354 309 372 331 C378 338 380 346 377 353 C343 340 304 328 267 321 Z" fill="url(#metal-blue)" stroke="none"/>
+        <path d="M274 310 C282 296 295 291 308 295 C333 300 351 313 368 330 C348 315 328 305 307 301 C291 297 280 303 274 310 Z" fill="#d0dce2" stroke="none"/>
+        <path d="M267 321 C272 301 287 288 303 291 C330 293 354 309 372 331" fill="none" stroke-width="5"/>
+        <path d="M267 321 C304 328 343 340 377 353" fill="none" stroke-width="7"/>
+        <path d="M331 342 L333 321" fill="none" stroke="#cf3745" stroke-width="10"/>
+        <path d="M332 338 L333 321" fill="none" stroke="#ff6269" stroke-width="4"/>
+        <path d="M314 334 L346 344" fill="none" stroke-width="6"/>
+      </g>
+
+      <g id="mask-seams" fill="none" stroke-width="5">
+        <path d="M216 426 C239 416 268 412 302 417"/>
+        <path d="M237 467 C257 454 281 443 304 436"/>
+      </g>
+
+      <g id="forehead-indicator" stroke-width="3.5">
+        <circle cx="328" cy="275" r="8.1" fill="url(#small-lamp-red)" stroke="#8b2b30"/>
+        <circle cx="327.2" cy="273.7" r="4.5" fill="#ff696b" stroke="none"/>
+      </g>
+      <path id="mask-contour" d="M202 300 C198 288 196 272 195 254 M357 202 C381 226 393 267 397 308 C402 350 390 387 367 408 C350 424 324 435 298 429 C296 455 308 486 323 507 C278 499 239 479 212 450 C184 421 178 381 188 338 L202 300" fill="none"/>
+    </g>
+
+    <g id="ear-implant" stroke="#34404b" stroke-width="6">
+      <path d="M193 200 C205 207 220 209 233 208 L236 239 C229 251 207 251 189 241 C188 228 189 213 193 200 Z" fill="#8b9ba4"/>
+      <path d="M197 212 C207 216 218 216 226 214 L227 238 C217 243 204 241 196 237 Z" fill="#6d828c" stroke="none"/>
+      <circle cx="213.9" cy="227.5" r="10.1" fill="url(#small-lamp-red)" stroke="#80464a" stroke-width="4"/>
+      <circle cx="213.8" cy="226.7" r="5.5" fill="#ff6864" stroke="none"/>
+    </g>
+
+    <g id="nose">
+      <path d="M394 389 C402 382 420 384 429 388 C437 391 430 401 416 410 C405 405 390 396 394 389 Z" fill="url(#nose-pink)" stroke="#703b30" stroke-width="5"/>
+      <path d="M400 390 C407 387 419 388 426 390 C420 397 409 399 402 394 Z" fill="#ffa6a1"/>
+    </g>
+
+    <g id="mouth" fill="none" stroke="#643b2b" stroke-width="5">
+      <path d="M415 411 C416 428 404 439 392 442 C377 446 365 439 363 427 M415 417 C418 433 429 443 442 441 C451 441 457 432 458 424"/>
+      <path d="M382 444 L387 453 L393 443 M430 441 L435 451 L440 442" fill="#fff2dd" stroke-width="2.5"/>
+    </g>
+
+    <g id="whiskers" fill="none" stroke="#6f3d22" stroke-width="5.5">
+      <path d="M501 414 C529 407 556 409 583 419"/>
+      <path d="M501 433 C525 439 547 449 567 462"/>
+    </g>
+  </g>
+</svg>

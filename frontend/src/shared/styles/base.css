@@ -1,0 +1,92 @@
+/*
+ * Base layer: document defaults only. Everything else is a utility on the element that
+ * needs it. Values come from the theme, so this file declares no new design value.
+ */
+
+@layer base {
+  html {
+    /* No layout may push the page sideways: the mobile width is the narrowest the
+     * design supports, and every screen fits it. */
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--color-background);
+    min-width: 320px;
+    overflow-x: hidden;
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--leading-base);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-weight: var(--font-weight-black);
+    line-height: var(--leading-tight);
+    text-transform: uppercase;
+  }
+
+  a {
+    color: var(--color-primary-ink);
+  }
+
+  /*
+   * Keyboard focus is a 3px primary outline with a soft primary glow, and hover only ever
+   * changes fill — so focus and hover never look the same.
+   */
+  :focus-visible {
+    outline: var(--stroke-heavy) solid var(--color-primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--color-primary-light);
+  }
+
+  /*
+   * Fluid headings: the mobile size is the base, and the scale steps up once there is
+   * room for it, so a title never forces a horizontal scrollbar on a phone.
+   */
+  h1 {
+    font-size: var(--font-size-3xl);
+  }
+
+  h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  h3 {
+    font-size: var(--font-size-lg);
+  }
+
+  @media (width >= 48rem) {
+    h1 {
+      font-size: var(--font-size-4xl);
+    }
+
+    h2 {
+      font-size: var(--font-size-2xl);
+    }
+
+    h3 {
+      font-size: var(--font-size-xl);
+    }
+  }
+
+  /*
+   * Motion is decoration here: every animation and transition only softens a change
+   * that is already expressed by color, position or text. A user who asks for reduced
+   * motion gets the same information without it.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

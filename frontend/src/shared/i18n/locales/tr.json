@@ -1,0 +1,1101 @@
+{
+	"common": {
+		"loading": "Yükleniyor...",
+		"save": "Kaydet",
+		"cancel": "İptal",
+		"close": "Kapat",
+		"retry": "Tekrar dene",
+		"back": "Geri",
+		"dismiss": "Kapat"
+	},
+	"i18n": {
+		"ready": "Çok dilli altyapı çalışıyor.",
+		"label": "Dil"
+	},
+	"auth": {
+		"close": "Kapat",
+		"modes": "Giriş yap veya kayıt ol",
+		"login": {
+			"tab": "Giriş Yap",
+			"title": "Oynamaya Hazır mısın?",
+			"subtitle": "Oyuna katılmak için giriş yap veya bir hesap oluştur.",
+			"submit": "Giriş Yap",
+			"switchPrompt": "Hesabın yok mu?",
+			"switchAction": "Hesap Oluştur"
+		},
+		"register": {
+			"tab": "Kayıt Ol",
+			"title": "Oyuna Katıl!",
+			"subtitle": "Bir hesap oluştur ve arkadaşlarınla oynamaya başla.",
+			"submit": "Hesap Oluştur",
+			"switchPrompt": "Zaten bir hesabın var mı?",
+			"switchAction": "Giriş Yap"
+		},
+		"fields": {
+			"username": "Kullanıcı adı",
+			"usernamePlaceholder": "Bir kullanıcı adı seç",
+			"email": "E-posta",
+			"emailPlaceholder": "E-posta adresini gir",
+			"password": "Şifre",
+			"passwordPlaceholder": "Şifreni gir",
+			"newPasswordPlaceholder": "Bir şifre oluştur",
+			"confirmPassword": "Şifreyi Onayla",
+			"confirmPasswordPlaceholder": "Şifreni tekrar gir",
+			"showPassword": "Şifreyi göster",
+			"hidePassword": "Şifreyi gizle"
+		},
+		"validation": {
+			"usernameRequired": "Kullanıcı adı gerekli.",
+			"usernameInvalid": "3 ile 20 arasında harf, rakam veya alt çizgi kullan.",
+			"emailRequired": "E-posta gerekli.",
+			"emailInvalid": "Hata! Geçersiz e-posta adresi.",
+			"passwordRequired": "Şifre gerekli.",
+			"passwordTooShort": "Şifre en az 8 karakter olmalı.",
+			"passwordTooLong": "Şifre çok uzun.",
+			"passwordInvalid": "Şifre 8 ile 72 karakter arasında olmalı.",
+			"confirmPasswordRequired": "Lütfen şifreni onayla.",
+			"passwordMismatch": "Şifreler eşleşmiyor."
+		},
+		"feedback": {
+			"emailTaken": "Bu e-posta zaten kayıtlı.",
+			"usernameTaken": "Bu kullanıcı adı zaten alınmış.",
+			"credentialsTitle": "E-posta veya şifre hatalı",
+			"credentialsBody": "Bilgilerini kontrol edip tekrar dene.",
+			"welcomeTitle": "Tekrar hoş geldin, {{username}}!",
+			"welcomeBody": "Lobiye yönlendiriliyorsun…",
+			"rateLimitedTitle": "Çok fazla deneme",
+			"rateLimitedBody": "Biraz bekleyip tekrar dene.",
+			"unavailableTitle": "Bir şeyler ters gitti",
+			"unavailableBody": "Sunucuya ulaşılamadı. Birazdan tekrar dene.",
+			"sessionExpiredTitle": "Oturumun sona erdi",
+			"sessionExpiredBody": "Kaldığın yerden devam etmek için tekrar giriş yap."
+		},
+		"logOut": {
+			"title": "Çıkış yapılsın mı?",
+			"body": {
+				"SPYMASTER": "Devam eden bir maçta Ajan Şefisin. Çıkış yaparsan maçtan ayrılırsın ve profiline bir ayrılma cezası eklenir; bu ceza Ajan Şefi için daha ağırdır. Yerini zamanında kimse almazsa oda kapanır.",
+				"OPERATIVE": "Devam eden bir maçta oynuyorsun. Çıkış yaparsan maçtan ayrılırsın ve profiline bir ayrılma cezası eklenir. Takımında başka Ajan yoksa ve yerini zamanında kimse almazsa oda kapanır."
+			},
+			"stay": "Kal",
+			"confirm": "Çıkış Yap",
+			"pending": "Çıkış yapılıyor…",
+			"failed": "Çıkış yapılamadı. Tekrar dene."
+		},
+		"oauth": {
+			"or": "veya",
+			"continue": "Google ile devam et",
+			"redirecting": "Google'a yönlendiriliyor…",
+			"error": {
+				"OAUTH_CANCELLED": {
+					"title": "Google ile giriş iptal edildi",
+					"body": "Tekrar deneyebilir ya da e-postanla giriş yapabilirsin."
+				},
+				"OAUTH_STATE_INVALID": {
+					"title": "Google ile girişin süresi doldu",
+					"body": "Giriş çok uzun sürdü ya da yarıda kesildi. Tekrar dene."
+				},
+				"OAUTH_EMAIL_UNVERIFIED": {
+					"title": "E-posta doğrulanmamış",
+					"body": "Google hesabının e-postası doğrulanmamış. Google'da doğrula ya da e-postanla giriş yap."
+				},
+				"OAUTH_PROVIDER_ERROR": {
+					"title": "Google ile giriş başarısız",
+					"body": "Google ile giriş yapamadık. Biraz sonra tekrar dene."
+				}
+			}
+		}
+	},
+	"landing": {
+		"badge": "ÇOK OYUNCULU KELİME EĞLENCESİ",
+		"headlineLead": "Aynı düşün.",
+		"headlineTail": "Birlikte kazan.",
+		"tagline": "ft_transcendence:\nEn İyi Sosyal\nKelime Oyunu",
+		"description": "Takımlara katıl, zekice ipuçları ver ve bu eğlenceli, rekabetçi\nçok oyunculu macerada kelimeleri birlikte tahmin et!\nBağlanmaya hazır mısın?",
+		"descriptionShort": "Takımlara katıl, zekice ipuçları ver ve bu eğlenceli, rekabetçi çok oyunculu oyunda kelimeleri birlikte tahmin et.",
+		"playNow": "Hemen Oyna",
+		"logIn": "Giriş Yap",
+		"learnMore": "Daha Fazla",
+		"primaryNavigation": "Hesap",
+		"howToPlay": "Nasıl Oynanır",
+		"giveClueTitle": "İpucu ver",
+		"giveClueDescription": "Takımını yönlendirmek için\ntek bir zekice kelime kullan.",
+		"guessTogetherTitle": "Birlikte tahmin et",
+		"guessTogetherDescription": "İpucunu tartışın ve\ndoğru kartları seçin.",
+		"beatOtherTeamTitle": "Rakip takımı yen",
+		"beatOtherTeamDescription": "Takımının kartlarını\nrakiplerinden önce aç.",
+		"community": "Binlerce çevrim içi oyuncuya katıl!\nArkadaşlarınla oyna ya da yenileriyle tanış.",
+		"inviteFriends": "Arkadaş Davet Et",
+		"legalNavigation": "Yasal",
+		"privacy": "Gizlilik Politikası",
+		"terms": "Kullanım Koşulları",
+		"help": "Yardım",
+		"copyright": "© 2026 ft_transcendence ekibi. 42 İstanbul öğrencileri için oluşturuldu (ft_transcendence). Tüm hakları saklıdır.",
+		"accountDeleted": "Hesabın silindi."
+	},
+	"legal": {
+		"wordmark": "Codenames Online",
+		"home": "Codenames Online ana sayfa",
+		"navigation": "Ana menü",
+		"legalNavigation": "Yasal",
+		"howToPlay": "Nasıl Oynanır",
+		"privacy": "Gizlilik",
+		"terms": "Koşullar",
+		"privacyPolicy": "Gizlilik Politikası",
+		"termsOfService": "Hizmet Koşulları",
+		"logIn": "Giriş Yap",
+		"lastUpdated": "Son güncelleme 29 Eylül 2026",
+		"footer": "Codenames Online · Bir 42 okul projesi",
+		"repository": "GitHub'daki proje deposu (yeni sekmede açılır)"
+	},
+	"privacy": {
+		"title": "Gizlilik Politikası",
+		"intro": "Bu sayfa, Codenames Online'ın hakkınızda neleri sakladığını, bunları neden sakladığını ve ne kadar süre tuttuğunu açıklar. Codenames Online, 42 müfredatı için geliştirilmiş bir öğrenci projesidir ve yalnızca hesapları, maçları ve sohbeti çalıştırmak için gereken bilgileri toplar.",
+		"sections": [
+			{
+				"id": "what-we-store",
+				"title": "Neleri saklıyoruz",
+				"paragraphs": [
+					"Hesabınız bir e-posta adresi, bir kullanıcı adı ve bir parola içerir. Parola hiçbir zaman düz metin olarak değil, yalnızca özet (hash) olarak saklanır.",
+					"Profiliniz, hazır setten seçtiğiniz ya da yüklediğiniz avatarı içerir. Oynadığınız maçlar, maç geçmişinizi ve bundan türetilen galibiyet ve mağlubiyet gibi istatistikleri ekler. Sosyal özellikleri kullanmak, arkadaş bağlantılarınızı ve gönderdiğiniz sohbet mesajlarını ekler."
+				]
+			},
+			{
+				"id": "why-we-store-it",
+				"title": "Neden saklıyoruz",
+				"paragraphs": [
+					"Hesap verileri oturum açmanızı sağlar ve sizi diğer oyunculara tanıtır. Maç sonuçları profilinizi, maç geçmişinizi ve istatistiklerinizi oluşturur. Arkadaş bağlantıları ve mesajlar, arkadaş listesini ve sohbeti çalıştırır.",
+					"Verileriniz yalnızca oyunu çalıştırmak için kullanılır. Hiçbir veri satılmaz, kiralanmaz veya reklamcılarla paylaşılmaz."
+				]
+			},
+			{
+				"id": "cookies",
+				"title": "Çerezler ve tarayıcı depolaması",
+				"paragraphs": [
+					"Oturum açtığınızda iki çerez ayarlanır: kısa ömürlü bir oturum çerezi ve onu yenileyen bir yenileme çerezi. İkisi de HttpOnly'dir, yalnızca bu siteye gönderilir ve yalnızca kimlik doğrulama için kullanılır.",
+					"Dil tercihiniz tarayıcınızın yerel depolamasına kaydedilir, böylece oyun bir sonraki açılışta aynı dilde açılır. Reklam veya analiz çerezi kullanılmaz."
+				]
+			},
+			{
+				"id": "live-game-data",
+				"title": "Canlı oyun verileri",
+				"paragraphs": [
+					"Odalar, takımlar, roller, oyun tahtası ve skor, bir oda açık olduğu sürece geçici depolamada tutulur ve oda kapandığında silinir.",
+					"Bağlantınız koparsa, aynı maça geri dönebilmeniz için yeriniz kısa bir süre ayrılır. Bir maç bittiğinde sonucu, maçtaki her oyuncunun maç geçmişine eklenir."
+				]
+			},
+			{
+				"id": "chat-messages",
+				"title": "Sohbet mesajları",
+				"paragraphs": [
+					"Oda sohbeti ve arkadaşlar arasındaki özel mesajlar, sunucunun belirlediği sınırlı bir süre boyunca saklanır. Her mesaj bu süre dolduğunda silinir.",
+					"Oda mesajlarını yalnızca o odadaki oyuncular, özel mesajları ise yalnızca konuşmadaki iki arkadaş görebilir."
+				]
+			},
+			{
+				"id": "what-others-see",
+				"title": "Diğer oyuncular neleri görür",
+				"paragraphs": [
+					"Oturum açmış oyuncular kullanıcı adınızı, avatarınızı, çevrimiçi durumunuzu ve istatistikleriyle birlikte herkese açık profilinizi görebilir. Aynı odadaki oyuncular maç sırasında takımınızı, rolünüzü ve hamlelerinizi görür.",
+					"Proje, verilerinizi reklam, pazarlama veya herhangi bir ticari amaçla üçüncü taraflarla paylaşmaz."
+				]
+			},
+			{
+				"id": "how-long-we-keep-it",
+				"title": "Ne kadar süre saklıyoruz",
+				"paragraphs": [
+					"Hesap, profil, arkadaş ve maç verileri, hesabınız var olduğu ve projenin sunucusu çalıştığı sürece saklanır. Sohbet mesajları saklama süreleri dolduğunda, canlı oda verileri ise oda kapandığında silinir."
+				]
+			},
+			{
+				"id": "your-choices",
+				"title": "Seçimleriniz",
+				"paragraphs": [
+					"Kullanıcı adınızı ve avatarınızı istediğiniz zaman değiştirebilir, arkadaş ekleyip çıkarabilir ve arayüz dilini değiştirebilirsiniz.",
+					"E-posta adresini veya parolayı değiştirmek ve hesabı silmek oyun içinde mümkün değildir. Hesabınızın ve verilerinizin silinmesi için proje ekibiyle iletişime geçin."
+				]
+			},
+			{
+				"id": "security",
+				"title": "Güvenlik",
+				"paragraphs": [
+					"Parolalar yalnızca özet olarak saklanır, oturum çerezleri sayfa betikleri tarafından okunamaz ve yayındaki oyun HTTPS üzerinden sunulur. Hiçbir sistem tamamen güvenli değildir; bu nedenle kullanıcı adınızda, avatarınızda veya mesajlarınızda hassas kişisel bilgiler paylaşmaktan kaçının."
+				]
+			},
+			{
+				"id": "changes",
+				"title": "Bu politikadaki değişiklikler",
+				"paragraphs": [
+					"Bu politika, oyunun verileri işleme biçimi değiştiğinde güncellenir. Sayfanın üstündeki tarih geçerli sürümü gösterir."
+				]
+			},
+			{
+				"id": "contact",
+				"title": "İletişim",
+				"paragraphs": [
+					"Verilerinizle ilgili sorular ve talepler proje deposu üzerinden proje ekibine iletilir."
+				]
+			}
+		]
+	},
+	"terms": {
+		"title": "Hizmet Koşulları",
+		"intro": "Bu koşullar Codenames Online'ın kullanımını kapsar. Hesap oluşturmak, bu koşulları kabul ettiğiniz anlamına gelir. Oyun, 42 müfredatı için geliştirilmiş bir öğrenci projesidir ve dostça oyun için sunulur.",
+		"sections": [
+			{
+				"id": "about-the-game",
+				"title": "Oyun hakkında",
+				"paragraphs": [
+					"Codenames Online gerçek zamanlı, çok oyunculu bir kelime oyunudur. Hesaplar, profiller, oyun odaları, arkadaşlar, sohbet, maç geçmişi ve istatistikler sunar.",
+					"Codenames masa oyunundan esinlenen bağımsız bir eğitim projesidir. Czech Games Edition veya Codenames markasıyla bir bağlantısı yoktur ve onlar tarafından onaylanmamıştır."
+				]
+			},
+			{
+				"id": "your-account",
+				"title": "Hesabınız",
+				"paragraphs": [
+					"Oynamak için bir hesaba ihtiyacınız vardır. Kontrol ettiğiniz bir e-posta adresi kullanın, saldırgan veya yanıltıcı olmayan bir kullanıcı adı seçin ve parolanızı kimseyle paylaşmayın. Hesabınız altında gerçekleşen her şeyden siz sorumlusunuz."
+				]
+			},
+			{
+				"id": "fair-play",
+				"title": "Adil oyun",
+				"paragraphs": [
+					"Oyunu tasarlandığı gibi oynayın. Gizli tahta bilgisini oyun dışında Ajanlara iletmeyin, oyunu otomatikleştirmeyin ve sonuçları veya istatistikleri manipüle etmeyin.",
+					"Başka hesaplara erişmeye, odaları veya hizmeti bozmaya ya da hatalardan yararlanmaya çalışmayın. Bir hata bulursanız bunun yerine proje ekibine bildirin."
+				]
+			},
+			{
+				"id": "chat-and-conduct",
+				"title": "Sohbet ve davranış",
+				"paragraphs": [
+					"Sohbet, odanızdaki oyuncular ve arkadaşlarınız içindir. Diğer oyunculara saygı gösterin: taciz, nefret söylemi, tehdit ve spam yasaktır. Gönderdiğiniz mesajlardan siz sorumlusunuz.",
+					"Maçları başkaları için bozmak amacıyla kasıtlı olarak terk etmeyin veya oyalamayın. Oda sahibi, devam eden bir maç dışında oyuncuları odadan çıkarabilir."
+				]
+			},
+			{
+				"id": "availability",
+				"title": "Erişilebilirlik",
+				"paragraphs": [
+					"Oyun bir öğrenci projesidir ve olduğu gibi sunulur. Bağlantılar kopabilir, maçlar kesintiye uğrayabilir ve hizmet bakım sırasında ya da proje sona erdiğinde kullanılamayabilir. Kesintisiz çalışma garantisi yoktur.",
+					"Bağlantınız koptuğunda yeriniz kısa bir süre ayrılır. Zamanında geri dönmezseniz odadan ayrılırsınız."
+				]
+			},
+			{
+				"id": "your-content",
+				"title": "İçeriğiniz",
+				"paragraphs": [
+					"Kullanıcı adınız, avatarınız ve mesajlarınız size aittir. Oyun, Gizlilik Politikası'nda açıklandığı gibi yalnızca bir maçı yürütmek, bir profili göstermek ve sohbeti iletmek için gerekenleri saklar."
+				]
+			},
+			{
+				"id": "intellectual-property",
+				"title": "Fikri mülkiyet",
+				"paragraphs": [
+					"Projenin kendi kodu, arayüz tasarımı ve görselleri proje ekibine aittir. Üçüncü taraf kütüphaneler ve yazı tipleri kendi lisanslarına tabidir. Codenames adı ve orijinal oyun, ilgili sahiplerine aittir."
+				]
+			},
+			{
+				"id": "changes-and-ending-use",
+				"title": "Değişiklikler ve kullanımın sona ermesi",
+				"paragraphs": [
+					"Bu koşullar oyun geliştikçe değişebilir; sayfanın üstündeki tarih geçerli sürümü gösterir. Oyunu istediğiniz zaman kullanmayı bırakabilirsiniz. Hesabınızın silinmesi için proje ekibiyle iletişime geçin."
+				]
+			},
+			{
+				"id": "contact",
+				"title": "İletişim",
+				"paragraphs": [
+					"Bu koşullarla ilgili sorular proje deposu üzerinden proje ekibine iletilir."
+				]
+			}
+		]
+	},
+	"lobby": {
+		"title": "Sıradaki ipucuna hazır mısın?",
+		"subtitle": "Bir oda oluştur ya da arkadaşlarına katıl ve tahmin etmeye başla.",
+		"profile": {
+			"online": "Çevrimiçi",
+			"level": "Sv. {{level}}",
+			"menu": {
+				"label": "Hesap menüsü, {{username}}",
+				"profile": "Profil",
+				"settings": "Ayarlar"
+			}
+		},
+		"create": {
+			"title": "Oda Oluştur",
+			"descriptionShort": "Yeni bir oyun başlat ve arkadaşlarını davet et.",
+			"description": "Yeni bir oyun başlat ve\narkadaşlarını davet et.",
+			"action": "Oda Oluştur"
+		},
+		"join": {
+			"title": "Odaya Katıl",
+			"descriptionShort": "Bir oda kodu gir ve oyuna katıl.",
+			"description": "Bir odaya gir ve\noyuna katıl.",
+			"action": "Odaya Katıl"
+		},
+		"players": {
+			"title": "Çevrimiçi Oyuncular",
+			"loading": "Çevrimiçi oyuncular yükleniyor",
+			"online": "çevrimiçi",
+			"openProfile": "{{username}} profilini aç",
+			"showMore": "Daha\nFazla",
+			"showMoreLabel": "{{count}} oyuncu daha göster",
+			"emptyTitle": "Şu anda çevrimiçi oyuncu yok",
+			"emptyBody": "Bir oda oluşturup kodunu paylaş ya da bir arkadaşını oyuna davet et.",
+			"invite": "Arkadaş Davet Et",
+			"errorTitle": "Çevrimiçi oyuncular yüklenemedi",
+			"errorBody": "Bağlantını kontrol edip tekrar dene."
+		}
+	},
+	"room": {
+		"create": {
+			"title": "Oda Oluştur",
+			"subtitle": "Yeni bir oyun odası aç ve arkadaşlarını davet et.",
+			"benefits": {
+				"newRoom": "Yeni Oyun Odası",
+				"inviteFriends": "Oluşturduktan sonra arkadaşlarını davet et.",
+				"chooseRole": "Takımını ve rolünü odada seç."
+			},
+			"maxPlayers": "En Fazla Oyuncu",
+			"maxPlayersHint": "{{min}}–{{max}} oyuncu",
+			"fewerPlayers": "Daha az oyuncu",
+			"morePlayers": "Daha fazla oyuncu",
+			"submit": "Oda Oluştur",
+			"creating": "Oda oluşturuluyor",
+			"goToRoom": "Odaya Git",
+			"retry": "Tekrar Dene",
+			"createdTitle": "Oda oluşturuldu!",
+			"createdBody": "Oda lobin açılıyor…"
+		},
+		"join": {
+			"title": "Odaya Katıl",
+			"subtitle": "Bir oda kodu gir ve oyuna katıl.",
+			"codeLabel": "Oda Kodu",
+			"codePlaceholder": "ABCD12",
+			"finding": "Oda aranıyor…",
+			"previewCaption": "Oda kodu",
+			"players": "{{count}} / {{max}} Oyuncu",
+			"status": {
+				"waiting": "BEKLİYOR",
+				"full": "DOLU",
+				"inGame": "OYUNDA",
+				"closed": "KAPALI"
+			},
+			"submit": "Odaya Katıl",
+			"joining": "Katılınıyor",
+			"opening": "Lobi açılıyor",
+			"full": "Oda Dolu",
+			"joinedTitle": "Odadasın!",
+			"joinedBody": "Oda lobisi açılıyor…",
+			"errors": {
+				"format": "Oda kodunun altı harf ve rakamını gir.",
+				"notFound": "Bu kodla bir oda bulunamadı. Kodu kontrol edip tekrar dene.",
+				"full": "Bu oda dolu.",
+				"notJoinable": "Bu oda şu anda yeni oyuncu almıyor."
+			},
+			"spectate": "İzlemek İçin Katıl",
+			"notJoinable": "Kapalı"
+		},
+		"feedback": {
+			"createFailedTitle": "Oda oluşturulamadı",
+			"createFailedBody": "Bir sorun oluştu. Tekrar dene.",
+			"joinFailedTitle": "Odaya katılınamadı",
+			"joinFailedBody": "Bir sorun oluştu. Tekrar dene.",
+			"rateLimitedTitle": "Çok fazla deneme",
+			"rateLimitedBody": "Biraz bekleyip tekrar dene.",
+			"alreadyInRoomTitle": "Zaten bir odadasın",
+			"alreadyInRoomBody": "Başka bir oda oluşturmadan ya da katılmadan önce ondan ayrıl.",
+			"returnToRoom": "Odama git"
+		},
+		"loading": "Oda yükleniyor…",
+		"connection": {
+			"failedTitle": "Odaya bağlanılamadı",
+			"failedBody": "Bağlantını kontrol edip tekrar dene.",
+			"reconnecting": "Yeniden bağlanılıyor…",
+			"reconnectingBody": {
+				"game": "Maçtaki yerini tutuyoruz. Bu sayfada kal.",
+				"room": "Odadaki yerini tutuyoruz. Bu sayfada kal.",
+				"finished": "Seni sonuçlara geri götürüyoruz. Bu sayfada kal."
+			},
+			"secondsLeft": {
+				"game": "Yerini korumak için {{seconds}} sn",
+				"room": "Yerini korumak için {{seconds}} sn",
+				"finished": "Karar vermek için {{seconds}} sn"
+			},
+			"leave": {
+				"game": "Maçtan Çık",
+				"room": "Odadan Çık",
+				"finished": "Lobiye Dön"
+			},
+			"lostTitle": "Bağlantı koptu",
+			"lostBody": "Çok uzun süre uzak kaldığın için odadan ayrıldın. Hesabın ve istatistiklerin güvende.",
+			"backToLobby": "Lobiye Dön"
+		},
+		"leave": {
+			"action": "Odadan Çık",
+			"stay": "Kal",
+			"leaving": "Çıkılıyor…",
+			"failed": "Odadan çıkılamadı. Tekrar dene.",
+			"room": {
+				"title": "Odadan çıkılsın mı?",
+				"body": "Bu odadan çıkacak, takımını ve rolünü kaybedeceksin. Yerin başka bir oyuncuya açılır.",
+				"confirm": "Odadan Çık",
+				"bodySpectator": "Bu odadan çıkıp lobiye döneceksin."
+			},
+			"game": {
+				"title": "Oyundan çıkılsın mı?",
+				"body": {
+					"SPYMASTER": "Bu maçtan çıkıp lobiye döneceksin. Devam eden bir maçtan ayrılmak profiline bir ayrılma cezası ekler; bu ceza Ajan Şefi için daha ağırdır. Yerini zamanında kimse almazsa oda herkes için kapanır.",
+					"OPERATIVE": "Bu maçtan çıkıp lobiye döneceksin. Devam eden bir maçtan ayrılmak profiline bir ayrılma cezası ekler. Takımında başka Ajan yoksa ve yerini zamanında kimse almazsa oda herkes için kapanır."
+				},
+				"confirm": "Oyundan Çık"
+			}
+		},
+		"countdown": {
+			"title": "Oyun Başlıyor",
+			"hint": "Oyun tahtasına geçiyorsun — bol şans!",
+			"someone": "Bir oyuncu",
+			"cancelled": {
+				"PLAYER_UNREADY": "Geri sayım durdu: {{username}} artık hazır değil.",
+				"PLAYER_LEFT": "Geri sayım durdu: {{username}} odadan çıktı.",
+				"TEAM_CHANGED": "Geri sayım durdu: {{username}} takım değiştirdi.",
+				"ROLE_CHANGED": "Geri sayım durdu: {{username}} rol değiştirdi.",
+				"PLAYER_KICKED": "Geri sayım durdu: {{username}} odadan çıkarıldı."
+			}
+		},
+		"ready": {
+			"title": "{{host}} adlı oyuncunun odası",
+			"titleFallback": "Hazırlık Odası",
+			"codeLabel": "Oda kodu",
+			"copyCode": "Oda kodunu kopyala",
+			"codeCopied": "Oda kodu kopyalandı",
+			"copyFailed": "Kod kopyalanamadı. Seçip elle kopyala.",
+			"shareHint": "Bu kodu arkadaşlarınla paylaş.",
+			"maxPlayers": "En Fazla Oyuncu",
+			"playerCount": "{{count}} / {{max}} Oyuncu",
+			"roomFull": "Oda Dolu",
+			"phase": {
+				"WAITING": {
+					"title": "Oyuncular bekleniyor…",
+					"body": "Oda kodunu paylaş. Herkes hazır olunca oyun başlar."
+				},
+				"FULL": {
+					"title": "Oda Dolu",
+					"body": "{{max}} yerin {{count}} tanesi dolu. Yeni oyuncular katılamaz."
+				},
+				"COUNTDOWN": {
+					"title": "Hazır ol!",
+					"body": "Herkes hazır. Maç başlamak üzere."
+				},
+				"POST_GAME": {
+					"title": "Son Sonuç Bekleniyor…",
+					"body": "Hâlâ son sonuca bakan oyuncu sayısı: {{pending}}. Herkes döndüğünde sıradaki maç başlayabilir."
+				}
+			},
+			"team": {
+				"RED": "Kırmızı Takım",
+				"BLUE": "Mavi Takım"
+			},
+			"teamButton": {
+				"RED": "Kırmızı Takım",
+				"BLUE": "Mavi Takım"
+			},
+			"teamShort": {
+				"RED": "Kırmızı",
+				"BLUE": "Mavi"
+			},
+			"host": "Kurucu",
+			"hostSuffix": ", kurucu",
+			"youSuffix": ", sen",
+			"card": "{{username}}{{you}}{{host}}: {{role}}, {{status}}",
+			"role": {
+				"SPYMASTER": "Ajan Şefi",
+				"OPERATIVE": "Ajan",
+				"SPECTATOR": "İzleyici"
+			},
+			"status": {
+				"ready": "Hazır!",
+				"waiting": "Bekliyor"
+			},
+			"emptySeat": "Oyuncu bekleniyor…",
+			"setupTitle": "Kurulumun",
+			"chooseTeam": "Takımını Seç",
+			"chooseRole": "Rolünü Seç",
+			"roleCard": {
+				"SPYMASTER": {
+					"title": "Ajan Şefi",
+					"description": "Takımına\nipucu verir."
+				},
+				"OPERATIVE": {
+					"title": "Ajan",
+					"description": "Doğru kartları\ntahmin eder."
+				}
+			},
+			"taken": "Dolu",
+			"readyAction": "Hazır",
+			"readyDone": "Hazır!",
+			"counter": "{{ready}} / {{count}} Oyuncu Hazır",
+			"counterFull": "{{count}} / {{max}} Oyuncu · Oda Dolu",
+			"summary": "Sen: {{setup}}",
+			"noTeam": "Henüz takım yok",
+			"change": "Değiştir",
+			"choose": "Seç",
+			"hints": {
+				"teamFirst": "Önce bir takım, sonra bir rol seç. O zamana kadar izliyorsun.",
+				"spymasterTaken": "Bu takımın Ajan Şefi {{username}}.",
+				"locked": "Maç başlıyor, kurulumun kilitlendi.",
+				"hostOnly": "Oda boyutunu yalnızca oda sahibi değiştirebilir.",
+				"ready": {
+					"TEAM_REQUIRED": "Önce bir takım seç.",
+					"ROLE_REQUIRED": "Önce bir rol seç.",
+					"LOCKED": "Maç başlıyor.",
+					"POST_GAME_PENDING": "Bazı oyuncular hâlâ son sonuca bakıyor."
+				},
+				"claim": "{{team}} takımına katılmak için bir rol seç.",
+				"timerHostOnly": "Tur süresini yalnızca oda sahibi değiştirebilir."
+			},
+			"errors": {
+				"roleConflict": "Başka bir oyuncu az önce bu takımın Ajan Şefi yerini aldı.",
+				"teamRequired": "Önce bir takım seç.",
+				"roleRequired": "Önce bir rol seç.",
+				"locked": "Maç başlıyor, kurulumun artık değişemez.",
+				"notHost": "Oda ayarlarını yalnızca oda sahibi değiştirebilir.",
+				"capacity": "Oda, içindeki oyuncu sayısından küçük olamaz.",
+				"offline": "Çevrimdışısın. Yeniden bağlanınca tekrar dene.",
+				"generic": "Olmadı. Tekrar dene.",
+				"postGamePending": "Herkes son sonuçtan dönene kadar bekle.",
+				"timer": "Bu tur süresi kullanılamıyor. Listeden birini seç."
+			},
+			"spectators": "İzleyiciler",
+			"spectate": "Bunun yerine izle"
+		},
+		"recovery": {
+			"notMember": "Artık o odada değilsin.",
+			"returned": "Hâlâ bir odadasın, seni oraya geri götürdük.",
+			"closed": "O oda kapandı.",
+			"removed": "Artık o odanın üyesi değilsin.",
+			"legacy": "Oyunun eski bir sürümüne ait bir odadasın ve bu oda burada açılamıyor. Oda bitince kendiliğinden kapanır.",
+			"kicked": "Oda sahibi seni odadan çıkardı.",
+			"postGameTimeout": "Zamanında seçim yapmadığın için maçtan sonra odadan ayrıldın.",
+			"insufficientPlayers": "Oda kapandı: bir takım gereken oyuncusu olmadan kaldı. Maç sayılmadı."
+		},
+		"invites": {
+			"title": "{{username}} seni oyuna davet etti",
+			"body": "Oda kodu",
+			"join": "Katıl",
+			"joining": "Katılınıyor…",
+			"dismiss": "Kapat",
+			"closed": "Bu oda kapandı."
+		},
+		"settings": {
+			"timer": "Tur süresi",
+			"language": "Kelimeler",
+			"noLimit": "Sınırsız",
+			"seconds_one": "{{count}} saniye",
+			"seconds_other": "{{count}} saniye",
+			"ownerYou": "Oda sahibi sensin. Oyuncuları çıkarabilir, oda boyutunu ve tur süresini değiştirebilirsin.",
+			"ownerOnly": "Oda ayarlarını yalnızca oda sahibi değiştirebilir."
+		},
+		"kick": {
+			"action": "{{username}} adlı oyuncuyu odadan çıkar",
+			"fromProfile": "Odadan Çıkar",
+			"title": "{{username}} çıkarılsın mı?",
+			"body": "{{username}} odadan çıkar. Oda koduyla yeniden katılabilir.",
+			"bodyInGame": "{{username}} maçtan hemen çıkar. Takımı Ajan Şefi ya da Ajan olmadan kalırsa oyun duraklar ve yerini zamanında kimse almazsa oda kapanır.",
+			"confirm": "Çıkar",
+			"kicking": "Çıkarılıyor…",
+			"errors": {
+				"notHost": "Artık oda sahibi değilsin.",
+				"gone": "Bu oyuncu zaten ayrıldı.",
+				"self": "Kendini çıkaramazsın. Bunun yerine Çık seçeneğini kullan.",
+				"closed": "Bu oda kapandı."
+			}
+		}
+	},
+	"game": {
+		"loading": "Maç yükleniyor…",
+		"board": "Kelime tahtası",
+		"team": {
+			"RED": "Kırmızı",
+			"BLUE": "Mavi"
+		},
+		"teamName": {
+			"RED": "Kırmızı Takım",
+			"BLUE": "Mavi Takım"
+		},
+		"score": {
+			"label": "Skor: Kırmızı {{red}}, Mavi {{blue}}"
+		},
+		"turn": {
+			"title": "Sıra <team>{{team}}</team> Takımda",
+			"over": "Maç Bitti",
+			"paused": "Oyun Duraklatıldı",
+			"timeLeft": "Bu turda kalan süre"
+		},
+		"instruction": {
+			"CLUE": "Casus Şefisin. Takımına bir ipucu ver.",
+			"CLUE_SENT": "İpucu gönderildi. Ajanların kartlarını seçiyor."
+		},
+		"clue": {
+			"label": "İpucu",
+			"heading": "İpucu Ver",
+			"number": "Sayı",
+			"placeholder": "Tek kelimelik ipucu yaz",
+			"submit": "İpucu Ver",
+			"sending": "Gönderiliyor…",
+			"rule": "Boşluksuz, en fazla 30 harflik tek bir kelime kullan.",
+			"decrease": "Daha az kart",
+			"increase": "Daha fazla kart",
+			"sent": "İpucu Gönderildi",
+			"sentLabel": "İpucu:",
+			"sentNumber": "Sayı:",
+			"value": "İpucu: {{word}} · {{number}}",
+			"guesses": "Kalan Tahmin: {{count}}"
+		},
+		"status": {
+			"waitingLabel": "Bekleniyor",
+			"waitingTitle": "İpucu bekleniyor…",
+			"waitingBody": "Casus Şefin bir ipucu seçiyor.",
+			"opponentGuessing": "{{team}} Takım Tahmin Ediyor",
+			"opponentClue": "{{team}} Casus Şef Düşünüyor",
+			"opponentBody": "Sıranı bekle. Şu anda kart seçilemez.",
+			"spymasterOpponentBody": "İpucu vermek için sıranı bekle.",
+			"spectatingBody": "Bu maçı izliyorsun. Boş bir yer açılınca onu alabilirsin.",
+			"pausedTitle": "Oyuncu Bekleniyor…",
+			"pausedBody": "Bir takımın oyuncusu eksik. Yer alındığında oyun devam eder."
+		},
+		"pass": {
+			"action": "Pas",
+			"passing": "Pas geçiliyor…"
+		},
+		"roster": {
+			"operatives": "Ajanlar",
+			"spymaster": "Casus Şef",
+			"spymasterLine": "Casus Şef: {{names}}",
+			"operativesLine": "Ajanlar: {{names}}",
+			"nobody": "—",
+			"openProfile": "{{username}} profilini aç"
+		},
+		"card": {
+			"pick": "{{word}} kartını seç",
+			"key": "{{word}}, {{affiliation}}",
+			"revealed": "{{word}}, açıldı: {{affiliation}}",
+			"affiliation": {
+				"RED": "Kırmızı ajan",
+				"BLUE": "Mavi ajan",
+				"NEUTRAL": "Masum",
+				"ASSASSIN": "Suikastçı"
+			}
+		},
+		"leave": "Oyundan Çık",
+		"results": {
+			"badge": "Maç Bitti",
+			"wins": "{{team}} Takım Kazandı!",
+			"reason": {
+				"ALL_TEAM_CARDS_REVEALED": "{{team}} son ajanını açtı.",
+				"ASSASSIN_REVEALED": "{{team}} suikastçıyı açtı."
+			},
+			"backToLobby": "Lobiye Dön",
+			"viewBoard": "Son Tahtayı Gör",
+			"showResults": "Sonuçları Gör",
+			"exit": "Odadan Çık",
+			"returning": "Dönülüyor…",
+			"returnFailed": "Lobiye dönülemedi. Tekrar dene.",
+			"deadline": "Seçmek için {{seconds}} sn kaldı. Karar vermeyen oyuncular odadan çıkar."
+		},
+		"errors": {
+			"invalidClue": "İpucu en fazla 30 harflik tek bir kelime olmalı.",
+			"invalidNumber": "1 ile 9 arasında bir sayı seç.",
+			"invalidCard": "Bu kart bu tahtada yok.",
+			"alreadyRevealed": "O kart zaten açıldı.",
+			"noGuesses": "Takımının tahmin hakkı kalmadı.",
+			"notYourTurn": "Artık senin sıran değil.",
+			"roleForbidden": "Rolün bunu yapamaz.",
+			"finished": "Maç zaten bitti.",
+			"offline": "Çevrimdışısın. Bağlantı gelince tekrar dene.",
+			"generic": "Bir şeyler ters gitti. Tekrar dene."
+		},
+		"staffing": {
+			"title": "Oyun Duraklatıldı",
+			"body": "Yeri zamanında kimse almazsa oda kapanır ve herkes lobiye döner.",
+			"needs": {
+				"SPYMASTER": "{{team}} için Ajan Şefi gerekli",
+				"OPERATIVE": "{{team}} için Ajan gerekli",
+				"BOTH": "{{team}} için Ajan Şefi ve Ajan gerekli"
+			},
+			"closesIn": "Odanın kapanmasına",
+			"role": {
+				"SPYMASTER": "Ajan Şefi",
+				"OPERATIVE": "Ajan"
+			},
+			"departure": {
+				"EXITED": "{{team}} {{role}} {{username}} maçtan ayrıldı.",
+				"SESSION_ENDED": "{{team}} {{role}} {{username}} çıkış yaptı.",
+				"DISCONNECTED": "{{team}} {{role}} {{username}} bağlantısını kaybetti.",
+				"KICKED_BY_HOST": "Oda sahibi {{team}} {{role}} {{username}} adlı oyuncuyu çıkardı.",
+				"ACCOUNT_DELETED": "{{team}} {{role}} {{username}} hesabını sildi.",
+				"unknown": "Bir takım gereken bir oyuncusunu kaybetti."
+			},
+			"claimTitle": "Boş bir yer al",
+			"claim": "{{team}} {{role}}",
+			"claimClosed": "Bu yer şu anda alınamıyor."
+		}
+	},
+	"profile": {
+		"close": "Profili kapat",
+		"loading": "Profil yükleniyor",
+		"retry": "Tekrar dene",
+		"presence": {
+			"online": "Çevrimiçi",
+			"offline": "Çevrimdışı"
+		},
+		"stats": {
+			"wins": "Galibiyet",
+			"losses": "Mağlubiyet",
+			"level": "Seviye",
+			"played_one": "{{count}} maç oynandı",
+			"played_other": "{{count}} maç oynandı"
+		},
+		"friend": {
+			"add": "Arkadaş Ekle",
+			"adding": "Ekleniyor…",
+			"remove": "Arkadaşlıktan Çıkar",
+			"removing": "Çıkarılıyor…",
+			"loadFailed": "Arkadaş listen yüklenemedi.",
+			"failed": {
+				"ADDING": "Arkadaş eklenemedi. Tekrar dene.",
+				"REMOVING": "Arkadaşlıktan çıkarılamadı. Tekrar dene."
+			}
+		},
+		"message": "Mesaj",
+		"invite": {
+			"button": {
+				"READY": "Davet Et",
+				"FAILED": "Davet Et",
+				"SENDING": "Davet ediliyor…",
+				"SENT": "Davet Gönderildi",
+				"UNAVAILABLE": "Davet Et"
+			},
+			"sent": "Davet gönderildi. {{username}} davetten odana katılabilir.",
+			"failed": "Davet gönderilemedi. Tekrar dene.",
+			"reason": {
+				"NO_ACTIVE_ROOM": "{{username}} adlı oyuncuyu davet etmek için bir odaya katıl ya da oda oluştur.",
+				"ROOM_NOT_JOINABLE": "Oyunun başladı. Davetler, oda oyuncu beklerken gönderilebilir.",
+				"ROOM_FULL": "Odan dolu.",
+				"IN_YOUR_ROOM": "{{username}} zaten odanda.",
+				"OFFLINE": "{{username}} çevrimdışı. Çevrimiçi olduğunda davet edebilirsin.",
+				"IN_ROOM": "{{username}} zaten başka bir odada.",
+				"NOT_FRIENDS": "{{username}} adlı oyuncuyu davet etmek için arkadaş olarak ekle."
+			}
+		},
+		"notFound": {
+			"title": "Oyuncu bulunamadı",
+			"body": "Bu hesap artık kullanılamıyor."
+		},
+		"error": {
+			"title": "Profil yüklenemedi.",
+			"body": "Bağlantını kontrol edip tekrar dene."
+		},
+		"history": {
+			"title": "Oyun Geçmişi",
+			"count_one": "Son {{count}} oyun",
+			"count_other": "Son {{count}} oyun",
+			"loading": "Oyun geçmişi yükleniyor",
+			"emptyTitle": "Oyun bulunamadı",
+			"emptyBody": "Biten maçlar sonucu, takımın, rolün ve rakiplerinle birlikte burada görünür.",
+			"errorTitle": "Oyun geçmişi yüklenemedi.",
+			"errorBody": "Bağlantını kontrol edip tekrar dene.",
+			"retry": "Tekrar dene",
+			"result": {
+				"WIN": "GALİBİYET",
+				"LOSS": "MAĞLUBİYET"
+			},
+			"opponents": "Rakipler: {{names}}",
+			"endReason": {
+				"ALL_TEAM_CARDS_REVEALED": "Tüm kartlar bulundu",
+				"ASSASSIN_REVEALED": "Suikastçı açıldı",
+				"PLAYER_FORFEIT": "Hükmen"
+			},
+			"scoreLabel": "Son skor: takımın {{own}}, rakip takım {{other}}"
+		},
+		"report": {
+			"action": "Oyuncuyu bildir",
+			"reported": "Bildirildi",
+			"back": "Profile dön",
+			"title": "{{username}} adlı oyuncuyu bildir",
+			"subtitle": "Ne olduğunu anlat. Oyuncu kimin bildirdiğini öğrenmez.",
+			"reasonLabel": "Neden",
+			"reasonHint": "Devam etmek için bir neden seç.",
+			"reason": {
+				"HARASSMENT": "Taciz veya hakaret",
+				"CHEATING": "Hile",
+				"OFFENSIVE_USERNAME": "Uygunsuz kullanıcı adı",
+				"SPAM": "Spam",
+				"OTHER": "Başka bir şey"
+			},
+			"detailsLabel": "Ayrıntılar (isteğe bağlı)",
+			"detailsPlaceholder": "Ne oldu, ne zaman oldu?",
+			"detailsCount": "{{count}} / {{max}}",
+			"cancel": "Vazgeç",
+			"submit": "Bildirimi gönder",
+			"sending": "Gönderiliyor…",
+			"done": "Tamam",
+			"outcome": {
+				"SENT": "Teşekkürler. {{username}} hakkındaki bildirimin incelemeye gönderildi.",
+				"ALREADY_REPORTED": "{{username}} adlı oyuncuyu kısa süre önce bildirdin. Önceki bildirimin inceleniyor."
+			},
+			"error": {
+				"NOT_FOUND": "{{username}} adlı oyuncunun hesabı artık yok.",
+				"RATE_LIMITED": "Çok fazla bildirim. Biraz bekleyip tekrar dene.",
+				"INVALID": "Bildirim kabul edilmedi. Nedeni ve ayrıntıları kontrol et.",
+				"FAILED": "Bildirim gönderilemedi. Tekrar dene."
+			}
+		}
+	},
+	"chat": {
+		"launcher": {
+			"title": "Sohbet",
+			"label": "Sohbeti aç",
+			"labelUnread_one": "Sohbeti aç, {{count}} yeni mesaj",
+			"labelUnread_other": "Sohbeti aç, {{count}} yeni mesaj",
+			"caption_one": "{{count}} yeni mesaj",
+			"caption_other": "{{count}} yeni mesaj",
+			"captionNone": "Yeni mesaj yok"
+		},
+		"panel": {
+			"title": "Sohbetler",
+			"close": "Sohbeti kapat",
+			"back": "Sohbetlere dön"
+		},
+		"search": {
+			"label": "Arkadaş ara",
+			"placeholder": "Arkadaş ara"
+		},
+		"tabs": {
+			"label": "Sohbetler",
+			"ROOM": "Oda",
+			"FRIENDS": "Arkadaşlar"
+		},
+		"sections": {
+			"room": "Bu odada",
+			"friends": "Arkadaşlar"
+		},
+		"room": {
+			"name": "Oda sohbeti",
+			"code": "Oda {{code}}",
+			"preparing": "Oda sohbeti hazırlanıyor…",
+			"closed": "Oda sohbeti kapandı"
+		},
+		"list": {
+			"loading": "Sohbetler yükleniyor…",
+			"channelsError": "Sohbetlerin yüklenemedi.",
+			"friendsError": "Arkadaşların yüklenemedi.",
+			"noRoom": "Oyuncularıyla sohbet etmek için bir odaya katıl.",
+			"noFriends": "Burada sohbet etmek için arkadaş ekle.",
+			"noResults": "“{{query}}” ile eşleşen kimse yok.",
+			"noMessages": "Henüz mesaj yok",
+			"fromYou": "Sen: {{text}}",
+			"fromPlayer": "{{name}}: {{text}}",
+			"addFriend": "Sohbet etmek için arkadaş olarak ekle",
+			"opening": "Sohbet açılıyor…",
+			"openFailed": "Bu sohbet açılamadı. Tekrar dene.",
+			"unread_one": "{{count}} yeni mesaj",
+			"unread_other": "{{count}} yeni mesaj"
+		},
+		"presence": {
+			"online": "Çevrimiçi",
+			"offline": "Çevrimdışı"
+		},
+		"age": {
+			"now": "şimdi",
+			"MINUTES": "{{count}} dk",
+			"HOURS": "{{count}} sa",
+			"DAYS": "{{count}} g"
+		},
+		"day": {
+			"today": "Bugün",
+			"yesterday": "Dün"
+		},
+		"thread": {
+			"label": "Mesajlar",
+			"loading": "Mesajlar yükleniyor…",
+			"error": "Bu mesajlar yüklenemedi.",
+			"empty": "Henüz mesaj yok. Merhaba de!",
+			"emptyRoom": "Henüz mesaj yok. Odaya merhaba de!",
+			"olderLoading": "Önceki mesajlar yükleniyor…",
+			"olderFailed": "Önceki mesajlar yüklenemedi.",
+			"newMessages": "Yeni mesajlar",
+			"newFrom": "{{name}} adlı oyuncudan yeni mesaj",
+			"newMessage": "Yeni mesaj",
+			"you": "Sen:"
+		},
+		"composer": {
+			"label": "Mesaj",
+			"placeholder": "Bir mesaj yaz…",
+			"send": "Mesajı gönder",
+			"offline": "Yeniden bağlanılıyor… birazdan tekrar gönderebilirsin.",
+			"tooLong": "Mesajlar en fazla {{max}} karakter olabilir.",
+			"count": "{{count}}/{{max}}"
+		},
+		"pending": {
+			"sending": "Gönderiliyor…",
+			"retry": "Tekrar dene",
+			"discard": "Kaldır",
+			"failed": {
+				"OFFLINE": "Gönderilmedi: çevrimdışısın.",
+				"TIMEOUT": "Henüz gönderilmedi: sunucu yanıt vermedi.",
+				"UNAVAILABLE": "Gönderilmedi: sohbet şu anda kullanılamıyor.",
+				"REVOKED": "Gönderilmedi: bu sohbete artık yazamazsın.",
+				"INVALID": "Gönderilmedi: mesaj reddedildi."
+			}
+		},
+		"access": {
+			"direct": "Artık arkadaş değilsiniz. Tekrar sohbet etmek için arkadaş olarak ekle.",
+			"viewProfile": "Profili gör",
+			"room": {
+				"default": "Bu oda sohbetini artık kullanamazsın.",
+				"GAME_FINISHED": "Oyun bitince oda sohbeti kapandı.",
+				"ROOM_LEFT": "Bu odadan ayrıldın, sohbeti kapandı.",
+				"KICKED_BY_HOST": "Bu odadan çıkarıldın, sohbeti kapandı.",
+				"POST_GAME_TIMEOUT": "Oyundan sonra oda sohbeti kapandı.",
+				"ROOM_CLOSED": "Bu oda kapandı."
+			}
+		},
+		"unknownPlayer": "Oyuncu",
+		"retry": "Tekrar dene"
+	},
+	"settings": {
+		"title": "Ayarlar",
+		"subtitle": "Profilini ve hesabını yönet.",
+		"close": {
+			"SETTINGS": "Ayarları kapat",
+			"CROP": "Kırpmayı iptal et",
+			"PICK": "Avatar seçimini iptal et"
+		},
+		"saved": {
+			"title": "Profil güncellendi",
+			"body": "Değişikliklerin kaydedildi."
+		},
+		"avatar": {
+			"label": "Profil fotoğrafı",
+			"current": "Şu anki avatarın",
+			"upload": "Fotoğraf yükle",
+			"pick": "Avatar seç",
+			"hint": "JPG, PNG veya WEBP, en fazla 2 MB. Kare görseller en iyi sonucu verir. Fotoğraf yüklemezsen varsayılan avatarın kullanılır.",
+			"error": {
+				"INVALID_TYPE": "2 MB altında bir JPG, PNG veya WEBP görsel kullan.",
+				"TOO_LARGE": "2 MB altında bir JPG, PNG veya WEBP görsel kullan.",
+				"UNREADABLE": "Bu görsel açılamadı. Başka bir tane dene.",
+				"UPLOAD_FAILED": "Yükleme başarısız oldu. Tekrar dene."
+			}
+		},
+		"username": {
+			"label": "Kullanıcı adı",
+			"save": "Kaydet",
+			"saving": "Kaydediliyor…",
+			"hint": "3–20 karakter: harf, rakam ve alt çizgi. Benzersiz olmalı.",
+			"error": {
+				"INVALID_USERNAME": "3–20 harf, rakam veya alt çizgi kullan.",
+				"USERNAME_TAKEN": "Bu kullanıcı adı zaten alınmış. Başka bir tane dene.",
+				"FAILED": "Kullanıcı adın kaydedilemedi. Tekrar dene."
+			}
+		},
+		"email": {
+			"label": "E-posta",
+			"hint": "Giriş e-postan. Buradan değiştirilemez."
+		},
+		"logOut": {
+			"button": "Çıkış Yap",
+			"pending": "Çıkış yapılıyor…",
+			"failed": "Çıkış yapılamadı. Tekrar dene."
+		},
+		"legal": {
+			"navigation": "Yasal",
+			"privacy": "Gizlilik Politikası",
+			"terms": "Kullanım Koşulları",
+			"newTab": "(yeni sekmede açılır)"
+		},
+		"crop": {
+			"title": "Fotoğrafını Kırp",
+			"subtitle": "Konumlandırmak için sürükle. Yakınlaştırmak için kaydırıcıyı kullan.",
+			"position": "Fotoğraf konumu. Sürükle ya da ok tuşlarıyla taşı.",
+			"zoom": "Yakınlaştır",
+			"preview": "Önizleme — avatarın odalarda ve profillerde böyle görünür",
+			"hint": "JPG, PNG veya WEBP, en fazla 2 MB. Fotoğrafı değiştirmek için <choose>başka bir dosya seç</choose>.",
+			"cancel": "İptal",
+			"save": "Fotoğrafı kaydet",
+			"saving": "Yükleniyor…"
+		},
+		"pick": {
+			"title": "Bir Avatar Seç",
+			"subtitle": "Hazır bir avatar seç.",
+			"option": "Avatar: {{name}}",
+			"loading": "Avatarlar yükleniyor",
+			"loadFailed": "Avatarlar yüklenemedi.",
+			"retry": "Tekrar dene",
+			"hint": "Kaydettiğinde şu anki avatarın değişir. Yerine geçtiği yüklenmiş fotoğraf silinir.",
+			"failed": "Avatar kaydedilemedi. Tekrar dene.",
+			"cancel": "İptal",
+			"save": "Avatarı kaydet",
+			"saving": "Kaydediliyor…"
+		},
+		"deleteAccount": {
+			"button": "Hesabı sil",
+			"title": "Hesap Silinsin mi?",
+			"body": "Bu işlem hesabını, profilini, arkadaşlarını, istatistiklerini ve mesajlarını kalıcı olarak siler. Geri alınamaz.",
+			"inMatch": "Bir maçta oynuyorsun. Hesabını silmek seni maçtan çıkarır. Takımın eksik kalırsa ve yerini zamanında kimse almazsa oda kapanır.",
+			"confirmLabel": "Onaylamak için <name>{{username}}</name> yaz",
+			"confirmHint": "Kullanıcı adın, profilinde göründüğü gibi.",
+			"cancel": "Vazgeç",
+			"confirm": "Sil",
+			"pending": "Siliniyor…",
+			"error": {
+				"MISMATCH": "Bu senin kullanıcı adın değil. Onaylamak için aynen yaz.",
+				"RATE_LIMITED": "Çok fazla deneme. Biraz bekleyip tekrar dene.",
+				"FAILED": "Hesabın silinemedi. Tekrar dene."
+			}
+		},
+		"language": {
+			"label": "Dil",
+			"hint": "Oyun dili hemen değişir. Seçimin bu cihazda kaydedilir."
+		}
+	},
+	"friends": {
+		"title": "Arkadaşlar",
+		"subtitle": "Arkadaşların ve ekleyebileceğin oyuncular.",
+		"count_one": "{{count}} arkadaş",
+		"count_other": "{{count}} arkadaş",
+		"openLabel_one": "Arkadaşlar, {{count}} arkadaş",
+		"openLabel_other": "Arkadaşlar, {{count}} arkadaş",
+		"listTitle": "Arkadaşların",
+		"loading": "Arkadaşların yükleniyor",
+		"errorTitle": "Arkadaşların yüklenemedi",
+		"errorBody": "Bağlantını kontrol edip tekrar dene.",
+		"emptyTitle": "Henüz arkadaşın yok",
+		"emptyBody": "İlk arkadaşını eklemek için yukarıda bir kullanıcı adı ara.",
+		"online": "çevrimiçi",
+		"offline": "çevrimdışı",
+		"search": {
+			"label": "Oyuncuları kullanıcı adına göre ara",
+			"placeholder": "Kullanıcı adı ara",
+			"hint": "En fazla {{max}} karakter. Arkadaşlık anında kurulur, onay gerekmez.",
+			"resultsTitle": "Arama sonuçları",
+			"resultCount_one": "{{count}} oyuncu bulundu",
+			"resultCount_other": "{{count}} oyuncu bulundu",
+			"searching": "Oyuncular aranıyor",
+			"errorTitle": "Arama başarısız oldu",
+			"errorBody": "Bağlantını kontrol edip tekrar dene.",
+			"emptyTitle": "Oyuncu bulunamadı",
+			"emptyBody": "Hiçbir kullanıcı adı “{{term}}” içermiyor.",
+			"alreadyFriend": "Arkadaş",
+			"add": "Ekle",
+			"adding": "Ekleniyor…",
+			"addLabel": "{{username}} adlı oyuncuyu arkadaş olarak ekle",
+			"addNotFound": "Bu oyuncu artık mevcut değil.",
+			"addFailed": "Bu oyuncu eklenemedi. Tekrar dene.",
+			"more": "Daha fazla göster",
+			"loadingMore": "Yükleniyor…"
+		}
+	}
+}

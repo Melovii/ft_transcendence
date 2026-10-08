@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="28.2 28.7 684.6 684.6" role="img" aria-labelledby="astronaut-title astronaut-description">
+  <title id="astronaut-title">Astronaut avatar</title>
+  <desc id="astronaut-description">A smiling young astronaut with tousled dark hair, large eyes, and a white spacesuit, seen through a blue glass bubble helmet inside a navy and steel blue circular frame.</desc>
+  <defs>
+    <linearGradient id="frame-navy" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#102950"/>
+      <stop offset=".55" stop-color="#10254f"/>
+      <stop offset="1" stop-color="#112a53"/>
+    </linearGradient>
+    <linearGradient id="frame-blue" x1="0%" y1="0%" x2="75%" y2="100%">
+      <stop offset="0" stop-color="#426995"/>
+      <stop offset="1" stop-color="#3b6390"/>
+    </linearGradient>
+    <radialGradient id="background-blue" cx="49%" cy="44%" r="68%">
+      <stop offset="0" stop-color="#294074"/>
+      <stop offset="1" stop-color="#203763"/>
+    </radialGradient>
+    <radialGradient id="helmet-blue" cx="46%" cy="43%" r="69%">
+      <stop offset="0" stop-color="#41799c"/>
+      <stop offset=".7" stop-color="#336b97"/>
+      <stop offset="1" stop-color="#2f6893"/>
+    </radialGradient>
+    <linearGradient id="hair-slate" x1="0%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0" stop-color="#41637a"/>
+      <stop offset=".6" stop-color="#456374"/>
+      <stop offset="1" stop-color="#455f73"/>
+    </linearGradient>
+    <radialGradient id="face-tone" cx="49%" cy="47%" r="75%">
+      <stop offset="0" stop-color="#b7b4b3"/>
+      <stop offset=".7" stop-color="#b2afae"/>
+      <stop offset="1" stop-color="#aaa5a7"/>
+    </radialGradient>
+    <linearGradient id="ear-tone" x1="0%" y1="20%" x2="100%" y2="80%">
+      <stop offset="0" stop-color="#b2abad"/>
+      <stop offset="1" stop-color="#b7b0b0"/>
+    </linearGradient>
+    <linearGradient id="collar-blue" x1="0%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0" stop-color="#6787ad"/>
+      <stop offset="1" stop-color="#6e85ae"/>
+    </linearGradient>
+    <linearGradient id="suit-shadow" x1="0%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0" stop-color="#7588ae"/>
+      <stop offset="1" stop-color="#6980a7"/>
+    </linearGradient>
+    <linearGradient id="suit-white" x1="0%" y1="0%" x2="75%" y2="100%">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f3fcfd"/>
+    </linearGradient>
+    <linearGradient id="panel-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#778cb3"/>
+      <stop offset="1" stop-color="#6e86ab"/>
+    </linearGradient>
+    <linearGradient id="glass-reflection" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#d6edf7" stop-opacity=".92"/>
+      <stop offset="1" stop-color="#c5dee5" stop-opacity=".72"/>
+    </linearGradient>
+    <radialGradient id="glass-wash" cx="28%" cy="22%" r="90%">
+      <stop offset="0" stop-color="#a4e5f2" stop-opacity=".045"/>
+      <stop offset="1" stop-color="#89cced" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="avatar-clip"><ellipse cx="370.5" cy="371" rx="293.5" ry="294"/></clipPath>
+    <clipPath id="helmet-clip"><ellipse cx="370.3" cy="338.1" rx="221.1" ry="213.4"/></clipPath>
+  </defs>
+
+  <g id="outer-ring"><ellipse cx="370.5" cy="371" rx="342.3" ry="341.7" fill="url(#frame-navy)"/></g>
+  <g id="inner-ring"><ellipse cx="370.5" cy="371" rx="312.3" ry="311.8" fill="url(#frame-blue)"/></g>
+  <g id="avatar-background"><ellipse cx="370.5" cy="371" rx="293.5" ry="294" fill="url(#background-blue)"/></g>
+
+  <g id="portrait" clip-path="url(#avatar-clip)" stroke-linecap="round" stroke-linejoin="round">
+    <g id="spacesuit" stroke="#10264b" stroke-width="7">
+      <g id="shoulders">
+        <path d="M461 554C482 554 498 570 504 592L521 628 505 658 471 661 451 598Z" fill="url(#suit-shadow)"/>
+        <path d="M477 565C492 578 495 603 498 634L513 641 519 626C509 608 504 596 502 588 496 574 489 568 477 565Z" fill="#e2eff8" stroke="none"/>
+        <path d="M507 603C515 615 523 632 526 647L504 661 501 631Z" fill="url(#suit-white)"/>
+        <path d="M203 612C211 600 213 579 226 567 237 557 248 556 257 560 282 567 294 599 292 632L288 667 239 670Z" fill="url(#suit-shadow)"/>
+      </g>
+      <path id="suit-chest" d="M269 566C318 578 405 586 466 562 478 582 486 615 491 651L478 689 290 691 286 655C298 618 287 585 269 566Z" fill="url(#suit-white)"/>
+      <path id="left-sleeve" d="M198 627C210 608 215 588 225 588 242 585 262 619 273 649L267 671 211 660Z" fill="url(#suit-white)"/>
+      <path d="M395 583 400 615" fill="none" stroke-width="6.5"/>
+      <g id="control-panel">
+        <path d="M341 618 440 615Q456 614 457 630L462 678 326 680 325 635Q324 618 341 618Z" fill="url(#panel-blue)"/>
+        <path d="M338 623C333 625 333 630 333 639L334 673" fill="none" stroke="#96a9c5" stroke-width="4" opacity=".42"/>
+        <ellipse cx="369" cy="653.4" rx="15.7" ry="16" fill="#fb5339" stroke="#884951" stroke-width="6"/>
+        <path d="M361 649C362 642 371 640 375 646" fill="none" stroke="#ff7251" stroke-width="3" opacity=".5"/>
+        <ellipse cx="426.6" cy="646" rx="11.2" ry="11.7" fill="#91d773" stroke="#356445" stroke-width="6"/>
+      </g>
+    </g>
+
+    <g id="helmet-collar">
+      <path d="M264 529C270 514 291 512 314 517L434 516C455 514 469 526 470 543L471 555C473 567 450 578 423 581 367 589 309 580 275 568 265 565 261 559 263 548Z" fill="url(#collar-blue)" stroke="#132a4c" stroke-width="7"/>
+      <path d="M270 529C276 517 295 519 311 523L432 523C446 521 461 526 465 537 426 560 318 554 269 540Z" fill="#89b4ce" opacity=".28"/>
+    </g>
+
+    <g id="helmet-interior" clip-path="url(#helmet-clip)">
+      <ellipse cx="370.3" cy="338.1" rx="221.1" ry="213.4" fill="url(#helmet-blue)"/>
+      <g id="hair-back" fill="url(#hair-slate)" stroke="#304f66" stroke-width="6.5">
+        <path d="M221 371C208 346 202 315 204 286 205 259 219 237 244 218 275 193 319 174 349 164 374 156 410 151 422 160 432 167 419 187 417 193 449 176 488 181 515 195 531 204 526 215 496 222 514 227 535 238 541 249 550 263 535 277 525 284 529 309 522 340 515 362L479 408 260 414Z"/>
+      </g>
+      <g id="ears" stroke="#75747d" stroke-width="6">
+        <path d="M509 354C530 352 544 373 543 398 543 420 532 438 514 444L499 405Z" fill="url(#ear-tone)"/>
+      </g>
+      <g id="face">
+        <path d="M289 276C324 286 357 296 378 290L443 285 498 286C511 319 518 353 519 383 523 420 515 466 494 495 473 525 436 539 396 542 352 545 315 536 284 515 263 500 248 477 241 447 225 458 205 453 192 438 180 425 177 404 183 383 190 361 207 353 222 356 236 357 246 364 254 374 279 356 295 319 289 276Z" fill="url(#face-tone)" stroke="#7c777d" stroke-width="6.5"/>
+        <path d="M293 282C317 298 352 321 376 319 388 318 392 313 391 303 425 317 468 323 502 307L498 291 430 286 377 295 319 283Z" fill="#978a91" opacity=".7"/>
+        <path d="M241 437C250 469 270 494 294 509 322 526 353 529 391 525 432 523 466 511 492 493 474 523 437 537 396 540 353 544 314 535 285 514 263 499 248 476 241 447 225 458 205 452 194 440 209 450 228 449 241 437Z" fill="#a59599" opacity=".9"/>
+        <path d="M253 439C249 444 245 446 241 447" fill="none" stroke="#76717a" stroke-width="6"/>
+      </g>
+      <g id="ear-detail">
+        <path d="M208 383C225 384 237 399 240 417 237 429 228 434 218 432 203 430 196 416 199 402Z" fill="#a697a1"/>
+        <path d="M207 385C225 381 238 398 239 418M233 403C223 402 216 408 216 418" fill="none" stroke="#7a727f" stroke-width="6"/>
+      </g>
+      <g id="hair" fill="url(#hair-slate)" stroke="#304f66" stroke-width="6.5">
+        <path d="M221 357C209 335 202 307 205 281 208 254 223 234 245 217 276 192 319 174 349 164 374 156 410 151 422 160 432 167 419 187 417 193 449 176 488 181 515 195 531 204 526 215 496 222 514 227 535 238 541 249 550 263 535 277 525 284L505 293C475 309 428 306 371 277 378 289 388 305 375 308 358 312 325 298 293 277 297 317 280 356 254 374 244 362 233 357 221 357Z"/>
+      </g>
+      <g id="eyebrows" fill="none" stroke="#35556a" stroke-width="10">
+        <path d="M330 346C342 337 359 332 376 335"/>
+        <path d="M453 335C469 332 483 335 495 345"/>
+      </g>
+      <g id="eyes">
+        <ellipse cx="359" cy="393.3" rx="35" ry="35.9" fill="#c3e8f2"/>
+        <ellipse cx="470" cy="393.3" rx="33.6" ry="35.4" fill="#c3e8f2"/>
+        <ellipse cx="362.5" cy="394.2" rx="19.9" ry="20.3" fill="#365568"/>
+        <ellipse cx="469" cy="393.5" rx="20.1" ry="20.2" fill="#365568"/>
+        <ellipse cx="372.4" cy="387.6" rx="5.5" ry="5.6" fill="#d0eef7"/>
+        <ellipse cx="479.6" cy="386.9" rx="5.7" ry="5.6" fill="#d0eef7"/>
+      </g>
+      <g id="nose" fill="none" stroke="#8b828a" stroke-width="5.5">
+        <path d="M419 401C416 411 425 412 430 417 442 429 428 442 411 432"/>
+      </g>
+      <g id="mouth" fill="none" stroke="#536370" stroke-width="6">
+        <path d="M371 456C387 470 412 474 434 465"/>
+        <path d="M363 461C370 459 374 454 375 448"/>
+      </g>
+      <ellipse id="glass-tint" cx="370.3" cy="338.1" rx="221.1" ry="213.4" fill="url(#glass-wash)"/>
+    </g>
+
+    <g id="helmet-glass" fill="none">
+      <ellipse cx="370.3" cy="338.1" rx="221.1" ry="213.4" stroke="#9adfed" stroke-width="8"/>
+      <g id="glass-highlights" fill="url(#glass-reflection)">
+        <path d="M221 214C232 196 254 177 271 174 285 171 297 177 297 189 296 201 280 220 264 233 248 247 228 254 217 246 209 240 212 226 221 214Z"/>
+        <ellipse cx="203.2" cy="274.7" rx="12.8" ry="16.1" transform="rotate(24 203.2 274.7)"/>
+      </g>
+    </g>
+  </g>
+</svg>

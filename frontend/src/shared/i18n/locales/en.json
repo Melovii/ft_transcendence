@@ -1,0 +1,1101 @@
+{
+	"common": {
+		"loading": "Loading...",
+		"save": "Save",
+		"cancel": "Cancel",
+		"close": "Close",
+		"retry": "Try again",
+		"back": "Back",
+		"dismiss": "Dismiss"
+	},
+	"i18n": {
+		"ready": "Multilingual infrastructure is working.",
+		"label": "Language"
+	},
+	"auth": {
+		"close": "Close",
+		"modes": "Log in or register",
+		"login": {
+			"tab": "Log In",
+			"title": "Ready to Play?",
+			"subtitle": "Log in or create an account to join the game.",
+			"submit": "Log In",
+			"switchPrompt": "Don't have an account?",
+			"switchAction": "Create Account"
+		},
+		"register": {
+			"tab": "Register",
+			"title": "Join the Game!",
+			"subtitle": "Create an account and start playing with friends.",
+			"submit": "Create Account",
+			"switchPrompt": "Already have an account?",
+			"switchAction": "Log In"
+		},
+		"fields": {
+			"username": "Username",
+			"usernamePlaceholder": "Choose a username",
+			"email": "Email",
+			"emailPlaceholder": "Enter your email",
+			"password": "Password",
+			"passwordPlaceholder": "Enter your password",
+			"newPasswordPlaceholder": "Create a password",
+			"confirmPassword": "Confirm Password",
+			"confirmPasswordPlaceholder": "Repeat your password",
+			"showPassword": "Show password",
+			"hidePassword": "Hide password"
+		},
+		"validation": {
+			"usernameRequired": "Username is required.",
+			"usernameInvalid": "Use 3 to 20 letters, numbers or underscores.",
+			"emailRequired": "Email is required.",
+			"emailInvalid": "Oops! Invalid email address.",
+			"passwordRequired": "Password is required.",
+			"passwordTooShort": "Password must be at least 8 characters.",
+			"passwordTooLong": "Password is too long.",
+			"passwordInvalid": "Password must be 8 to 72 characters long.",
+			"confirmPasswordRequired": "Please confirm your password.",
+			"passwordMismatch": "Passwords do not match."
+		},
+		"feedback": {
+			"emailTaken": "This email is already registered.",
+			"usernameTaken": "This username is already taken.",
+			"credentialsTitle": "Incorrect email or password",
+			"credentialsBody": "Check your details and try again.",
+			"welcomeTitle": "Welcome back, {{username}}!",
+			"welcomeBody": "Taking you to the lobby…",
+			"rateLimitedTitle": "Too many attempts",
+			"rateLimitedBody": "Wait a moment, then try again.",
+			"unavailableTitle": "Something went wrong",
+			"unavailableBody": "We could not reach the server. Try again in a moment.",
+			"sessionExpiredTitle": "Your session has expired",
+			"sessionExpiredBody": "Log in again to pick up where you left off."
+		},
+		"logOut": {
+			"title": "Log Out?",
+			"body": {
+				"SPYMASTER": "You're the Spymaster in a running match. Logging out leaves it and adds a leave penalty to your profile, heavier for a Spymaster. If nobody takes your seat in time, the room closes.",
+				"OPERATIVE": "You're playing in a running match. Logging out leaves it and adds a leave penalty to your profile. If your team has no other Operative and nobody takes your seat in time, the room closes."
+			},
+			"stay": "Stay",
+			"confirm": "Log Out",
+			"pending": "Logging out…",
+			"failed": "Couldn't log out. Try again."
+		},
+		"oauth": {
+			"or": "or",
+			"continue": "Continue with Google",
+			"redirecting": "Redirecting to Google…",
+			"error": {
+				"OAUTH_CANCELLED": {
+					"title": "Google sign-in cancelled",
+					"body": "You can try again, or log in with your email."
+				},
+				"OAUTH_STATE_INVALID": {
+					"title": "Google sign-in expired",
+					"body": "The sign-in took too long or was interrupted. Try again."
+				},
+				"OAUTH_EMAIL_UNVERIFIED": {
+					"title": "Email not verified",
+					"body": "Your Google account's email isn't verified. Verify it with Google, or log in with your email."
+				},
+				"OAUTH_PROVIDER_ERROR": {
+					"title": "Google sign-in failed",
+					"body": "We couldn't sign you in with Google. Try again in a moment."
+				}
+			}
+		}
+	},
+	"landing": {
+		"badge": "MULTIPLAYER WORD FUN",
+		"headlineLead": "Think alike.",
+		"headlineTail": "Win together.",
+		"tagline": "ft_transcendence:\nThe Ultimate Social\nWord Game",
+		"description": "Join teams, give clever clues, and guess words together in\nthis fun, competitive multiplayer adventure! Are you ready\nto connect?",
+		"descriptionShort": "Join teams, give clever clues, and guess words together in this fun, competitive multiplayer game.",
+		"playNow": "Play Now",
+		"logIn": "Log In",
+		"learnMore": "Learn More",
+		"primaryNavigation": "Account",
+		"howToPlay": "How To Play",
+		"giveClueTitle": "Give a clue",
+		"giveClueDescription": "Use one clever word to\nguide your team.",
+		"guessTogetherTitle": "Guess together",
+		"guessTogetherDescription": "Discuss the clue and\nchoose the right cards.",
+		"beatOtherTeamTitle": "Beat the other team",
+		"beatOtherTeamDescription": "Reveal your team's cards\nbefore your opponents.",
+		"community": "Join thousands of players online!\nPlay with friends or make new ones.",
+		"inviteFriends": "Invite Friends",
+		"legalNavigation": "Legal",
+		"privacy": "Privacy Policy",
+		"terms": "Terms of Service",
+		"help": "Help",
+		"copyright": "© 2026 ft_transcendence team. Created for 42 İstanbul students (ft_transcendence). All rights reserved.",
+		"accountDeleted": "Your account was deleted."
+	},
+	"legal": {
+		"wordmark": "Codenames Online",
+		"home": "Codenames Online home",
+		"navigation": "Main",
+		"legalNavigation": "Legal",
+		"howToPlay": "How to Play",
+		"privacy": "Privacy",
+		"terms": "Terms",
+		"privacyPolicy": "Privacy Policy",
+		"termsOfService": "Terms of Service",
+		"logIn": "Log In",
+		"lastUpdated": "Last updated 29 September 2026",
+		"footer": "Codenames Online · A 42 school project",
+		"repository": "Project repository on GitHub (opens in a new tab)"
+	},
+	"privacy": {
+		"title": "Privacy Policy",
+		"intro": "This page explains what Codenames Online stores about you, why it is stored, and how long it is kept. Codenames Online is a student project built for the 42 curriculum, and it only collects what it needs to run accounts, matches and chat.",
+		"sections": [
+			{
+				"id": "what-we-store",
+				"title": "What we store",
+				"paragraphs": [
+					"Your account holds an email address, a username and a password. The password is never stored as plain text, only as a hash.",
+					"Your profile holds the avatar you pick from the preset set or upload. Playing matches adds your match history and the statistics derived from it, such as wins and losses. Using the social features adds your friend connections and the chat messages you send."
+				]
+			},
+			{
+				"id": "why-we-store-it",
+				"title": "Why we store it",
+				"paragraphs": [
+					"Account data signs you in and identifies you to other players. Match results power your profile, your match history and your statistics. Friend connections and messages run the friends list and chat.",
+					"Your data is used only to run the game. Nothing is sold, rented or shared with advertisers."
+				]
+			},
+			{
+				"id": "cookies",
+				"title": "Cookies and browser storage",
+				"paragraphs": [
+					"Signing in sets two cookies: a short-lived session cookie and a refresh cookie that renews it. Both are HttpOnly, sent only to this site, and used for authentication alone.",
+					"Your language choice is saved in your browser's local storage, so the game opens in the same language next time. There are no advertising or analytics cookies."
+				]
+			},
+			{
+				"id": "live-game-data",
+				"title": "Live game data",
+				"paragraphs": [
+					"Rooms, teams, roles, the board and the score live in temporary storage while a room is open, and are removed when the room closes.",
+					"If your connection drops, your seat is held for a short grace period so you can rejoin the same match. When a match ends, its result is added to the match history of every player in it."
+				]
+			},
+			{
+				"id": "chat-messages",
+				"title": "Chat messages",
+				"paragraphs": [
+					"Room chat and direct messages between friends are kept for a limited period set by the server. Each message is deleted when that period ends.",
+					"Room messages are visible only to the players in that room, and direct messages only to the two friends in the conversation."
+				]
+			},
+			{
+				"id": "what-others-see",
+				"title": "What other players see",
+				"paragraphs": [
+					"Signed-in players can see your username, your avatar, your online status and your public profile with its statistics. Players in the same room see your team, your role and your moves during a match.",
+					"The project does not share your data with third parties for advertising, marketing or any commercial purpose."
+				]
+			},
+			{
+				"id": "how-long-we-keep-it",
+				"title": "How long we keep it",
+				"paragraphs": [
+					"Account, profile, friend and match data stay while your account exists and the project's server is running. Chat messages are deleted when their retention period ends, and live room data is deleted when the room closes."
+				]
+			},
+			{
+				"id": "your-choices",
+				"title": "Your choices",
+				"paragraphs": [
+					"You can change your username and your avatar at any time, add or remove friends, and switch the interface language.",
+					"Changing your email address or password and deleting your account are not available inside the game. To have your account and its data removed, contact the project team."
+				]
+			},
+			{
+				"id": "security",
+				"title": "Security",
+				"paragraphs": [
+					"Passwords are stored only as hashes, session cookies cannot be read by page scripts, and the deployed game is served over HTTPS. No system is perfectly secure, so avoid sharing sensitive personal information in your username, your avatar or your messages."
+				]
+			},
+			{
+				"id": "changes",
+				"title": "Changes to this policy",
+				"paragraphs": [
+					"This policy is updated when the game changes how it handles data. The date at the top of this page shows the current version."
+				]
+			},
+			{
+				"id": "contact",
+				"title": "Contact",
+				"paragraphs": [
+					"Questions and requests about your data go to the project team through the project repository."
+				]
+			}
+		]
+	},
+	"terms": {
+		"title": "Terms of Service",
+		"intro": "These terms cover the use of Codenames Online. Creating an account means you accept them. The game is a student project built for the 42 curriculum and is offered for friendly play.",
+		"sections": [
+			{
+				"id": "about-the-game",
+				"title": "About the game",
+				"paragraphs": [
+					"Codenames Online is a real-time multiplayer word game. It offers accounts, profiles, game rooms, friends, chat, match history and statistics.",
+					"It is an independent educational project inspired by the Codenames board game. It is not affiliated with, endorsed by or connected to Czech Games Edition or the Codenames brand."
+				]
+			},
+			{
+				"id": "your-account",
+				"title": "Your account",
+				"paragraphs": [
+					"You need an account to play. Use an email address you control, pick a username that is not offensive or misleading, and keep your password to yourself. You are responsible for what happens under your account."
+				]
+			},
+			{
+				"id": "fair-play",
+				"title": "Fair play",
+				"paragraphs": [
+					"Play the game as designed. Do not pass hidden board information to Operatives outside the game, do not automate play, and do not manipulate results or statistics.",
+					"Do not try to access other accounts, disrupt rooms or the service, or exploit faults. If you find a fault, report it to the project team instead."
+				]
+			},
+			{
+				"id": "chat-and-conduct",
+				"title": "Chat and conduct",
+				"paragraphs": [
+					"Chat is for players in your room and for friends. Respect other players: harassment, hate speech, threats and spam are not allowed. You are responsible for the messages you send.",
+					"Do not leave or stall matches on purpose to spoil them for others. A room host can remove players from the room outside a running match."
+				]
+			},
+			{
+				"id": "availability",
+				"title": "Availability",
+				"paragraphs": [
+					"The game is a student project and is provided as it is. Connections can drop, matches can be interrupted, and the service can be unavailable during maintenance or once the project ends. There is no guaranteed uptime.",
+					"A dropped connection holds your seat for a short grace period. If you do not return in time, you leave the room."
+				]
+			},
+			{
+				"id": "your-content",
+				"title": "Your content",
+				"paragraphs": [
+					"Your username, your avatar and your messages stay yours. The game stores only what it needs to run a match, show a profile and deliver chat, as described in the Privacy Policy."
+				]
+			},
+			{
+				"id": "intellectual-property",
+				"title": "Intellectual property",
+				"paragraphs": [
+					"The project's own code, interface design and artwork belong to the project team. Third-party libraries and fonts keep their own licenses. The Codenames name and the original game belong to their respective owners."
+				]
+			},
+			{
+				"id": "changes-and-ending-use",
+				"title": "Changes and ending use",
+				"paragraphs": [
+					"These terms can change as the game develops, and the date at the top of this page shows the current version. You can stop using the game at any time. To have your account removed, contact the project team."
+				]
+			},
+			{
+				"id": "contact",
+				"title": "Contact",
+				"paragraphs": [
+					"Questions about these terms go to the project team through the project repository."
+				]
+			}
+		]
+	},
+	"lobby": {
+		"title": "Ready for the next clue?",
+		"subtitle": "Create a room or join your friends and start guessing.",
+		"profile": {
+			"online": "Online",
+			"level": "Lvl {{level}}",
+			"menu": {
+				"label": "Account menu, {{username}}",
+				"profile": "Profile",
+				"settings": "Settings"
+			}
+		},
+		"create": {
+			"title": "Create Room",
+			"descriptionShort": "Start a new game and invite your friends.",
+			"description": "Start a new game and\ninvite your friends.",
+			"action": "Create Room"
+		},
+		"join": {
+			"title": "Join Room",
+			"descriptionShort": "Enter a room code and jump into the game.",
+			"description": "Enter a room and jump into\nthe game.",
+			"action": "Join Room"
+		},
+		"players": {
+			"title": "Players Online",
+			"loading": "Loading players online",
+			"online": "online",
+			"openProfile": "Open {{username}}'s profile",
+			"showMore": "Show\nMore",
+			"showMoreLabel": "Show {{count}} more players",
+			"emptyTitle": "No players online right now",
+			"emptyBody": "Create a room and share its code, or invite a friend to play.",
+			"invite": "Invite Friends",
+			"errorTitle": "Couldn't load players online",
+			"errorBody": "Check your connection and try again."
+		}
+	},
+	"room": {
+		"create": {
+			"title": "Create a Room",
+			"subtitle": "Start a new game room and invite your friends.",
+			"benefits": {
+				"newRoom": "New Game Room",
+				"inviteFriends": "Invite friends after creating.",
+				"chooseRole": "Choose your team and role inside."
+			},
+			"maxPlayers": "Max Players",
+			"maxPlayersHint": "{{min}}–{{max}} players",
+			"fewerPlayers": "Fewer players",
+			"morePlayers": "More players",
+			"submit": "Create Room",
+			"creating": "Creating room",
+			"goToRoom": "Go to Room",
+			"retry": "Try Again",
+			"createdTitle": "Room created!",
+			"createdBody": "Opening your room lobby…"
+		},
+		"join": {
+			"title": "Join a Room",
+			"subtitle": "Enter a room code and jump into the game.",
+			"codeLabel": "Room Code",
+			"codePlaceholder": "ABCD12",
+			"finding": "Finding room…",
+			"previewCaption": "Room code",
+			"players": "{{count}} / {{max}} Players",
+			"status": {
+				"waiting": "WAITING",
+				"full": "FULL",
+				"inGame": "IN GAME",
+				"closed": "NOT OPEN"
+			},
+			"submit": "Join Room",
+			"joining": "Joining",
+			"opening": "Opening lobby",
+			"full": "Room Full",
+			"joinedTitle": "You're in!",
+			"joinedBody": "Opening the room lobby…",
+			"errors": {
+				"format": "Enter the six letters and digits of the room code.",
+				"notFound": "No room found with this code. Check it and try again.",
+				"full": "This room is full.",
+				"notJoinable": "This room isn't taking new players right now."
+			},
+			"spectate": "Join to Watch",
+			"notJoinable": "Not Open"
+		},
+		"feedback": {
+			"createFailedTitle": "Couldn't create the room",
+			"createFailedBody": "Something went wrong. Try again.",
+			"joinFailedTitle": "Couldn't join the room",
+			"joinFailedBody": "Something went wrong. Try again.",
+			"rateLimitedTitle": "Too many attempts",
+			"rateLimitedBody": "Wait a moment, then try again.",
+			"alreadyInRoomTitle": "You're already in a room",
+			"alreadyInRoomBody": "Leave it before you create or join another one.",
+			"returnToRoom": "Go to my room"
+		},
+		"loading": "Loading the room…",
+		"connection": {
+			"failedTitle": "Couldn't connect to the room",
+			"failedBody": "Check your connection and try again.",
+			"reconnecting": "Reconnecting…",
+			"reconnectingBody": {
+				"game": "We're holding your seat in the match. Stay on this page.",
+				"room": "We're holding your seat in the room. Stay on this page.",
+				"finished": "We're getting you back to the results. Stay on this page."
+			},
+			"secondsLeft": {
+				"game": "{{seconds}}s left to keep your seat",
+				"room": "{{seconds}}s left to keep your seat",
+				"finished": "{{seconds}}s left to decide"
+			},
+			"leave": {
+				"game": "Leave Match",
+				"room": "Leave Room",
+				"finished": "Back to Lobby"
+			},
+			"lostTitle": "Connection lost",
+			"lostBody": "You were away too long, so you left the room. Your account and stats are safe.",
+			"backToLobby": "Back to Lobby"
+		},
+		"leave": {
+			"action": "Leave Room",
+			"stay": "Stay",
+			"leaving": "Leaving…",
+			"failed": "Couldn't leave the room. Try again.",
+			"room": {
+				"title": "Leave Room?",
+				"body": "You will leave this room and lose your team and role. Your seat opens for another player.",
+				"confirm": "Leave Room",
+				"bodySpectator": "You'll leave this room and return to the lobby."
+			},
+			"game": {
+				"title": "Leave Game?",
+				"body": {
+					"SPYMASTER": "You'll leave this match and return to the lobby. Leaving a running match adds a leave penalty to your profile, heavier for a Spymaster. If nobody takes your seat in time, the room closes for everyone.",
+					"OPERATIVE": "You'll leave this match and return to the lobby. Leaving a running match adds a leave penalty to your profile. If your team has no other Operative and nobody takes your seat in time, the room closes for everyone."
+				},
+				"confirm": "Leave Game"
+			}
+		},
+		"countdown": {
+			"title": "Game Starting",
+			"hint": "Taking you to the board — good luck!",
+			"someone": "A player",
+			"cancelled": {
+				"PLAYER_UNREADY": "Countdown stopped: {{username}} is no longer ready.",
+				"PLAYER_LEFT": "Countdown stopped: {{username}} left the room.",
+				"TEAM_CHANGED": "Countdown stopped: {{username}} changed team.",
+				"ROLE_CHANGED": "Countdown stopped: {{username}} changed role.",
+				"PLAYER_KICKED": "Countdown stopped: {{username}} was removed from the room."
+			}
+		},
+		"ready": {
+			"title": "{{host}}'s Room",
+			"titleFallback": "Ready Room",
+			"codeLabel": "Room code",
+			"copyCode": "Copy room code",
+			"codeCopied": "Room code copied",
+			"copyFailed": "Couldn't copy the code. Select it and copy it by hand.",
+			"shareHint": "Share this code with your friends.",
+			"maxPlayers": "Max Players",
+			"playerCount": "{{count}} / {{max}} Players",
+			"roomFull": "Room Full",
+			"phase": {
+				"WAITING": {
+					"title": "Waiting for Players…",
+					"body": "Share the room code. The game starts when all are ready."
+				},
+				"FULL": {
+					"title": "Room Full",
+					"body": "{{count}} of {{max}} seats are taken. New players cannot join."
+				},
+				"COUNTDOWN": {
+					"title": "Get Ready!",
+					"body": "Everyone is ready. The match is about to begin."
+				},
+				"POST_GAME": {
+					"title": "Waiting for the Last Result…",
+					"body": "Players still viewing the last result: {{pending}}. The next match can start once everyone is back."
+				}
+			},
+			"team": {
+				"RED": "Red Team",
+				"BLUE": "Blue Team"
+			},
+			"teamButton": {
+				"RED": "Red Team",
+				"BLUE": "Blue Team"
+			},
+			"teamShort": {
+				"RED": "Red",
+				"BLUE": "Blue"
+			},
+			"host": "Host",
+			"hostSuffix": ", host",
+			"youSuffix": ", you",
+			"card": "{{username}}{{you}}{{host}}: {{role}}, {{status}}",
+			"role": {
+				"SPYMASTER": "Spymaster",
+				"OPERATIVE": "Operative",
+				"SPECTATOR": "Spectator"
+			},
+			"status": {
+				"ready": "Ready!",
+				"waiting": "Waiting"
+			},
+			"emptySeat": "Waiting for player…",
+			"setupTitle": "Your Setup",
+			"chooseTeam": "Choose Your Team",
+			"chooseRole": "Choose Your Role",
+			"roleCard": {
+				"SPYMASTER": {
+					"title": "Spymaster",
+					"description": "Give clues to\nyour team."
+				},
+				"OPERATIVE": {
+					"title": "Operative",
+					"description": "Guess the\ncorrect cards."
+				}
+			},
+			"taken": "Taken",
+			"readyAction": "Ready",
+			"readyDone": "Ready!",
+			"counter": "{{ready}} / {{count}} Players Ready",
+			"counterFull": "{{count}} / {{max}} Players · Room Full",
+			"summary": "You: {{setup}}",
+			"noTeam": "No team yet",
+			"change": "Change",
+			"choose": "Choose",
+			"hints": {
+				"teamFirst": "Choose a team, then a role. Until then you're watching.",
+				"spymasterTaken": "{{username}} is this team's Spymaster.",
+				"locked": "The match is starting, so your setup is locked.",
+				"hostOnly": "Only the room owner can change the room size.",
+				"ready": {
+					"TEAM_REQUIRED": "Choose a team first.",
+					"ROLE_REQUIRED": "Choose a role first.",
+					"LOCKED": "The match is starting.",
+					"POST_GAME_PENDING": "Some players are still viewing the last result."
+				},
+				"claim": "Choose a role to join the {{team}} team.",
+				"timerHostOnly": "Only the room owner can change the turn timer."
+			},
+			"errors": {
+				"roleConflict": "Another player just took this team's Spymaster seat.",
+				"teamRequired": "Choose a team first.",
+				"roleRequired": "Choose a role first.",
+				"locked": "The match is starting, so your setup can't change now.",
+				"notHost": "Only the room owner can change the room settings.",
+				"capacity": "The room can't be smaller than the players in it.",
+				"offline": "You're offline. Try again once you're reconnected.",
+				"generic": "That didn't work. Try again.",
+				"postGamePending": "Wait until everyone is back from the last result.",
+				"timer": "That turn timer isn't available. Pick one from the list."
+			},
+			"spectators": "Spectators",
+			"spectate": "Watch instead"
+		},
+		"recovery": {
+			"notMember": "You are no longer in that room.",
+			"returned": "You are still in a room, so we took you back to it.",
+			"closed": "That room has closed.",
+			"removed": "You are no longer a member of that room.",
+			"legacy": "You're still in a room from an older version of the game, which can't be opened here. It closes on its own once it ends.",
+			"kicked": "The room owner removed you from the room.",
+			"postGameTimeout": "You didn't choose in time, so you left the room after the match.",
+			"insufficientPlayers": "The room closed: a team stayed without a player it needed. The match didn't count."
+		},
+		"invites": {
+			"title": "{{username}} invited you to play",
+			"body": "Room code",
+			"join": "Join",
+			"joining": "Joining…",
+			"dismiss": "Dismiss",
+			"closed": "This room has closed."
+		},
+		"settings": {
+			"timer": "Turn timer",
+			"language": "Words",
+			"noLimit": "No limit",
+			"seconds_one": "{{count}} second",
+			"seconds_other": "{{count}} seconds",
+			"ownerYou": "You're the room owner. You can remove players, change the room size and set the turn timer.",
+			"ownerOnly": "Only the room owner can change the room settings."
+		},
+		"kick": {
+			"action": "Remove {{username}} from the room",
+			"fromProfile": "Remove from Room",
+			"title": "Remove {{username}}?",
+			"body": "{{username}} leaves the room. They can join again with the room code.",
+			"bodyInGame": "{{username}} leaves the match now. If their team is left without a Spymaster or an Operative, the game pauses, and the room closes unless someone takes the seat in time.",
+			"confirm": "Remove",
+			"kicking": "Removing…",
+			"errors": {
+				"notHost": "You're no longer the room owner.",
+				"gone": "That player has already left.",
+				"self": "You can't remove yourself. Use Leave instead.",
+				"closed": "This room has closed."
+			}
+		}
+	},
+	"game": {
+		"loading": "Loading the match…",
+		"board": "Word board",
+		"team": {
+			"RED": "Red",
+			"BLUE": "Blue"
+		},
+		"teamName": {
+			"RED": "Red Team",
+			"BLUE": "Blue Team"
+		},
+		"score": {
+			"label": "Score: Red {{red}}, Blue {{blue}}"
+		},
+		"turn": {
+			"title": "<team>{{team}}</team> Team's Turn",
+			"over": "Match Over",
+			"paused": "Game Paused",
+			"timeLeft": "Time left in this turn"
+		},
+		"instruction": {
+			"CLUE": "You are the Spymaster. Give your team a clue.",
+			"CLUE_SENT": "Clue sent. Your operatives are choosing their cards."
+		},
+		"clue": {
+			"label": "Clue",
+			"heading": "Give a Clue",
+			"number": "Number",
+			"placeholder": "Type a one-word clue",
+			"submit": "Give Clue",
+			"sending": "Sending…",
+			"rule": "Use one word of up to 30 letters, with no spaces.",
+			"decrease": "Fewer cards",
+			"increase": "More cards",
+			"sent": "Clue Sent",
+			"sentLabel": "Clue:",
+			"sentNumber": "Number:",
+			"value": "Clue: {{word}} · {{number}}",
+			"guesses": "Guesses Remaining: {{count}}"
+		},
+		"status": {
+			"waitingLabel": "Waiting",
+			"waitingTitle": "Waiting for the clue…",
+			"waitingBody": "Your Spymaster is choosing a clue.",
+			"opponentGuessing": "{{team}} Team Is Guessing",
+			"opponentClue": "{{team}} Spymaster Is Choosing",
+			"opponentBody": "Wait for your turn. Cards can't be picked right now.",
+			"spymasterOpponentBody": "Wait for your turn to give a clue.",
+			"spectatingBody": "You're watching this match. Take a free seat when one opens.",
+			"pausedTitle": "Waiting for Players…",
+			"pausedBody": "A team is missing a player. Play resumes when the seat is taken."
+		},
+		"pass": {
+			"action": "Pass",
+			"passing": "Passing…"
+		},
+		"roster": {
+			"operatives": "Operatives",
+			"spymaster": "Spymaster",
+			"spymasterLine": "Spymaster: {{names}}",
+			"operativesLine": "Operatives: {{names}}",
+			"nobody": "—",
+			"openProfile": "Open {{username}}'s profile"
+		},
+		"card": {
+			"pick": "Pick {{word}}",
+			"key": "{{word}}, {{affiliation}}",
+			"revealed": "{{word}}, revealed: {{affiliation}}",
+			"affiliation": {
+				"RED": "Red agent",
+				"BLUE": "Blue agent",
+				"NEUTRAL": "Bystander",
+				"ASSASSIN": "Assassin"
+			}
+		},
+		"leave": "Leave Game",
+		"results": {
+			"badge": "Match Over",
+			"wins": "{{team}} Team Wins!",
+			"reason": {
+				"ALL_TEAM_CARDS_REVEALED": "{{team}} revealed their last agent.",
+				"ASSASSIN_REVEALED": "{{team}} revealed the assassin."
+			},
+			"backToLobby": "Back to Lobby",
+			"viewBoard": "View Final Board",
+			"showResults": "Show Results",
+			"exit": "Exit Room",
+			"returning": "Returning…",
+			"returnFailed": "Couldn't go back to the lobby. Try again.",
+			"deadline": "{{seconds}}s left to choose. Players who stay undecided leave the room."
+		},
+		"errors": {
+			"invalidClue": "The clue must be one word of up to 30 letters.",
+			"invalidNumber": "Choose a number from 1 to 9.",
+			"invalidCard": "That card isn't on this board.",
+			"alreadyRevealed": "That card was already revealed.",
+			"noGuesses": "Your team has no guesses left.",
+			"notYourTurn": "It isn't your turn any more.",
+			"roleForbidden": "Your role can't do that.",
+			"finished": "The match is already over.",
+			"offline": "You're offline. Try again once the connection is back.",
+			"generic": "Something went wrong. Try again."
+		},
+		"staffing": {
+			"title": "Game Paused",
+			"body": "If nobody takes the seat in time, the room closes and everyone returns to the lobby.",
+			"needs": {
+				"SPYMASTER": "{{team}} needs a Spymaster",
+				"OPERATIVE": "{{team}} needs an Operative",
+				"BOTH": "{{team}} needs a Spymaster and an Operative"
+			},
+			"closesIn": "Room closes in",
+			"role": {
+				"SPYMASTER": "Spymaster",
+				"OPERATIVE": "Operative"
+			},
+			"departure": {
+				"EXITED": "{{username}}, the {{team}} {{role}}, left the match.",
+				"SESSION_ENDED": "{{username}}, the {{team}} {{role}}, logged out.",
+				"DISCONNECTED": "{{username}}, the {{team}} {{role}}, lost their connection.",
+				"KICKED_BY_HOST": "The room owner removed {{username}}, the {{team}} {{role}}.",
+				"ACCOUNT_DELETED": "{{username}}, the {{team}} {{role}}, deleted their account.",
+				"unknown": "A team lost a player it needs."
+			},
+			"claimTitle": "Take a free seat",
+			"claim": "{{team}} {{role}}",
+			"claimClosed": "That seat can't be taken right now."
+		}
+	},
+	"profile": {
+		"close": "Close profile",
+		"loading": "Loading profile",
+		"retry": "Try again",
+		"presence": {
+			"online": "Online",
+			"offline": "Offline"
+		},
+		"stats": {
+			"wins": "Wins",
+			"losses": "Losses",
+			"level": "Level",
+			"played_one": "{{count}} match played",
+			"played_other": "{{count}} matches played"
+		},
+		"friend": {
+			"add": "Add Friend",
+			"adding": "Adding…",
+			"remove": "Remove Friend",
+			"removing": "Removing…",
+			"loadFailed": "Your friends list couldn't load.",
+			"failed": {
+				"ADDING": "Couldn't add this friend. Try again.",
+				"REMOVING": "Couldn't remove this friend. Try again."
+			}
+		},
+		"message": "Message",
+		"invite": {
+			"button": {
+				"READY": "Invite",
+				"FAILED": "Invite",
+				"SENDING": "Inviting…",
+				"SENT": "Invite Sent",
+				"UNAVAILABLE": "Invite"
+			},
+			"sent": "Invite sent. {{username}} can join your room from the invitation.",
+			"failed": "The invite couldn't be sent. Try again.",
+			"reason": {
+				"NO_ACTIVE_ROOM": "Join or create a room to invite {{username}}.",
+				"ROOM_NOT_JOINABLE": "Your game has started. Invites work while the room is waiting for players.",
+				"ROOM_FULL": "Your room is full.",
+				"IN_YOUR_ROOM": "{{username}} is already in your room.",
+				"OFFLINE": "{{username}} is offline. Invite is available when they are online.",
+				"IN_ROOM": "{{username}} is already in another room.",
+				"NOT_FRIENDS": "Add {{username}} as a friend to invite them."
+			}
+		},
+		"notFound": {
+			"title": "Player not found",
+			"body": "This account is no longer available."
+		},
+		"error": {
+			"title": "Profile couldn't load.",
+			"body": "Check your connection and try again."
+		},
+		"history": {
+			"title": "Game History",
+			"count_one": "Last {{count}} game",
+			"count_other": "Last {{count}} games",
+			"loading": "Loading game history",
+			"emptyTitle": "No games found",
+			"emptyBody": "Finished matches appear here with the result, your team and role, and your opponents.",
+			"errorTitle": "Game history couldn't load.",
+			"errorBody": "Check your connection and try again.",
+			"retry": "Try again",
+			"result": {
+				"WIN": "WIN",
+				"LOSS": "LOSS"
+			},
+			"opponents": "vs {{names}}",
+			"endReason": {
+				"ALL_TEAM_CARDS_REVEALED": "All cards found",
+				"ASSASSIN_REVEALED": "Assassin revealed",
+				"PLAYER_FORFEIT": "Forfeit"
+			},
+			"scoreLabel": "Final score: your team {{own}}, the other team {{other}}"
+		},
+		"report": {
+			"action": "Report player",
+			"reported": "Reported",
+			"back": "Back to profile",
+			"title": "Report {{username}}",
+			"subtitle": "Tell us what happened. The player won't know who reported them.",
+			"reasonLabel": "Reason",
+			"reasonHint": "Choose a reason to continue.",
+			"reason": {
+				"HARASSMENT": "Harassment or abuse",
+				"CHEATING": "Cheating",
+				"OFFENSIVE_USERNAME": "Offensive username",
+				"SPAM": "Spam",
+				"OTHER": "Something else"
+			},
+			"detailsLabel": "Details (optional)",
+			"detailsPlaceholder": "What happened, and when?",
+			"detailsCount": "{{count}} / {{max}}",
+			"cancel": "Cancel",
+			"submit": "Submit report",
+			"sending": "Sending…",
+			"done": "Done",
+			"outcome": {
+				"SENT": "Thanks. Your report about {{username}} was sent for review.",
+				"ALREADY_REPORTED": "You already reported {{username}} recently. Your earlier report is being reviewed."
+			},
+			"error": {
+				"NOT_FOUND": "{{username}}'s account no longer exists.",
+				"RATE_LIMITED": "Too many reports. Wait a moment, then try again.",
+				"INVALID": "The report couldn't be accepted. Check the reason and details.",
+				"FAILED": "The report couldn't be sent. Try again."
+			}
+		}
+	},
+	"chat": {
+		"launcher": {
+			"title": "Chat",
+			"label": "Open chat",
+			"labelUnread_one": "Open chat, {{count}} new message",
+			"labelUnread_other": "Open chat, {{count}} new messages",
+			"caption_one": "{{count}} new message",
+			"caption_other": "{{count}} new messages",
+			"captionNone": "No new messages"
+		},
+		"panel": {
+			"title": "Chats",
+			"close": "Close chat",
+			"back": "Back to chats"
+		},
+		"search": {
+			"label": "Search friends",
+			"placeholder": "Search friends"
+		},
+		"tabs": {
+			"label": "Conversations",
+			"ROOM": "Room",
+			"FRIENDS": "Friends"
+		},
+		"sections": {
+			"room": "In this room",
+			"friends": "Friends"
+		},
+		"room": {
+			"name": "Room chat",
+			"code": "Room {{code}}",
+			"preparing": "Room chat is getting ready…",
+			"closed": "Room chat is closed"
+		},
+		"list": {
+			"loading": "Loading chats…",
+			"channelsError": "Couldn't load your chats.",
+			"friendsError": "Couldn't load your friends.",
+			"noRoom": "Join a room to chat with its players.",
+			"noFriends": "Add friends to chat with them here.",
+			"noResults": "No one matches “{{query}}”.",
+			"noMessages": "No messages yet",
+			"fromYou": "You: {{text}}",
+			"fromPlayer": "{{name}}: {{text}}",
+			"addFriend": "Add as friend to start chatting",
+			"opening": "Opening chat…",
+			"openFailed": "Couldn't open this chat. Try again.",
+			"unread_one": "{{count}} new message",
+			"unread_other": "{{count}} new messages"
+		},
+		"presence": {
+			"online": "Online",
+			"offline": "Offline"
+		},
+		"age": {
+			"now": "now",
+			"MINUTES": "{{count}}m",
+			"HOURS": "{{count}}h",
+			"DAYS": "{{count}}d"
+		},
+		"day": {
+			"today": "Today",
+			"yesterday": "Yesterday"
+		},
+		"thread": {
+			"label": "Messages",
+			"loading": "Loading messages…",
+			"error": "Couldn't load these messages.",
+			"empty": "No messages yet. Say hi!",
+			"emptyRoom": "No messages yet. Say hi to your room!",
+			"olderLoading": "Loading earlier messages…",
+			"olderFailed": "Couldn't load earlier messages.",
+			"newMessages": "New messages",
+			"newFrom": "New message from {{name}}",
+			"newMessage": "New message",
+			"you": "You:"
+		},
+		"composer": {
+			"label": "Message",
+			"placeholder": "Write a message…",
+			"send": "Send message",
+			"offline": "Reconnecting… you can send again in a moment.",
+			"tooLong": "Messages can be up to {{max}} characters.",
+			"count": "{{count}}/{{max}}"
+		},
+		"pending": {
+			"sending": "Sending…",
+			"retry": "Retry",
+			"discard": "Remove",
+			"failed": {
+				"OFFLINE": "Not sent: you're offline.",
+				"TIMEOUT": "Not sent yet: the server didn't answer.",
+				"UNAVAILABLE": "Not sent: chat is unavailable right now.",
+				"REVOKED": "Not sent: you can't message this chat anymore.",
+				"INVALID": "Not sent: the message was rejected."
+			}
+		},
+		"access": {
+			"direct": "You're no longer friends. Add them as a friend to chat again.",
+			"viewProfile": "View profile",
+			"room": {
+				"default": "You can't use this room chat anymore.",
+				"GAME_FINISHED": "Room chat closed when the game ended.",
+				"ROOM_LEFT": "You left this room, so its chat is closed.",
+				"KICKED_BY_HOST": "You were removed from this room, so its chat is closed.",
+				"POST_GAME_TIMEOUT": "Room chat closed after the game.",
+				"ROOM_CLOSED": "This room has closed."
+			}
+		},
+		"unknownPlayer": "Player",
+		"retry": "Try again"
+	},
+	"settings": {
+		"title": "Settings",
+		"subtitle": "Manage your profile and account.",
+		"close": {
+			"SETTINGS": "Close settings",
+			"CROP": "Cancel cropping",
+			"PICK": "Cancel picking an avatar"
+		},
+		"saved": {
+			"title": "Profile updated",
+			"body": "Your changes are saved."
+		},
+		"avatar": {
+			"label": "Profile picture",
+			"current": "Your current avatar",
+			"upload": "Upload photo",
+			"pick": "Pick avatar",
+			"hint": "JPG, PNG or WEBP, up to 2 MB. Square images look best. Without an upload, your default avatar is used.",
+			"error": {
+				"INVALID_TYPE": "Use a JPG, PNG or WEBP image under 2 MB.",
+				"TOO_LARGE": "Use a JPG, PNG or WEBP image under 2 MB.",
+				"UNREADABLE": "This image couldn't be opened. Try another one.",
+				"UPLOAD_FAILED": "Upload failed. Try again."
+			}
+		},
+		"username": {
+			"label": "Username",
+			"save": "Save",
+			"saving": "Saving…",
+			"hint": "3–20 characters: letters, numbers and underscore. Must be unique.",
+			"error": {
+				"INVALID_USERNAME": "Use 3–20 letters, numbers or underscores.",
+				"USERNAME_TAKEN": "That username is already taken. Try another one.",
+				"FAILED": "Couldn't save your username. Try again."
+			}
+		},
+		"email": {
+			"label": "Email",
+			"hint": "Your sign-in email. It can’t be changed here."
+		},
+		"logOut": {
+			"button": "Log Out",
+			"pending": "Logging out…",
+			"failed": "Couldn't log out. Try again."
+		},
+		"legal": {
+			"navigation": "Legal",
+			"privacy": "Privacy Policy",
+			"terms": "Terms of Service",
+			"newTab": "(opens in a new tab)"
+		},
+		"crop": {
+			"title": "Crop Your Photo",
+			"subtitle": "Drag to reposition. Use the slider to zoom.",
+			"position": "Photo position. Drag it, or use the arrow keys to move it.",
+			"zoom": "Zoom",
+			"preview": "Preview — how your avatar appears in rooms and profiles",
+			"hint": "JPG, PNG or WEBP, up to 2 MB. <choose>Choose another file</choose> to replace the photo.",
+			"cancel": "Cancel",
+			"save": "Save photo",
+			"saving": "Uploading…"
+		},
+		"pick": {
+			"title": "Pick an Avatar",
+			"subtitle": "Choose a ready-made avatar.",
+			"option": "Avatar: {{name}}",
+			"loading": "Loading avatars",
+			"loadFailed": "The avatars couldn't load.",
+			"retry": "Try again",
+			"hint": "Your current avatar is replaced when you save. An uploaded photo it replaces is removed.",
+			"failed": "Couldn't save the avatar. Try again.",
+			"cancel": "Cancel",
+			"save": "Save avatar",
+			"saving": "Saving…"
+		},
+		"deleteAccount": {
+			"button": "Delete account",
+			"title": "Delete Account?",
+			"body": "This permanently deletes your account, profile, friends, statistics and messages. It can't be undone.",
+			"inMatch": "You're playing in a match. Deleting your account removes you from it. If your team is left short and nobody takes your seat in time, the room closes.",
+			"confirmLabel": "Type <name>{{username}}</name> to confirm",
+			"confirmHint": "Your username, exactly as it appears in your profile.",
+			"cancel": "Cancel",
+			"confirm": "Delete",
+			"pending": "Deleting…",
+			"error": {
+				"MISMATCH": "That isn't your username. Type it exactly to confirm.",
+				"RATE_LIMITED": "Too many attempts. Wait a moment, then try again.",
+				"FAILED": "Couldn't delete your account. Try again."
+			}
+		},
+		"language": {
+			"label": "Language",
+			"hint": "The game switches language at once. Your choice is saved on this device."
+		}
+	},
+	"friends": {
+		"title": "Friends",
+		"subtitle": "Your friends and players to add.",
+		"count_one": "{{count}} friend",
+		"count_other": "{{count}} friends",
+		"openLabel_one": "Friends, {{count}} friend",
+		"openLabel_other": "Friends, {{count}} friends",
+		"listTitle": "Your friends",
+		"loading": "Loading your friends",
+		"errorTitle": "Couldn't load your friends",
+		"errorBody": "Check your connection, then try again.",
+		"emptyTitle": "No friends yet",
+		"emptyBody": "Search for a username above to add your first friend.",
+		"online": "online",
+		"offline": "offline",
+		"search": {
+			"label": "Search players by username",
+			"placeholder": "Search by username",
+			"hint": "Up to {{max}} characters. Friendship is instant: there is nothing to accept.",
+			"resultsTitle": "Search results",
+			"resultCount_one": "{{count}} player found",
+			"resultCount_other": "{{count}} players found",
+			"searching": "Searching players",
+			"errorTitle": "Search failed",
+			"errorBody": "Check your connection, then try again.",
+			"emptyTitle": "No players found",
+			"emptyBody": "No username contains “{{term}}”.",
+			"alreadyFriend": "Friend",
+			"add": "Add",
+			"adding": "Adding…",
+			"addLabel": "Add {{username}} as a friend",
+			"addNotFound": "This player no longer exists.",
+			"addFailed": "Couldn't add this player. Try again.",
+			"more": "Show more",
+			"loadingMore": "Loading…"
+		}
+	}
+}

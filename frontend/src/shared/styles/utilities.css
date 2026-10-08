@@ -1,0 +1,39 @@
+/*
+ * Project utilities: the few patterns that utility composition cannot express on the
+ * element itself. Each one is a real Tailwind utility, so variants (`hover:`, `md:`)
+ * and the normal cascade order apply.
+ */
+
+/*
+ * Link that reveals its `data-tooltip` text on hover and on keyboard focus. The text
+ * lives in the markup attribute so it stays translatable.
+ */
+@utility tooltip-link {
+  position: relative;
+
+  &::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + var(--spacing-2));
+    left: 0;
+    z-index: var(--z-toast);
+    width: max-content;
+    max-width: 24rem;
+    padding: var(--spacing-2) var(--spacing-3);
+    border-radius: var(--radius-sm);
+    background: var(--color-text-ink);
+    box-shadow: var(--shadow-toast);
+    color: var(--color-surface);
+    font-size: var(--font-size-sm);
+    line-height: var(--leading-base);
+    text-transform: none;
+    opacity: 0;
+    transition: opacity 150ms ease;
+    pointer-events: none;
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    opacity: 1;
+  }
+}

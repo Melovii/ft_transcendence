@@ -1,0 +1,1101 @@
+{
+	"common": {
+		"loading": "Chargement...",
+		"save": "Enregistrer",
+		"cancel": "Annuler",
+		"close": "Fermer",
+		"retry": "Réessayer",
+		"back": "Retour",
+		"dismiss": "Fermer"
+	},
+	"i18n": {
+		"ready": "L'infrastructure multilingue fonctionne.",
+		"label": "Langue"
+	},
+	"auth": {
+		"close": "Fermer",
+		"modes": "Se connecter ou s'inscrire",
+		"login": {
+			"tab": "Connexion",
+			"title": "Prêt à jouer ?",
+			"subtitle": "Connecte-toi ou crée un compte pour rejoindre la partie.",
+			"submit": "Se connecter",
+			"switchPrompt": "Pas encore de compte ?",
+			"switchAction": "Créer un compte"
+		},
+		"register": {
+			"tab": "Inscription",
+			"title": "Rejoins la partie !",
+			"subtitle": "Crée un compte et commence à jouer avec tes amis.",
+			"submit": "Créer un compte",
+			"switchPrompt": "Déjà un compte ?",
+			"switchAction": "Se connecter"
+		},
+		"fields": {
+			"username": "Nom d'utilisateur",
+			"usernamePlaceholder": "Choisis un nom d'utilisateur",
+			"email": "E-mail",
+			"emailPlaceholder": "Saisis ton e-mail",
+			"password": "Mot de passe",
+			"passwordPlaceholder": "Saisis ton mot de passe",
+			"newPasswordPlaceholder": "Crée un mot de passe",
+			"confirmPassword": "Confirmer le mot de passe",
+			"confirmPasswordPlaceholder": "Répète ton mot de passe",
+			"showPassword": "Afficher le mot de passe",
+			"hidePassword": "Masquer le mot de passe"
+		},
+		"validation": {
+			"usernameRequired": "Le nom d'utilisateur est obligatoire.",
+			"usernameInvalid": "Utilise 3 à 20 lettres, chiffres ou tirets bas.",
+			"emailRequired": "L'e-mail est obligatoire.",
+			"emailInvalid": "Oups ! Adresse e-mail invalide.",
+			"passwordRequired": "Le mot de passe est obligatoire.",
+			"passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères.",
+			"passwordTooLong": "Le mot de passe est trop long.",
+			"passwordInvalid": "Le mot de passe doit contenir entre 8 et 72 caractères.",
+			"confirmPasswordRequired": "Confirme ton mot de passe.",
+			"passwordMismatch": "Les mots de passe ne correspondent pas."
+		},
+		"feedback": {
+			"emailTaken": "Cet e-mail est déjà enregistré.",
+			"usernameTaken": "Ce nom d'utilisateur est déjà pris.",
+			"credentialsTitle": "E-mail ou mot de passe incorrect",
+			"credentialsBody": "Vérifie tes informations et réessaie.",
+			"welcomeTitle": "Bon retour, {{username}} !",
+			"welcomeBody": "Direction le lobby…",
+			"rateLimitedTitle": "Trop de tentatives",
+			"rateLimitedBody": "Patiente un instant, puis réessaie.",
+			"unavailableTitle": "Un problème est survenu",
+			"unavailableBody": "Impossible de joindre le serveur. Réessaie dans un instant.",
+			"sessionExpiredTitle": "Ta session a expiré",
+			"sessionExpiredBody": "Reconnecte-toi pour reprendre là où tu en étais."
+		},
+		"logOut": {
+			"title": "Se déconnecter ?",
+			"body": {
+				"SPYMASTER": "Tu es maître-espion dans une partie en cours. Te déconnecter te fait quitter la partie et ajoute une pénalité d'abandon à ton profil, plus lourde pour un maître-espion. Si personne ne prend ta place à temps, le salon ferme.",
+				"OPERATIVE": "Tu joues dans une partie en cours. Te déconnecter te fait quitter la partie et ajoute une pénalité d'abandon à ton profil. Si ton équipe n'a pas d'autre agent et que personne ne prend ta place à temps, le salon ferme."
+			},
+			"stay": "Rester",
+			"confirm": "Se déconnecter",
+			"pending": "Déconnexion…",
+			"failed": "Impossible de te déconnecter. Réessaie."
+		},
+		"oauth": {
+			"or": "ou",
+			"continue": "Continuer avec Google",
+			"redirecting": "Redirection vers Google…",
+			"error": {
+				"OAUTH_CANCELLED": {
+					"title": "Connexion Google annulée",
+					"body": "Vous pouvez réessayer ou vous connecter avec votre e-mail."
+				},
+				"OAUTH_STATE_INVALID": {
+					"title": "Connexion Google expirée",
+					"body": "La connexion a pris trop de temps ou a été interrompue. Réessayez."
+				},
+				"OAUTH_EMAIL_UNVERIFIED": {
+					"title": "E-mail non vérifié",
+					"body": "L'e-mail de votre compte Google n'est pas vérifié. Vérifiez-le chez Google ou connectez-vous avec votre e-mail."
+				},
+				"OAUTH_PROVIDER_ERROR": {
+					"title": "Échec de la connexion Google",
+					"body": "Impossible de vous connecter avec Google. Réessayez dans un instant."
+				}
+			}
+		}
+	},
+	"landing": {
+		"badge": "LE JEU DE MOTS MULTIJOUEUR",
+		"headlineLead": "Pensez pareil.",
+		"headlineTail": "Gagnez ensemble.",
+		"tagline": "ft_transcendence :\nLe jeu de mots\nsocial ultime",
+		"description": "Rejoignez une équipe, donnez des indices malins et devinez\ndes mots ensemble dans cette aventure multijoueur fun et\ncompétitive ! Prêt à vous connecter ?",
+		"descriptionShort": "Rejoignez une équipe, donnez des indices malins et devinez des mots ensemble dans ce jeu multijoueur fun et compétitif.",
+		"playNow": "Jouer",
+		"logIn": "Connexion",
+		"learnMore": "En savoir plus",
+		"primaryNavigation": "Compte",
+		"howToPlay": "Comment jouer",
+		"giveClueTitle": "Donnez un indice",
+		"giveClueDescription": "Un seul mot astucieux pour\nguider votre équipe.",
+		"guessTogetherTitle": "Devinez ensemble",
+		"guessTogetherDescription": "Discutez de l'indice et\nchoisissez les bonnes cartes.",
+		"beatOtherTeamTitle": "Battez l'autre équipe",
+		"beatOtherTeamDescription": "Révélez les cartes de votre équipe\navant vos adversaires.",
+		"community": "Rejoignez des milliers de joueurs en ligne !\nJouez entre amis ou faites-vous-en de nouveaux.",
+		"inviteFriends": "Inviter des amis",
+		"legalNavigation": "Mentions légales",
+		"privacy": "Politique de confidentialité",
+		"terms": "Conditions d'utilisation",
+		"help": "Aide",
+		"copyright": "© 2026 équipe ft_transcendence. Créé pour les étudiants de 42 İstanbul (ft_transcendence). Tous droits réservés.",
+		"accountDeleted": "Votre compte a été supprimé."
+	},
+	"legal": {
+		"wordmark": "Codenames Online",
+		"home": "Accueil de Codenames Online",
+		"navigation": "Principale",
+		"legalNavigation": "Mentions légales",
+		"howToPlay": "Comment jouer",
+		"privacy": "Confidentialité",
+		"terms": "Conditions",
+		"privacyPolicy": "Politique de confidentialité",
+		"termsOfService": "Conditions d'utilisation",
+		"logIn": "Se connecter",
+		"lastUpdated": "Dernière mise à jour le 29 septembre 2026",
+		"footer": "Codenames Online · Un projet de l'école 42",
+		"repository": "Dépôt du projet sur GitHub (s'ouvre dans un nouvel onglet)"
+	},
+	"privacy": {
+		"title": "Politique de confidentialité",
+		"intro": "Cette page explique ce que Codenames Online conserve à votre sujet, pourquoi ces données sont conservées et pendant combien de temps. Codenames Online est un projet étudiant réalisé dans le cadre du cursus 42, et ne collecte que ce dont il a besoin pour faire fonctionner les comptes, les parties et le chat.",
+		"sections": [
+			{
+				"id": "what-we-store",
+				"title": "Ce que nous conservons",
+				"paragraphs": [
+					"Votre compte contient une adresse e-mail, un nom d'utilisateur et un mot de passe. Le mot de passe n'est jamais conservé en clair, uniquement sous forme de hachage.",
+					"Votre profil contient l'avatar que vous choisissez parmi les avatars proposés ou que vous téléversez. Vos parties ajoutent votre historique de parties et les statistiques qui en découlent, comme les victoires et les défaites. L'utilisation des fonctions sociales ajoute vos liens d'amitié et les messages que vous envoyez."
+				]
+			},
+			{
+				"id": "why-we-store-it",
+				"title": "Pourquoi nous les conservons",
+				"paragraphs": [
+					"Les données du compte vous permettent de vous connecter et vous identifient auprès des autres joueurs. Les résultats des parties alimentent votre profil, votre historique et vos statistiques. Les liens d'amitié et les messages font fonctionner la liste d'amis et le chat.",
+					"Vos données servent uniquement au fonctionnement du jeu. Rien n'est vendu, loué ni partagé avec des annonceurs."
+				]
+			},
+			{
+				"id": "cookies",
+				"title": "Cookies et stockage du navigateur",
+				"paragraphs": [
+					"La connexion crée deux cookies : un cookie de session de courte durée et un cookie de renouvellement qui le prolonge. Les deux sont HttpOnly, envoyés uniquement à ce site et utilisés seulement pour l'authentification.",
+					"Votre choix de langue est enregistré dans le stockage local de votre navigateur, afin que le jeu s'ouvre dans la même langue la fois suivante. Il n'y a aucun cookie publicitaire ou de mesure d'audience."
+				]
+			},
+			{
+				"id": "live-game-data",
+				"title": "Données de jeu en direct",
+				"paragraphs": [
+					"Les salons, les équipes, les rôles, le plateau et le score sont gardés dans un stockage temporaire tant qu'un salon est ouvert, puis supprimés à sa fermeture.",
+					"Si votre connexion est coupée, votre place est réservée pendant un court délai pour que vous puissiez revenir dans la même partie. À la fin d'une partie, son résultat est ajouté à l'historique de chaque joueur qui y a participé."
+				]
+			},
+			{
+				"id": "chat-messages",
+				"title": "Messages du chat",
+				"paragraphs": [
+					"Le chat des salons et les messages privés entre amis sont conservés pendant une durée limitée fixée par le serveur. Chaque message est supprimé à la fin de cette durée.",
+					"Les messages d'un salon ne sont visibles que par les joueurs de ce salon, et les messages privés que par les deux amis de la conversation."
+				]
+			},
+			{
+				"id": "what-others-see",
+				"title": "Ce que voient les autres joueurs",
+				"paragraphs": [
+					"Les joueurs connectés peuvent voir votre nom d'utilisateur, votre avatar, votre statut en ligne et votre profil public avec ses statistiques. Les joueurs du même salon voient votre équipe, votre rôle et vos actions pendant une partie.",
+					"Le projet ne partage pas vos données avec des tiers à des fins publicitaires, marketing ou commerciales."
+				]
+			},
+			{
+				"id": "how-long-we-keep-it",
+				"title": "Durée de conservation",
+				"paragraphs": [
+					"Les données du compte, du profil, des amis et des parties sont conservées tant que votre compte existe et que le serveur du projet fonctionne. Les messages sont supprimés à la fin de leur durée de conservation, et les données de salon à la fermeture du salon."
+				]
+			},
+			{
+				"id": "your-choices",
+				"title": "Vos choix",
+				"paragraphs": [
+					"Vous pouvez changer votre nom d'utilisateur et votre avatar à tout moment, ajouter ou retirer des amis et changer la langue de l'interface.",
+					"La modification de l'adresse e-mail ou du mot de passe et la suppression du compte ne sont pas disponibles dans le jeu. Pour faire supprimer votre compte et ses données, contactez l'équipe du projet."
+				]
+			},
+			{
+				"id": "security",
+				"title": "Sécurité",
+				"paragraphs": [
+					"Les mots de passe sont conservés uniquement sous forme de hachage, les cookies de session ne sont pas lisibles par les scripts de la page, et le jeu déployé est servi en HTTPS. Aucun système n'est parfaitement sûr : évitez de partager des informations personnelles sensibles dans votre nom d'utilisateur, votre avatar ou vos messages."
+				]
+			},
+			{
+				"id": "changes",
+				"title": "Modifications de cette politique",
+				"paragraphs": [
+					"Cette politique est mise à jour lorsque le jeu change sa façon de traiter les données. La date en haut de cette page indique la version en vigueur."
+				]
+			},
+			{
+				"id": "contact",
+				"title": "Contact",
+				"paragraphs": [
+					"Les questions et demandes concernant vos données sont à adresser à l'équipe du projet via le dépôt du projet."
+				]
+			}
+		]
+	},
+	"terms": {
+		"title": "Conditions d'utilisation",
+		"intro": "Ces conditions encadrent l'utilisation de Codenames Online. Créer un compte signifie que vous les acceptez. Le jeu est un projet étudiant réalisé dans le cadre du cursus 42 et est proposé pour jouer entre amis.",
+		"sections": [
+			{
+				"id": "about-the-game",
+				"title": "À propos du jeu",
+				"paragraphs": [
+					"Codenames Online est un jeu de mots multijoueur en temps réel. Il propose des comptes, des profils, des salons de jeu, des amis, un chat, un historique des parties et des statistiques.",
+					"C'est un projet éducatif indépendant inspiré du jeu de société Codenames. Il n'est ni affilié, ni approuvé, ni lié à Czech Games Edition ou à la marque Codenames."
+				]
+			},
+			{
+				"id": "your-account",
+				"title": "Votre compte",
+				"paragraphs": [
+					"Un compte est nécessaire pour jouer. Utilisez une adresse e-mail que vous contrôlez, choisissez un nom d'utilisateur ni offensant ni trompeur, et gardez votre mot de passe pour vous. Vous êtes responsable de ce qui se passe avec votre compte."
+				]
+			},
+			{
+				"id": "fair-play",
+				"title": "Fair-play",
+				"paragraphs": [
+					"Jouez au jeu tel qu'il est conçu. Ne transmettez pas d'informations cachées du plateau aux Agents en dehors du jeu, n'automatisez pas vos parties et ne manipulez pas les résultats ou les statistiques.",
+					"N'essayez pas d'accéder à d'autres comptes, de perturber les salons ou le service, ni d'exploiter des failles. Si vous trouvez une faille, signalez-la plutôt à l'équipe du projet."
+				]
+			},
+			{
+				"id": "chat-and-conduct",
+				"title": "Chat et comportement",
+				"paragraphs": [
+					"Le chat est destiné aux joueurs de votre salon et à vos amis. Respectez les autres joueurs : le harcèlement, les discours haineux, les menaces et le spam sont interdits. Vous êtes responsable des messages que vous envoyez.",
+					"Ne quittez pas et ne bloquez pas volontairement une partie pour la gâcher aux autres. L'hôte d'un salon peut en retirer des joueurs en dehors d'une partie en cours."
+				]
+			},
+			{
+				"id": "availability",
+				"title": "Disponibilité",
+				"paragraphs": [
+					"Le jeu est un projet étudiant fourni en l'état. Les connexions peuvent être coupées, les parties interrompues, et le service indisponible pendant une maintenance ou après la fin du projet. Aucune disponibilité n'est garantie.",
+					"En cas de coupure, votre place est réservée pendant un court délai. Si vous ne revenez pas à temps, vous quittez le salon."
+				]
+			},
+			{
+				"id": "your-content",
+				"title": "Votre contenu",
+				"paragraphs": [
+					"Votre nom d'utilisateur, votre avatar et vos messages vous appartiennent. Le jeu conserve uniquement ce dont il a besoin pour faire tourner une partie, afficher un profil et distribuer le chat, comme décrit dans la Politique de confidentialité."
+				]
+			},
+			{
+				"id": "intellectual-property",
+				"title": "Propriété intellectuelle",
+				"paragraphs": [
+					"Le code, le design de l'interface et les illustrations propres au projet appartiennent à l'équipe du projet. Les bibliothèques et polices tierces restent soumises à leurs propres licences. Le nom Codenames et le jeu original appartiennent à leurs propriétaires respectifs."
+				]
+			},
+			{
+				"id": "changes-and-ending-use",
+				"title": "Modifications et fin d'utilisation",
+				"paragraphs": [
+					"Ces conditions peuvent évoluer avec le jeu ; la date en haut de cette page indique la version en vigueur. Vous pouvez cesser d'utiliser le jeu à tout moment. Pour faire supprimer votre compte, contactez l'équipe du projet."
+				]
+			},
+			{
+				"id": "contact",
+				"title": "Contact",
+				"paragraphs": [
+					"Les questions sur ces conditions sont à adresser à l'équipe du projet via le dépôt du projet."
+				]
+			}
+		]
+	},
+	"lobby": {
+		"title": "Prêt pour le prochain indice ?",
+		"subtitle": "Crée une salle ou rejoins tes amis et commence à deviner.",
+		"profile": {
+			"online": "En ligne",
+			"level": "Niv. {{level}}",
+			"menu": {
+				"label": "Menu du compte, {{username}}",
+				"profile": "Profil",
+				"settings": "Paramètres"
+			}
+		},
+		"create": {
+			"title": "Créer une salle",
+			"descriptionShort": "Lance une nouvelle partie et invite tes amis.",
+			"description": "Lance une nouvelle partie\net invite tes amis.",
+			"action": "Créer une salle"
+		},
+		"join": {
+			"title": "Rejoindre",
+			"descriptionShort": "Saisis un code de salle et entre dans la partie.",
+			"description": "Entre dans une salle et\nrejoins la partie.",
+			"action": "Rejoindre"
+		},
+		"players": {
+			"title": "Joueurs en ligne",
+			"loading": "Chargement des joueurs en ligne",
+			"online": "en ligne",
+			"openProfile": "Ouvrir le profil de {{username}}",
+			"showMore": "Voir\nplus",
+			"showMoreLabel": "Afficher {{count}} joueurs de plus",
+			"emptyTitle": "Aucun joueur en ligne pour le moment",
+			"emptyBody": "Crée une salle et partage son code, ou invite un ami à jouer.",
+			"invite": "Inviter des amis",
+			"errorTitle": "Impossible de charger les joueurs en ligne",
+			"errorBody": "Vérifie ta connexion et réessaie."
+		}
+	},
+	"room": {
+		"create": {
+			"title": "Créer une salle",
+			"subtitle": "Lance une nouvelle salle de jeu et invite tes amis.",
+			"benefits": {
+				"newRoom": "Nouvelle salle de jeu",
+				"inviteFriends": "Invite tes amis après la création.",
+				"chooseRole": "Choisis ton équipe et ton rôle dans la salle."
+			},
+			"maxPlayers": "Joueurs max.",
+			"maxPlayersHint": "{{min}} à {{max}} joueurs",
+			"fewerPlayers": "Moins de joueurs",
+			"morePlayers": "Plus de joueurs",
+			"submit": "Créer la salle",
+			"creating": "Création de la salle",
+			"goToRoom": "Aller à la salle",
+			"retry": "Réessayer",
+			"createdTitle": "Salle créée !",
+			"createdBody": "Ouverture du salon de ta salle…"
+		},
+		"join": {
+			"title": "Rejoindre une salle",
+			"subtitle": "Saisis un code de salle et entre dans la partie.",
+			"codeLabel": "Code de la salle",
+			"codePlaceholder": "ABCD12",
+			"finding": "Recherche de la salle…",
+			"previewCaption": "Code de la salle",
+			"players": "{{count}} / {{max}} joueurs",
+			"status": {
+				"waiting": "EN ATTENTE",
+				"full": "PLEINE",
+				"inGame": "EN JEU",
+				"closed": "FERMÉ"
+			},
+			"submit": "Rejoindre",
+			"joining": "Connexion",
+			"opening": "Ouverture du salon",
+			"full": "Salle pleine",
+			"joinedTitle": "Tu es dans la salle !",
+			"joinedBody": "Ouverture du salon de la salle…",
+			"errors": {
+				"format": "Saisis les six lettres et chiffres du code de la salle.",
+				"notFound": "Aucune salle ne correspond à ce code. Vérifie-le et réessaie.",
+				"full": "Cette salle est pleine.",
+				"notJoinable": "Ce salon n'accepte pas de nouveaux joueurs pour le moment."
+			},
+			"spectate": "Rejoindre pour regarder",
+			"notJoinable": "Fermé"
+		},
+		"feedback": {
+			"createFailedTitle": "Impossible de créer la salle",
+			"createFailedBody": "Un problème est survenu. Réessaie.",
+			"joinFailedTitle": "Impossible de rejoindre la salle",
+			"joinFailedBody": "Un problème est survenu. Réessaie.",
+			"rateLimitedTitle": "Trop de tentatives",
+			"rateLimitedBody": "Patiente un instant, puis réessaie.",
+			"alreadyInRoomTitle": "Tu es déjà dans une salle",
+			"alreadyInRoomBody": "Quitte-la avant d'en créer ou d'en rejoindre une autre.",
+			"returnToRoom": "Aller à ma salle"
+		},
+		"loading": "Chargement du salon…",
+		"connection": {
+			"failedTitle": "Connexion au salon impossible",
+			"failedBody": "Vérifiez votre connexion et réessayez.",
+			"reconnecting": "Reconnexion…",
+			"reconnectingBody": {
+				"game": "Nous gardons votre place dans la partie. Restez sur cette page.",
+				"room": "Nous gardons votre place dans le salon. Restez sur cette page.",
+				"finished": "Nous vous ramenons aux résultats. Restez sur cette page."
+			},
+			"secondsLeft": {
+				"game": "{{seconds}} s pour garder votre place",
+				"room": "{{seconds}} s pour garder votre place",
+				"finished": "{{seconds}} s pour décider"
+			},
+			"leave": {
+				"game": "Quitter la partie",
+				"room": "Quitter le salon",
+				"finished": "Retour au lobby"
+			},
+			"lostTitle": "Connexion perdue",
+			"lostBody": "Vous êtes resté absent trop longtemps, vous avez donc quitté le salon. Votre compte et vos statistiques sont intacts.",
+			"backToLobby": "Retour au lobby"
+		},
+		"leave": {
+			"action": "Quitter le salon",
+			"stay": "Rester",
+			"leaving": "Départ…",
+			"failed": "Impossible de quitter le salon. Réessayez.",
+			"room": {
+				"title": "Quitter le salon ?",
+				"body": "Vous quitterez ce salon et perdrez votre équipe et votre rôle. Votre place sera libérée pour un autre joueur.",
+				"confirm": "Quitter le salon",
+				"bodySpectator": "Vous quitterez ce salon et reviendrez au lobby."
+			},
+			"game": {
+				"title": "Quitter la partie ?",
+				"body": {
+					"SPYMASTER": "Vous quitterez cette partie et reviendrez au salon. Quitter une partie en cours ajoute une pénalité d'abandon à votre profil, plus lourde pour un maître-espion. Si personne ne prend votre place à temps, le salon ferme pour tout le monde.",
+					"OPERATIVE": "Vous quitterez cette partie et reviendrez au salon. Quitter une partie en cours ajoute une pénalité d'abandon à votre profil. Si votre équipe n'a pas d'autre agent et que personne ne prend votre place à temps, le salon ferme pour tout le monde."
+				},
+				"confirm": "Quitter la partie"
+			}
+		},
+		"countdown": {
+			"title": "La partie commence",
+			"hint": "Direction le plateau — bonne chance !",
+			"someone": "Un joueur",
+			"cancelled": {
+				"PLAYER_UNREADY": "Compte à rebours arrêté : {{username}} n'est plus prêt.",
+				"PLAYER_LEFT": "Compte à rebours arrêté : {{username}} a quitté le salon.",
+				"TEAM_CHANGED": "Compte à rebours arrêté : {{username}} a changé d'équipe.",
+				"ROLE_CHANGED": "Compte à rebours arrêté : {{username}} a changé de rôle.",
+				"PLAYER_KICKED": "Compte à rebours arrêté : {{username}} a été retiré du salon."
+			}
+		},
+		"ready": {
+			"title": "Salon de {{host}}",
+			"titleFallback": "Salon d'attente",
+			"codeLabel": "Code du salon",
+			"copyCode": "Copier le code du salon",
+			"codeCopied": "Code du salon copié",
+			"copyFailed": "Impossible de copier le code. Sélectionnez-le et copiez-le à la main.",
+			"shareHint": "Partagez ce code avec vos amis.",
+			"maxPlayers": "Joueurs max",
+			"playerCount": "{{count}} / {{max}} joueurs",
+			"roomFull": "Salon complet",
+			"phase": {
+				"WAITING": {
+					"title": "En attente de joueurs…",
+					"body": "Partagez le code. La partie démarre quand tous sont prêts."
+				},
+				"FULL": {
+					"title": "Salon complet",
+					"body": "{{count}} places sur {{max}} sont prises. Aucun nouveau joueur ne peut rejoindre."
+				},
+				"COUNTDOWN": {
+					"title": "Préparez-vous !",
+					"body": "Tout le monde est prêt. La partie va commencer."
+				},
+				"POST_GAME": {
+					"title": "En attente du dernier résultat…",
+					"body": "Joueurs qui regardent encore le dernier résultat : {{pending}}. La prochaine partie pourra commencer quand tout le monde sera revenu."
+				}
+			},
+			"team": {
+				"RED": "Équipe rouge",
+				"BLUE": "Équipe bleue"
+			},
+			"teamButton": {
+				"RED": "Équipe rouge",
+				"BLUE": "Équipe bleue"
+			},
+			"teamShort": {
+				"RED": "Rouge",
+				"BLUE": "Bleue"
+			},
+			"host": "Hôte",
+			"hostSuffix": ", hôte",
+			"youSuffix": ", vous",
+			"card": "{{username}}{{you}}{{host}} : {{role}}, {{status}}",
+			"role": {
+				"SPYMASTER": "Maître-espion",
+				"OPERATIVE": "Agent",
+				"SPECTATOR": "Spectateur"
+			},
+			"status": {
+				"ready": "Prêt !",
+				"waiting": "En attente"
+			},
+			"emptySeat": "En attente d'un joueur…",
+			"setupTitle": "Votre configuration",
+			"chooseTeam": "Choisissez votre équipe",
+			"chooseRole": "Choisissez votre rôle",
+			"roleCard": {
+				"SPYMASTER": {
+					"title": "Maître-espion",
+					"description": "Donne des indices\nà son équipe."
+				},
+				"OPERATIVE": {
+					"title": "Agent",
+					"description": "Devine les\nbonnes cartes."
+				}
+			},
+			"taken": "Pris",
+			"readyAction": "Prêt",
+			"readyDone": "Prêt !",
+			"counter": "{{ready}} / {{count}} joueurs prêts",
+			"counterFull": "{{count}} / {{max}} joueurs · Salon complet",
+			"summary": "Vous : {{setup}}",
+			"noTeam": "Pas encore d'équipe",
+			"change": "Modifier",
+			"choose": "Choisir",
+			"hints": {
+				"teamFirst": "Choisissez une équipe, puis un rôle. En attendant, vous regardez.",
+				"spymasterTaken": "{{username}} est le maître-espion de cette équipe.",
+				"locked": "La partie commence, votre configuration est verrouillée.",
+				"hostOnly": "Seul le propriétaire du salon peut changer sa taille.",
+				"ready": {
+					"TEAM_REQUIRED": "Choisissez d'abord une équipe.",
+					"ROLE_REQUIRED": "Choisissez d'abord un rôle.",
+					"LOCKED": "La partie commence.",
+					"POST_GAME_PENDING": "Des joueurs regardent encore le dernier résultat."
+				},
+				"claim": "Choisissez un rôle pour rejoindre l'équipe {{team}}.",
+				"timerHostOnly": "Seul le propriétaire du salon peut changer le minuteur."
+			},
+			"errors": {
+				"roleConflict": "Un autre joueur vient de prendre la place de maître-espion de cette équipe.",
+				"teamRequired": "Choisissez d'abord une équipe.",
+				"roleRequired": "Choisissez d'abord un rôle.",
+				"locked": "La partie commence, votre configuration ne peut plus changer.",
+				"notHost": "Seul le propriétaire du salon peut changer ses réglages.",
+				"capacity": "Le salon ne peut pas être plus petit que le nombre de joueurs présents.",
+				"offline": "Vous êtes hors ligne. Réessayez une fois reconnecté.",
+				"generic": "Ça n'a pas marché. Réessayez.",
+				"postGamePending": "Attendez que tout le monde soit revenu du dernier résultat.",
+				"timer": "Ce minuteur n'est pas disponible. Choisissez-en un dans la liste."
+			},
+			"spectators": "Spectateurs",
+			"spectate": "Regarder plutôt"
+		},
+		"recovery": {
+			"notMember": "Tu ne fais plus partie de ce salon.",
+			"returned": "Tu es encore dans un salon, on t'y a ramené.",
+			"closed": "Ce salon est fermé.",
+			"removed": "Tu n'es plus membre de ce salon.",
+			"legacy": "Vous êtes encore dans un salon d'une ancienne version du jeu, qui ne peut pas être ouvert ici. Il se fermera de lui-même à la fin.",
+			"kicked": "Le propriétaire du salon vous a retiré du salon.",
+			"postGameTimeout": "Vous n'avez pas choisi à temps : vous avez quitté le salon après la partie.",
+			"insufficientPlayers": "Le salon a fermé : une équipe est restée sans un joueur nécessaire. La partie ne compte pas."
+		},
+		"invites": {
+			"title": "{{username}} t'invite à jouer",
+			"body": "Code du salon",
+			"join": "Rejoindre",
+			"joining": "Connexion…",
+			"dismiss": "Ignorer",
+			"closed": "Ce salon est fermé."
+		},
+		"settings": {
+			"timer": "Minuteur",
+			"language": "Mots",
+			"noLimit": "Sans limite",
+			"seconds_one": "{{count}} seconde",
+			"seconds_other": "{{count}} secondes",
+			"ownerYou": "Vous êtes le propriétaire du salon. Vous pouvez retirer des joueurs, changer la taille du salon et régler le minuteur.",
+			"ownerOnly": "Seul le propriétaire du salon peut changer ses réglages."
+		},
+		"kick": {
+			"action": "Retirer {{username}} du salon",
+			"fromProfile": "Retirer du salon",
+			"title": "Retirer {{username}} ?",
+			"body": "{{username}} quitte le salon. Il pourra revenir avec le code du salon.",
+			"bodyInGame": "{{username}} quitte la partie maintenant. Si son équipe se retrouve sans maître-espion ou sans agent, la partie est mise en pause et le salon ferme si personne ne prend la place à temps.",
+			"confirm": "Retirer",
+			"kicking": "Retrait…",
+			"errors": {
+				"notHost": "Vous n'êtes plus le propriétaire du salon.",
+				"gone": "Ce joueur est déjà parti.",
+				"self": "Vous ne pouvez pas vous retirer vous-même. Utilisez Quitter.",
+				"closed": "Ce salon a fermé."
+			}
+		}
+	},
+	"game": {
+		"loading": "Chargement de la partie…",
+		"board": "Plateau de mots",
+		"team": {
+			"RED": "Rouge",
+			"BLUE": "Bleue"
+		},
+		"teamName": {
+			"RED": "Équipe rouge",
+			"BLUE": "Équipe bleue"
+		},
+		"score": {
+			"label": "Score : Rouge {{red}}, Bleue {{blue}}"
+		},
+		"turn": {
+			"title": "Au tour de l'équipe <team>{{team}}</team>",
+			"over": "Partie terminée",
+			"paused": "Partie en pause",
+			"timeLeft": "Temps restant pour ce tour"
+		},
+		"instruction": {
+			"CLUE": "Vous êtes l'Espion en chef. Donnez un indice à votre équipe.",
+			"CLUE_SENT": "Indice envoyé. Vos agents choisissent leurs cartes."
+		},
+		"clue": {
+			"label": "Indice",
+			"heading": "Donner un indice",
+			"number": "Nombre",
+			"placeholder": "Un seul mot",
+			"submit": "Donner l'indice",
+			"sending": "Envoi…",
+			"rule": "Un seul mot de 30 lettres au plus, sans espace.",
+			"decrease": "Moins de cartes",
+			"increase": "Plus de cartes",
+			"sent": "Indice envoyé",
+			"sentLabel": "Indice :",
+			"sentNumber": "Nombre :",
+			"value": "Indice : {{word}} · {{number}}",
+			"guesses": "Essais restants : {{count}}"
+		},
+		"status": {
+			"waitingLabel": "En attente",
+			"waitingTitle": "En attente de l'indice…",
+			"waitingBody": "Votre Espion en chef choisit un indice.",
+			"opponentGuessing": "L'équipe {{team}} devine",
+			"opponentClue": "L'Espion en chef {{team}} réfléchit",
+			"opponentBody": "Attendez votre tour. Les cartes ne peuvent pas être choisies maintenant.",
+			"spymasterOpponentBody": "Attendez votre tour pour donner un indice.",
+			"spectatingBody": "Vous regardez cette partie. Prenez une place libre quand il y en a une.",
+			"pausedTitle": "En attente de joueurs…",
+			"pausedBody": "Il manque un joueur à une équipe. La partie reprend quand la place est prise."
+		},
+		"pass": {
+			"action": "Passer",
+			"passing": "Passage…"
+		},
+		"roster": {
+			"operatives": "Agents",
+			"spymaster": "Espion en chef",
+			"spymasterLine": "Espion en chef : {{names}}",
+			"operativesLine": "Agents : {{names}}",
+			"nobody": "—",
+			"openProfile": "Ouvrir le profil de {{username}}"
+		},
+		"card": {
+			"pick": "Choisir {{word}}",
+			"key": "{{word}}, {{affiliation}}",
+			"revealed": "{{word}}, révélée : {{affiliation}}",
+			"affiliation": {
+				"RED": "Agent rouge",
+				"BLUE": "Agent bleu",
+				"NEUTRAL": "Passant",
+				"ASSASSIN": "Assassin"
+			}
+		},
+		"leave": "Quitter la partie",
+		"results": {
+			"badge": "Partie terminée",
+			"wins": "L'équipe {{team}} gagne !",
+			"reason": {
+				"ALL_TEAM_CARDS_REVEALED": "L'équipe {{team}} a révélé son dernier agent.",
+				"ASSASSIN_REVEALED": "L'équipe {{team}} a révélé l'assassin."
+			},
+			"backToLobby": "Retour au salon",
+			"viewBoard": "Voir le plateau final",
+			"showResults": "Voir les résultats",
+			"exit": "Quitter le salon",
+			"returning": "Retour…",
+			"returnFailed": "Impossible de revenir au salon. Réessayez.",
+			"deadline": "Encore {{seconds}} s pour choisir. Les joueurs indécis quittent le salon."
+		},
+		"errors": {
+			"invalidClue": "L'indice doit être un seul mot de 30 lettres au plus.",
+			"invalidNumber": "Choisissez un nombre de 1 à 9.",
+			"invalidCard": "Cette carte n'est pas sur ce plateau.",
+			"alreadyRevealed": "Cette carte a déjà été révélée.",
+			"noGuesses": "Votre équipe n'a plus d'essais.",
+			"notYourTurn": "Ce n'est plus votre tour.",
+			"roleForbidden": "Votre rôle ne permet pas cette action.",
+			"finished": "La partie est déjà terminée.",
+			"offline": "Vous êtes hors ligne. Réessayez une fois la connexion rétablie.",
+			"generic": "Un problème est survenu. Réessayez."
+		},
+		"staffing": {
+			"title": "Partie en pause",
+			"body": "Si personne ne prend la place à temps, le salon ferme et tout le monde revient au lobby.",
+			"needs": {
+				"SPYMASTER": "{{team}} a besoin d'un maître-espion",
+				"OPERATIVE": "{{team}} a besoin d'un agent",
+				"BOTH": "{{team}} a besoin d'un maître-espion et d'un agent"
+			},
+			"closesIn": "Le salon ferme dans",
+			"role": {
+				"SPYMASTER": "maître-espion",
+				"OPERATIVE": "agent"
+			},
+			"departure": {
+				"EXITED": "{{username}} ({{role}}, {{team}}) a quitté la partie.",
+				"SESSION_ENDED": "{{username}} ({{role}}, {{team}}) s'est déconnecté.",
+				"DISCONNECTED": "{{username}} ({{role}}, {{team}}) a perdu la connexion.",
+				"KICKED_BY_HOST": "Le propriétaire du salon a retiré {{username}} ({{role}}, {{team}}).",
+				"ACCOUNT_DELETED": "{{username}} ({{role}}, {{team}}) a supprimé son compte.",
+				"unknown": "Une équipe a perdu un joueur nécessaire."
+			},
+			"claimTitle": "Prendre une place libre",
+			"claim": "{{role}} {{team}}",
+			"claimClosed": "Cette place ne peut pas être prise pour le moment."
+		}
+	},
+	"profile": {
+		"close": "Fermer le profil",
+		"loading": "Chargement du profil",
+		"retry": "Réessayer",
+		"presence": {
+			"online": "En ligne",
+			"offline": "Hors ligne"
+		},
+		"stats": {
+			"wins": "Victoires",
+			"losses": "Défaites",
+			"level": "Niveau",
+			"played_one": "{{count}} partie jouée",
+			"played_other": "{{count}} parties jouées"
+		},
+		"friend": {
+			"add": "Ajouter",
+			"adding": "Ajout…",
+			"remove": "Retirer l'ami",
+			"removing": "Retrait…",
+			"loadFailed": "Votre liste d'amis n'a pas pu être chargée.",
+			"failed": {
+				"ADDING": "Impossible d'ajouter cet ami. Réessayez.",
+				"REMOVING": "Impossible de retirer cet ami. Réessayez."
+			}
+		},
+		"message": "Message",
+		"invite": {
+			"button": {
+				"READY": "Inviter",
+				"FAILED": "Inviter",
+				"SENDING": "Invitation…",
+				"SENT": "Invitation envoyée",
+				"UNAVAILABLE": "Inviter"
+			},
+			"sent": "Invitation envoyée. {{username}} peut rejoindre votre salon depuis l'invitation.",
+			"failed": "L'invitation n'a pas pu être envoyée. Réessayez.",
+			"reason": {
+				"NO_ACTIVE_ROOM": "Rejoignez ou créez un salon pour inviter {{username}}.",
+				"ROOM_NOT_JOINABLE": "Votre partie a commencé. Les invitations sont possibles tant que le salon attend des joueurs.",
+				"ROOM_FULL": "Votre salon est complet.",
+				"IN_YOUR_ROOM": "{{username}} est déjà dans votre salon.",
+				"OFFLINE": "{{username}} est hors ligne. L'invitation sera possible quand il ou elle sera en ligne.",
+				"IN_ROOM": "{{username}} est déjà dans un autre salon.",
+				"NOT_FRIENDS": "Ajoutez {{username}} en ami pour l'inviter."
+			}
+		},
+		"notFound": {
+			"title": "Joueur introuvable",
+			"body": "Ce compte n'est plus disponible."
+		},
+		"error": {
+			"title": "Le profil n'a pas pu être chargé.",
+			"body": "Vérifiez votre connexion et réessayez."
+		},
+		"history": {
+			"title": "Historique des parties",
+			"count_one": "Dernière partie",
+			"count_other": "{{count}} dernières parties",
+			"loading": "Chargement de l'historique des parties",
+			"emptyTitle": "Aucune partie trouvée",
+			"emptyBody": "Les parties terminées apparaissent ici avec le résultat, votre équipe, votre rôle et vos adversaires.",
+			"errorTitle": "L'historique des parties n'a pas pu être chargé.",
+			"errorBody": "Vérifiez votre connexion et réessayez.",
+			"retry": "Réessayer",
+			"result": {
+				"WIN": "VICTOIRE",
+				"LOSS": "DÉFAITE"
+			},
+			"opponents": "contre {{names}}",
+			"endReason": {
+				"ALL_TEAM_CARDS_REVEALED": "Toutes les cartes trouvées",
+				"ASSASSIN_REVEALED": "Assassin révélé",
+				"PLAYER_FORFEIT": "Abandon"
+			},
+			"scoreLabel": "Score final : votre équipe {{own}}, l'autre équipe {{other}}"
+		},
+		"report": {
+			"action": "Signaler le joueur",
+			"reported": "Signalé",
+			"back": "Retour au profil",
+			"title": "Signaler {{username}}",
+			"subtitle": "Dites-nous ce qui s'est passé. Le joueur ne saura pas qui l'a signalé.",
+			"reasonLabel": "Motif",
+			"reasonHint": "Choisissez un motif pour continuer.",
+			"reason": {
+				"HARASSMENT": "Harcèlement ou insultes",
+				"CHEATING": "Triche",
+				"OFFENSIVE_USERNAME": "Nom d'utilisateur offensant",
+				"SPAM": "Spam",
+				"OTHER": "Autre chose"
+			},
+			"detailsLabel": "Détails (facultatif)",
+			"detailsPlaceholder": "Que s'est-il passé, et quand ?",
+			"detailsCount": "{{count}} / {{max}}",
+			"cancel": "Annuler",
+			"submit": "Envoyer le signalement",
+			"sending": "Envoi…",
+			"done": "Terminé",
+			"outcome": {
+				"SENT": "Merci. Votre signalement concernant {{username}} a été envoyé pour examen.",
+				"ALREADY_REPORTED": "Vous avez déjà signalé {{username}} récemment. Votre signalement précédent est en cours d'examen."
+			},
+			"error": {
+				"NOT_FOUND": "Le compte de {{username}} n'existe plus.",
+				"RATE_LIMITED": "Trop de signalements. Patientez un instant, puis réessayez.",
+				"INVALID": "Le signalement n'a pas été accepté. Vérifiez le motif et les détails.",
+				"FAILED": "Le signalement n'a pas pu être envoyé. Réessayez."
+			}
+		}
+	},
+	"chat": {
+		"launcher": {
+			"title": "Chat",
+			"label": "Ouvrir le chat",
+			"labelUnread_one": "Ouvrir le chat, {{count}} nouveau message",
+			"labelUnread_other": "Ouvrir le chat, {{count}} nouveaux messages",
+			"caption_one": "{{count}} nouveau message",
+			"caption_other": "{{count}} nouveaux messages",
+			"captionNone": "Aucun nouveau message"
+		},
+		"panel": {
+			"title": "Discussions",
+			"close": "Fermer le chat",
+			"back": "Retour aux discussions"
+		},
+		"search": {
+			"label": "Rechercher des amis",
+			"placeholder": "Rechercher des amis"
+		},
+		"tabs": {
+			"label": "Discussions",
+			"ROOM": "Salon",
+			"FRIENDS": "Amis"
+		},
+		"sections": {
+			"room": "Dans ce salon",
+			"friends": "Amis"
+		},
+		"room": {
+			"name": "Chat du salon",
+			"code": "Salon {{code}}",
+			"preparing": "Le chat du salon se prépare…",
+			"closed": "Le chat du salon est fermé"
+		},
+		"list": {
+			"loading": "Chargement des discussions…",
+			"channelsError": "Impossible de charger vos discussions.",
+			"friendsError": "Impossible de charger vos amis.",
+			"noRoom": "Rejoignez un salon pour discuter avec ses joueurs.",
+			"noFriends": "Ajoutez des amis pour discuter avec eux ici.",
+			"noResults": "Personne ne correspond à « {{query}} ».",
+			"noMessages": "Aucun message pour l’instant",
+			"fromYou": "Vous : {{text}}",
+			"fromPlayer": "{{name}} : {{text}}",
+			"addFriend": "Ajoutez en ami pour discuter",
+			"opening": "Ouverture du chat…",
+			"openFailed": "Impossible d’ouvrir ce chat. Réessayez.",
+			"unread_one": "{{count}} nouveau message",
+			"unread_other": "{{count}} nouveaux messages"
+		},
+		"presence": {
+			"online": "En ligne",
+			"offline": "Hors ligne"
+		},
+		"age": {
+			"now": "maintenant",
+			"MINUTES": "{{count}} min",
+			"HOURS": "{{count}} h",
+			"DAYS": "{{count}} j"
+		},
+		"day": {
+			"today": "Aujourd’hui",
+			"yesterday": "Hier"
+		},
+		"thread": {
+			"label": "Messages",
+			"loading": "Chargement des messages…",
+			"error": "Impossible de charger ces messages.",
+			"empty": "Aucun message pour l’instant. Dites bonjour !",
+			"emptyRoom": "Aucun message pour l’instant. Dites bonjour au salon !",
+			"olderLoading": "Chargement des messages précédents…",
+			"olderFailed": "Impossible de charger les messages précédents.",
+			"newMessages": "Nouveaux messages",
+			"newFrom": "Nouveau message de {{name}}",
+			"newMessage": "Nouveau message",
+			"you": "Vous :"
+		},
+		"composer": {
+			"label": "Message",
+			"placeholder": "Écrire un message…",
+			"send": "Envoyer le message",
+			"offline": "Reconnexion… vous pourrez envoyer dans un instant.",
+			"tooLong": "Un message peut contenir jusqu’à {{max}} caractères.",
+			"count": "{{count}}/{{max}}"
+		},
+		"pending": {
+			"sending": "Envoi…",
+			"retry": "Réessayer",
+			"discard": "Retirer",
+			"failed": {
+				"OFFLINE": "Non envoyé : vous êtes hors ligne.",
+				"TIMEOUT": "Pas encore envoyé : le serveur n’a pas répondu.",
+				"UNAVAILABLE": "Non envoyé : le chat est indisponible pour le moment.",
+				"REVOKED": "Non envoyé : vous ne pouvez plus écrire dans ce chat.",
+				"INVALID": "Non envoyé : le message a été refusé."
+			}
+		},
+		"access": {
+			"direct": "Vous n’êtes plus amis. Ajoutez ce joueur en ami pour discuter à nouveau.",
+			"viewProfile": "Voir le profil",
+			"room": {
+				"default": "Vous ne pouvez plus utiliser ce chat de salon.",
+				"GAME_FINISHED": "Le chat du salon s’est fermé à la fin de la partie.",
+				"ROOM_LEFT": "Vous avez quitté ce salon, son chat est donc fermé.",
+				"KICKED_BY_HOST": "Vous avez été retiré de ce salon, son chat est donc fermé.",
+				"POST_GAME_TIMEOUT": "Le chat du salon s’est fermé après la partie.",
+				"ROOM_CLOSED": "Ce salon est fermé."
+			}
+		},
+		"unknownPlayer": "Joueur",
+		"retry": "Réessayer"
+	},
+	"settings": {
+		"title": "Paramètres",
+		"subtitle": "Gère ton profil et ton compte.",
+		"close": {
+			"SETTINGS": "Fermer les paramètres",
+			"CROP": "Annuler le recadrage",
+			"PICK": "Annuler le choix d'avatar"
+		},
+		"saved": {
+			"title": "Profil mis à jour",
+			"body": "Tes modifications sont enregistrées."
+		},
+		"avatar": {
+			"label": "Photo de profil",
+			"current": "Ton avatar actuel",
+			"upload": "Importer une photo",
+			"pick": "Choisir un avatar",
+			"hint": "JPG, PNG ou WEBP, 2 Mo maximum. Les images carrées rendent le mieux. Sans photo importée, ton avatar par défaut est utilisé.",
+			"error": {
+				"INVALID_TYPE": "Utilise une image JPG, PNG ou WEBP de moins de 2 Mo.",
+				"TOO_LARGE": "Utilise une image JPG, PNG ou WEBP de moins de 2 Mo.",
+				"UNREADABLE": "Cette image n'a pas pu être ouverte. Essaie une autre.",
+				"UPLOAD_FAILED": "L'envoi a échoué. Réessaie."
+			}
+		},
+		"username": {
+			"label": "Nom d'utilisateur",
+			"save": "Enregistrer",
+			"saving": "Enregistrement…",
+			"hint": "3 à 20 caractères : lettres, chiffres et tiret bas. Doit être unique.",
+			"error": {
+				"INVALID_USERNAME": "Utilise 3 à 20 lettres, chiffres ou tirets bas.",
+				"USERNAME_TAKEN": "Ce nom d'utilisateur est déjà pris. Essaie-en un autre.",
+				"FAILED": "Impossible d'enregistrer ton nom d'utilisateur. Réessaie."
+			}
+		},
+		"email": {
+			"label": "E-mail",
+			"hint": "Ton e-mail de connexion. Il ne peut pas être modifié ici."
+		},
+		"logOut": {
+			"button": "Se déconnecter",
+			"pending": "Déconnexion…",
+			"failed": "Impossible de te déconnecter. Réessaie."
+		},
+		"legal": {
+			"navigation": "Mentions légales",
+			"privacy": "Politique de confidentialité",
+			"terms": "Conditions d'utilisation",
+			"newTab": "(s'ouvre dans un nouvel onglet)"
+		},
+		"crop": {
+			"title": "Recadre ta photo",
+			"subtitle": "Fais glisser pour repositionner. Utilise le curseur pour zoomer.",
+			"position": "Position de la photo. Fais-la glisser ou utilise les flèches pour la déplacer.",
+			"zoom": "Zoom",
+			"preview": "Aperçu — ton avatar tel qu’il apparaît dans les salons et les profils",
+			"hint": "JPG, PNG ou WEBP, 2 Mo maximum. <choose>Choisis un autre fichier</choose> pour remplacer la photo.",
+			"cancel": "Annuler",
+			"save": "Enregistrer la photo",
+			"saving": "Envoi…"
+		},
+		"pick": {
+			"title": "Choisis un avatar",
+			"subtitle": "Choisis un avatar prêt à l’emploi.",
+			"option": "Avatar : {{name}}",
+			"loading": "Chargement des avatars",
+			"loadFailed": "Les avatars n'ont pas pu se charger.",
+			"retry": "Réessayer",
+			"hint": "Ton avatar actuel est remplacé quand tu enregistres. Une photo importée remplacée est supprimée.",
+			"failed": "Impossible d'enregistrer l'avatar. Réessaie.",
+			"cancel": "Annuler",
+			"save": "Enregistrer l'avatar",
+			"saving": "Enregistrement…"
+		},
+		"deleteAccount": {
+			"button": "Supprimer le compte",
+			"title": "Supprimer le compte ?",
+			"body": "Cette action supprime définitivement votre compte, votre profil, vos amis, vos statistiques et vos messages. Elle est irréversible.",
+			"inMatch": "Tu joues une partie. Supprimer ton compte t'en retire. Si ton équipe se retrouve incomplète et que personne ne prend ta place à temps, le salon ferme.",
+			"confirmLabel": "Tapez <name>{{username}}</name> pour confirmer",
+			"confirmHint": "Votre nom d'utilisateur, tel qu'il apparaît sur votre profil.",
+			"cancel": "Annuler",
+			"confirm": "Supprimer",
+			"pending": "Suppression…",
+			"error": {
+				"MISMATCH": "Ce n'est pas votre nom d'utilisateur. Tapez-le exactement pour confirmer.",
+				"RATE_LIMITED": "Trop de tentatives. Patientez un instant, puis réessayez.",
+				"FAILED": "Impossible de supprimer votre compte. Réessayez."
+			}
+		},
+		"language": {
+			"label": "Langue",
+			"hint": "Le jeu change de langue immédiatement. Ton choix est enregistré sur cet appareil."
+		}
+	},
+	"friends": {
+		"title": "Amis",
+		"subtitle": "Tes amis et des joueurs à ajouter.",
+		"count_one": "{{count}} ami",
+		"count_other": "{{count}} amis",
+		"openLabel_one": "Amis, {{count}} ami",
+		"openLabel_other": "Amis, {{count}} amis",
+		"listTitle": "Tes amis",
+		"loading": "Chargement de tes amis",
+		"errorTitle": "Impossible de charger tes amis",
+		"errorBody": "Vérifie ta connexion, puis réessaie.",
+		"emptyTitle": "Pas encore d'amis",
+		"emptyBody": "Recherche un nom d'utilisateur ci-dessus pour ajouter ton premier ami.",
+		"online": "en ligne",
+		"offline": "hors ligne",
+		"search": {
+			"label": "Rechercher des joueurs par nom d'utilisateur",
+			"placeholder": "Rechercher un nom d'utilisateur",
+			"hint": "{{max}} caractères maximum. L'amitié est immédiate : rien à accepter.",
+			"resultsTitle": "Résultats de la recherche",
+			"resultCount_one": "{{count}} joueur trouvé",
+			"resultCount_other": "{{count}} joueurs trouvés",
+			"searching": "Recherche de joueurs",
+			"errorTitle": "La recherche a échoué",
+			"errorBody": "Vérifie ta connexion, puis réessaie.",
+			"emptyTitle": "Aucun joueur trouvé",
+			"emptyBody": "Aucun nom d'utilisateur ne contient « {{term}} ».",
+			"alreadyFriend": "Ami",
+			"add": "Ajouter",
+			"adding": "Ajout…",
+			"addLabel": "Ajouter {{username}} en ami",
+			"addNotFound": "Ce joueur n'existe plus.",
+			"addFailed": "Impossible d'ajouter ce joueur. Réessaie.",
+			"more": "Afficher plus",
+			"loadingMore": "Chargement…"
+		}
+	}
+}

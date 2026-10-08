@@ -1,0 +1,216 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="24.3 22.1 660.8 660.8" role="img" aria-labelledby="punk-title punk-description">
+  <title id="punk-title">Purple-haired punk avatar</title>
+  <desc id="punk-description">A smiling character with swept purple hair, a shaved side, silver ear piercings, and a dark leather jacket, framed by purple and pink rings against a vivid pink background.</desc>
+  <defs>
+    <linearGradient id="frame-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#75218e"/>
+      <stop offset=".52" stop-color="#7b2395"/>
+      <stop offset="1" stop-color="#741d8b"/>
+    </linearGradient>
+    <linearGradient id="frame-pink" x1="10%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0" stop-color="#d864d9"/>
+      <stop offset=".6" stop-color="#dd67dd"/>
+      <stop offset="1" stop-color="#d360d6"/>
+    </linearGradient>
+    <radialGradient id="background-pink" cx="47%" cy="44%" r="70%">
+      <stop offset="0" stop-color="#ff4299"/>
+      <stop offset=".62" stop-color="#fe3793"/>
+      <stop offset="1" stop-color="#f72d8e"/>
+    </radialGradient>
+    <linearGradient id="hair-purple" gradientUnits="userSpaceOnUse" x1="268" y1="126" x2="363" y2="318">
+      <stop offset="0" stop-color="#be49c9"/>
+      <stop offset=".62" stop-color="#b647c3"/>
+      <stop offset="1" stop-color="#a638b2"/>
+    </linearGradient>
+    <linearGradient id="hair-back-purple" x1="0%" y1="0%" x2="100%" y2="80%">
+      <stop offset="0" stop-color="#9834ac"/>
+      <stop offset="1" stop-color="#b63fc0"/>
+    </linearGradient>
+    <linearGradient id="shaved-mauve" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0" stop-color="#b6608b"/>
+      <stop offset=".48" stop-color="#c16b90"/>
+      <stop offset="1" stop-color="#cc7899"/>
+    </linearGradient>
+    <radialGradient id="face-peach" cx="52%" cy="45%" r="70%">
+      <stop offset="0" stop-color="#f9bc9f"/>
+      <stop offset=".66" stop-color="#f7b699"/>
+      <stop offset="1" stop-color="#efaa90"/>
+    </radialGradient>
+    <linearGradient id="neck-peach" x1="10%" y1="0%" x2="75%" y2="100%">
+      <stop offset="0" stop-color="#e7a087"/>
+      <stop offset=".5" stop-color="#f5b498"/>
+      <stop offset="1" stop-color="#f5b397"/>
+    </linearGradient>
+    <linearGradient id="ear-peach" x1="0%" y1="35%" x2="100%" y2="70%">
+      <stop offset="0" stop-color="#f7bf9e"/>
+      <stop offset="1" stop-color="#f6b99a"/>
+    </linearGradient>
+    <radialGradient id="cheek-blush">
+      <stop offset="0" stop-color="#f09487" stop-opacity=".26"/>
+      <stop offset="1" stop-color="#f09487" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="lips-rose" x1="10%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0" stop-color="#db7e86"/>
+      <stop offset="1" stop-color="#d4657d"/>
+    </linearGradient>
+    <linearGradient id="jacket-charcoal" x1="0%" y1="0%" x2="100%" y2="80%">
+      <stop offset="0" stop-color="#424255"/>
+      <stop offset=".58" stop-color="#39364d"/>
+      <stop offset="1" stop-color="#302d40"/>
+    </linearGradient>
+    <linearGradient id="lapel-slate" x1="0%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0" stop-color="#4a4d61"/>
+      <stop offset="1" stop-color="#343146"/>
+    </linearGradient>
+    <linearGradient id="shirt-white" x1="0%" y1="0%" x2="65%" y2="100%">
+      <stop offset="0" stop-color="#cbd0cb"/>
+      <stop offset="1" stop-color="#e4e4df"/>
+    </linearGradient>
+    <linearGradient id="piercing-silver" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#cbd3cc"/>
+      <stop offset="1" stop-color="#a3b2aa"/>
+    </linearGradient>
+    <clipPath id="avatar-clip">
+      <ellipse cx="354.5" cy="352.5" rx="282.5" ry="282.6"/>
+    </clipPath>
+  </defs>
+
+  <g id="outer-ring">
+    <ellipse cx="354.7" cy="352.5" rx="330.4" ry="330.2" fill="url(#frame-purple)"/>
+  </g>
+  <g id="inner-ring">
+    <ellipse cx="354.7" cy="352.5" rx="301" ry="301.7" fill="url(#frame-pink)"/>
+  </g>
+  <g id="avatar-background">
+    <ellipse cx="354.5" cy="352.5" rx="282.5" ry="282.6" fill="url(#background-pink)"/>
+  </g>
+
+  <g id="portrait" clip-path="url(#avatar-clip)" stroke-linecap="round" stroke-linejoin="round">
+    <g id="hair-back" fill="url(#hair-back-purple)" stroke="#651f77" stroke-width="6">
+      <path d="M214 411 C214 448 208 476 194 495 C211 495 227 483 236 471 C239 489 232 508 227 520 C251 515 269 498 281 482 L270 433 L241 406 Z"/>
+      <path d="M218 429 C222 450 215 475 203 486 C221 479 231 463 235 448 L250 460 C254 479 246 500 240 509 C256 500 270 487 276 476 L260 435 Z" fill="#b143bf" stroke="none"/>
+      <path d="M216 425 C220 443 216 460 211 471" fill="none" stroke="#ce66d1" stroke-width="5"/>
+    </g>
+
+    <g id="jacket-base" stroke="#181927" stroke-width="6">
+      <path d="M175 610 L198 570 C202 562 219 558 235 553 C253 525 275 504 299 496 L384 513 C411 515 438 537 454 556 L434 565 C452 564 465 575 469 589 L481 629 L426 664 L219 659 Z" fill="url(#jacket-charcoal)"/>
+      <path id="left-sleeve-light" d="M200 570 C217 575 229 586 238 600 L232 642 L181 613 Z" fill="#4c4c60" stroke="none"/>
+      <path d="M201 569 C220 576 231 588 237 599" fill="none" stroke-width="5"/>
+      <path id="right-sleeve-light" d="M441 568 C457 573 461 584 467 606 L473 626 L479 626 L468 590 Q463 570 445 566 Z" fill="#58576b" stroke="none"/>
+    </g>
+
+    <g id="shirt">
+      <path d="M309 554 C325 582 345 604 366 607 C380 608 388 599 393 586 L405 649 L333 650 Z" fill="url(#shirt-white)"/>
+      <path d="M316 578 C335 598 350 608 365 608 C379 609 389 601 394 590" fill="none" stroke="#6a6b6c" stroke-width="6"/>
+    </g>
+
+    <g id="neck">
+      <path d="M301 488 L384 509 L383 553 L393 583 C397 593 385 607 370 607 C353 607 329 591 315 571 C303 553 300 535 301 514 Z" fill="url(#neck-peach)"/>
+      <path d="M305 508 C327 519 355 526 381 521 L381 544 C349 544 323 533 305 517 Z" fill="#d88c78"/>
+      <path d="M301 497 L301 529 M384 516 L383 555" fill="none" stroke="#984e48" stroke-width="5.5"/>
+    </g>
+
+    <g id="jacket-lapels" fill="url(#lapel-slate)" stroke="#181927" stroke-width="6">
+      <path id="left-lapel" d="M299 496 C270 506 250 530 235 554 L286 575 L260 607 L302 648 L338 648 C329 611 316 574 301 544 C298 537 297 531 299 526"/>
+      <path d="M294 501 C270 513 253 534 241 551 L288 570 L286 575" fill="none" stroke="#666a7c" stroke-width="5"/>
+      <path d="M285 581 L266 607 L294 636" fill="none" stroke="#696879" stroke-width="4"/>
+      <path id="right-lapel" d="M385 516 C411 520 439 540 454 556 L415 578 L451 604 L417 644 L399 647 C399 601 391 551 385 529 Z"/>
+      <path d="M392 519 C414 527 436 544 446 554 L417 572" fill="none" stroke="#666879" stroke-width="4"/>
+      <path d="M425 589 L445 605 L425 630" fill="none" stroke="#666577" stroke-width="4"/>
+      <g id="jacket-studs" fill="#b8bcd2" stroke="none">
+        <circle cx="259.6" cy="546.4" r="6.2"/>
+        <circle cx="285.1" cy="605.8" r="6.2"/>
+        <circle cx="426.7" cy="550.8" r="6"/>
+        <circle cx="425.7" cy="605.9" r="6.2"/>
+      </g>
+    </g>
+
+    <g id="right-ear">
+      <path d="M498 334 C516 340 526 356 526 376 C526 394 516 410 502 416 L491 401 Z" fill="url(#ear-peach)" stroke="#965043" stroke-width="6"/>
+      <path d="M507 348 C518 359 521 379 512 395 C519 376 512 364 506 359 Z" fill="#e89e84"/>
+    </g>
+
+    <g id="face">
+      <path id="face-shape" d="M279 257 C324 240 403 249 467 249 C493 270 501 306 502 340 L502 403 C501 444 484 476 457 494 C432 511 402 519 368 517 C330 516 298 504 273 484 C254 469 243 447 240 419 C225 429 204 420 192 405 C177 388 178 363 191 347 C207 329 231 334 246 350 L256 363 L267 325 Z" fill="url(#face-peach)"/>
+      <path id="jaw-shadow" d="M243 414 C250 441 265 462 288 478 C314 496 343 503 373 504 C411 506 437 498 460 487 C444 502 416 513 383 514 C344 516 307 505 281 488 C257 472 245 448 240 420 Z" fill="#dd937c"/>
+      <ellipse cx="294" cy="411" rx="46" ry="33" fill="url(#cheek-blush)"/>
+      <ellipse cx="469" cy="423" rx="30" ry="32" fill="url(#cheek-blush)"/>
+      <path d="M467 249 C493 270 501 306 502 340 L502 403 C501 444 484 476 457 494 C432 511 402 519 368 517 C330 516 298 504 273 484 C254 469 243 447 240 419" fill="none" stroke="#9a5145" stroke-width="6"/>
+    </g>
+
+    <g id="shaved-side">
+      <path d="M221 341 C214 311 222 276 238 257 C262 231 305 240 339 258 C316 263 300 270 290 284 C283 293 283 302 284 314 C271 328 261 345 256 363 C246 347 233 338 221 341 Z" fill="url(#shaved-mauve)"/>
+      <path d="M237 258 C222 281 217 312 222 340 L236 343 C232 314 235 285 249 264 Z" fill="#974d84"/>
+      <g id="hair-stubble" fill="none" stroke="#944d7b" stroke-width="5">
+        <path d="M247 273 L250 270 Q254 274 258 270"/>
+        <path d="M254 297 Q257 303 261 299"/>
+        <path d="M235 311 L238 309"/>
+      </g>
+    </g>
+
+    <g id="left-ear">
+      <path d="M253 358 C242 343 229 335 213 337 C194 338 182 354 182 375 C181 394 190 410 206 417 C223 425 237 424 248 415" fill="url(#ear-peach)"/>
+      <path d="M219 337 C199 332 182 350 182 375 C181 394 190 410 206 417 C223 425 237 424 248 415" fill="none" stroke="#9a5145" stroke-width="6"/>
+      <path d="M206 365 C219 358 235 371 239 390 C240 402 229 410 219 405 C207 403 200 393 202 381 Z" fill="#eba18a"/>
+      <path d="M206 364 C221 357 237 373 239 396 M236 381 C223 375 216 385 216 395" fill="none" stroke="#8d4941" stroke-width="5.5"/>
+    </g>
+
+    <g id="hair" stroke="#651f77" stroke-width="6">
+      <path id="hair-silhouette" d="M212 246 C198 222 200 190 218 165 C223 183 230 196 243 204 C253 158 299 123 360 123 C344 138 335 155 327 173 C352 144 380 153 412 140 C427 134 438 126 445 118 C449 140 440 166 422 176 C449 169 472 150 483 122 C497 147 500 183 491 213 C499 209 505 203 511 197 C511 231 500 254 483 270 C466 285 443 289 418 290 C393 291 375 281 357 273 C333 262 311 243 284 243 C265 241 251 245 240 256 C222 276 217 308 221 338 C209 333 194 338 184 347 L169 355 C167 325 180 296 205 279 C188 275 176 281 162 281 C175 259 191 247 212 246 Z" fill="url(#hair-purple)"/>
+      <path id="hair-left-shadow" d="M214 184 C209 205 211 225 220 239 C225 246 238 248 248 244 C233 254 221 272 216 290 C210 312 211 327 213 338 C194 337 181 342 172 350 C173 327 184 303 205 279 C218 270 225 262 224 255 C210 252 198 255 184 260 C194 252 204 247 214 245 C204 226 202 205 214 184 Z" fill="#9630ab" stroke="none"/>
+      <path id="left-hair-highlight" d="M218 177 C224 194 229 202 244 211 C256 173 278 144 341 129 C301 147 265 157 247 209 C242 221 241 231 247 240 C233 237 222 214 218 177 Z" fill="#d26ada" stroke="none"/>
+      <path id="side-highlight" d="M174 273 C186 259 201 252 216 253 L223 260 C204 256 190 265 174 273 Z" fill="#d26ada" stroke="none"/>
+      <path id="top-hair-highlight" d="M327 172 C347 153 374 156 399 149 C419 143 433 132 441 123 C433 145 414 154 389 157 C363 160 342 160 327 172 Z" fill="#db79e1" stroke="none"/>
+      <path id="right-hair-highlight" d="M414 181 C443 177 469 160 483 133 C478 163 450 187 417 189 L401 188 Z" fill="#dd7ee2" stroke="none"/>
+      <path id="front-left-shadow" d="M303 209 C307 229 320 242 338 247 C344 249 348 249 353 246 C360 237 365 224 370 216 C364 244 367 267 385 282 C374 279 365 274 356 270 C336 259 323 250 305 246 C300 237 298 225 303 209 Z" fill="#9632a7" stroke="none"/>
+      <path id="front-right-shadow" d="M369 219 C373 242 385 257 400 259 C426 263 451 239 464 212 C459 246 441 274 418 286 C450 278 470 259 486 235 C480 258 466 276 448 283 C437 287 427 287 417 287 C393 289 376 272 370 252 C366 241 367 229 369 219 Z" fill="#9e34ae" stroke="none"/>
+      <path d="M303 210 C300 224 301 237 311 248 M370 217 C363 246 369 270 388 284 M465 209 C460 245 438 275 414 288 M486 235 C475 260 455 280 435 287" fill="none" stroke="#782182" stroke-width="4"/>
+    </g>
+
+    <g id="eyebrows" fill="#692250">
+      <path d="M317 324 C334 313 349 316 363 324 L380 334 C385 337 390 339 395 338 C396 347 387 350 378 345 C357 334 342 321 320 327 Q313 329 317 324 Z"/>
+      <path d="M431 347 C446 344 459 331 474 326 C482 323 488 327 492 330 Q497 335 490 334 C473 329 458 347 444 354 C437 358 431 354 431 347 Z"/>
+    </g>
+
+    <g id="eyelid-shadows" fill="#de9785">
+      <path d="M311 353 C323 340 341 339 356 344 C374 349 384 360 389 376 C366 364 340 357 317 363 Z"/>
+      <path d="M435 373 C448 354 475 346 495 354 L497 363 C473 360 453 366 435 379 Z"/>
+    </g>
+
+    <g id="eyes" fill="#fffefa">
+      <path id="left-eye" d="M313 361 C335 354 366 362 388 378 C380 398 367 406 350 405 C328 404 314 390 313 373 Z"/>
+      <path id="right-eye" d="M433 378 C448 365 474 357 499 360 C498 383 481 404 461 404 C447 404 436 394 433 378 Z"/>
+      <g id="pupils" fill="#542c40">
+        <path d="M338 360 C346 359 358 362 367 367 C369 381 361 391 351 391 C338 391 331 379 338 360 Z"/>
+        <path d="M448 366 C455 361 467 360 474 363 C479 376 472 390 461 391 C449 392 440 380 448 366 Z"/>
+      </g>
+      <g id="eye-highlights" fill="#fffefa">
+        <ellipse cx="362.1" cy="373.6" rx="4.5" ry="4.6"/>
+        <ellipse cx="467.9" cy="372.2" rx="4.6" ry="4.6"/>
+      </g>
+    </g>
+
+    <g id="eyeliner" fill="#612d3e">
+      <path d="M301 347 C316 357 331 354 345 357 C362 360 378 369 389 378 Q392 383 386 382 C364 369 338 361 317 366 C309 367 303 358 301 347 Z"/>
+      <path d="M433 377 C452 361 476 354 496 356 C503 357 508 355 512 352 C510 361 504 367 496 367 C474 361 451 371 435 382 Q430 384 433 377 Z"/>
+    </g>
+
+    <g id="nose" fill="none" stroke="#b56555" stroke-width="4.5">
+      <path d="M413 377 C410 388 411 397 420 400 C433 404 432 415 422 422 C416 426 408 425 402 422"/>
+    </g>
+
+    <g id="mouth">
+      <path id="lips" d="M354 438 C367 444 379 435 392 440 Q399 443 404 440 C413 438 422 446 427 452 C421 465 410 470 398 468 C380 466 365 452 354 438 Z" fill="url(#lips-rose)"/>
+      <path d="M368 448 C382 456 404 460 420 455 C410 465 389 464 380 458 Z" fill="#e79195"/>
+      <path d="M353 437 C372 452 399 459 428 452 M344 440 C347 433 351 430 357 428" fill="none" stroke="#7e3540" stroke-width="5.5"/>
+      <path d="M386 474 C391 477 398 477 404 475" fill="none" stroke="#cc8c73" stroke-width="4"/>
+    </g>
+
+    <g id="earrings" stroke="#65746e" stroke-width="4.5">
+      <path id="ear-cuff" d="M204 410 Q207 406 211 409 L215 412 Q218 414 215 419 L209 428 Q207 431 203 429 L199 427 Q195 425 198 421 Z" fill="url(#piercing-silver)"/>
+      <path d="M207 414 L202 422" fill="none" stroke="#f5f8ec" stroke-width="5"/>
+      <path id="ear-stud" d="M226 413 C233 412 239 417 237 423 C236 430 230 434 224 431 C217 429 216 423 218 419 Q220 414 226 413 Z" fill="url(#piercing-silver)"/>
+      <ellipse cx="226.5" cy="421.5" rx="6" ry="4.5" fill="#fbfff4" stroke="none"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="53.3 23.4 688.4 688.4" role="img" aria-labelledby="headphones-title headphones-description">
+  <title id="headphones-title">Pink headphones avatar</title>
+  <desc id="headphones-description">A smiling girl with a dark brown bob and short fringe, large brown eyes, rosy cheeks, a purple shirt, and pink and purple over-ear headphones, inside a purple and pink circular frame.</desc>
+  <defs>
+    <linearGradient id="frame-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#92259e"/>
+      <stop offset=".5" stop-color="#9826a4"/>
+      <stop offset="1" stop-color="#90209b"/>
+    </linearGradient>
+    <linearGradient id="frame-pink" x1="0%" y1="0%" x2="65%" y2="100%">
+      <stop offset="0" stop-color="#f99bea"/>
+      <stop offset="1" stop-color="#f494e3"/>
+    </linearGradient>
+    <radialGradient id="background-rose" cx="48%" cy="44%" r="71%">
+      <stop offset="0" stop-color="#fb80ba"/>
+      <stop offset=".65" stop-color="#f875b5"/>
+      <stop offset="1" stop-color="#f36caf"/>
+    </radialGradient>
+    <linearGradient id="hair-brown" x1="0%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0" stop-color="#6b302c"/>
+      <stop offset=".58" stop-color="#69302d"/>
+      <stop offset="1" stop-color="#612a29"/>
+    </linearGradient>
+    <linearGradient id="hair-back-brown" x1="0%" y1="0%" x2="100%" y2="70%">
+      <stop offset="0" stop-color="#74392f"/>
+      <stop offset=".55" stop-color="#69312c"/>
+      <stop offset="1" stop-color="#612b29"/>
+    </linearGradient>
+    <linearGradient id="headband-pink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#c663c1"/>
+      <stop offset=".55" stop-color="#ca66c8"/>
+      <stop offset="1" stop-color="#dd70d0"/>
+    </linearGradient>
+    <radialGradient id="skin-peach" cx="47%" cy="40%" r="75%">
+      <stop offset="0" stop-color="#ffbbad"/>
+      <stop offset=".68" stop-color="#fbb3a5"/>
+      <stop offset="1" stop-color="#f4a698"/>
+    </radialGradient>
+    <linearGradient id="neck-peach" x1="0%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0" stop-color="#f3a393"/>
+      <stop offset=".6" stop-color="#fab3a5"/>
+      <stop offset="1" stop-color="#f9af9f"/>
+    </linearGradient>
+    <linearGradient id="shirt-purple" x1="0%" y1="0%" x2="75%" y2="100%">
+      <stop offset="0" stop-color="#9777d4"/>
+      <stop offset="1" stop-color="#8f6bc9"/>
+    </linearGradient>
+    <linearGradient id="headphone-cushion" x1="0%" y1="0%" x2="100%" y2="20%">
+      <stop offset="0" stop-color="#505e91"/>
+      <stop offset=".6" stop-color="#4a5686"/>
+      <stop offset="1" stop-color="#414b77"/>
+    </linearGradient>
+    <linearGradient id="headphone-shell" x1="0%" y1="0%" x2="100%" y2="80%">
+      <stop offset="0" stop-color="#e363c2"/>
+      <stop offset=".5" stop-color="#e562c4"/>
+      <stop offset="1" stop-color="#ce54b7"/>
+    </linearGradient>
+    <linearGradient id="earcup-purple" x1="0%" y1="0%" x2="100%" y2="80%">
+      <stop offset="0" stop-color="#9876d2"/>
+      <stop offset=".55" stop-color="#946ace"/>
+      <stop offset="1" stop-color="#8b5dbf"/>
+    </linearGradient>
+    <linearGradient id="earcup-pink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#ff7bc8"/>
+      <stop offset="1" stop-color="#f570b9"/>
+    </linearGradient>
+    <clipPath id="avatar-clip"><ellipse cx="397.5" cy="367.6" rx="295.7" ry="293.8"/></clipPath>
+  </defs>
+
+  <g id="outer-ring"><ellipse cx="397.5" cy="367.6" rx="344.2" ry="341.4" fill="url(#frame-purple)"/></g>
+  <g id="inner-ring"><ellipse cx="397.5" cy="367.6" rx="313.8" ry="311.8" fill="url(#frame-pink)"/></g>
+  <g id="avatar-background"><ellipse cx="397.5" cy="367.6" rx="295.7" ry="293.8" fill="url(#background-rose)"/></g>
+
+  <g id="portrait" clip-path="url(#avatar-clip)" stroke-linecap="round" stroke-linejoin="round">
+    <g id="hair-back" fill="url(#hair-back-brown)" stroke="#49211d" stroke-width="7">
+      <path d="M204 339C194 282 205 234 235 196 270 156 329 144 385 148 458 144 521 179 546 242 564 287 557 346 553 397 546 449 551 489 576 515 565 524 551 531 539 534L524 518 520 542C453 565 343 566 268 542L260 507 244 534C221 527 196 513 177 497 200 460 207 407 204 339Z"/>
+      <path d="M222 228C211 255 206 290 211 328L219 364 232 317C223 285 225 255 241 217Z" fill="#945040" stroke="none" opacity=".65"/>
+      <path d="M211 446C205 464 199 482 189 495 207 510 226 519 242 523L255 499C259 516 267 531 274 535L330 548 332 529 285 466Z" fill="#854337" stroke="none" opacity=".35"/>
+      <path d="M439 542 514 527 523 506 540 524 563 513C551 494 546 474 545 451L511 478Z" fill="#7d3d33" stroke="none" opacity=".3"/>
+    </g>
+
+    <g id="shirt">
+      <path d="M239 632C259 600 290 578 332 565 358 558 414 559 438 569 477 581 506 604 523 640L532 689 233 688Z" fill="url(#shirt-purple)" stroke="#50316e" stroke-width="6.5"/>
+    </g>
+    <g id="neck">
+      <path d="M333 516 439 531 439 578C440 593 422 605 399 607 373 609 346 597 336 583 332 577 333 568 333 556Z" fill="url(#neck-peach)" stroke="#9e4c43" stroke-width="6.5"/>
+      <path d="M337 528C364 542 400 548 435 542L435 566C397 569 365 551 337 535Z" fill="#df8a78"/>
+    </g>
+
+    <g id="headband" stroke="#382748" stroke-width="7">
+      <path d="M218 322C214 294 216 269 222 244 238 176 293 135 360 128 409 123 458 128 495 148 547 176 573 223 577 297L577 341 560 348 553 310C557 264 546 224 521 194 492 161 449 146 400 146 354 145 315 155 291 182 269 207 260 248 258 285L258 317Z" fill="url(#headband-pink)"/>
+      <path d="M240 310C241 267 248 229 267 201 289 168 327 149 365 143 407 137 446 144 476 155" fill="none" stroke="#b151ad" stroke-width="7" opacity=".36"/>
+      <path id="left-headband-slider" d="M219 315 219 298Q219 289 226 287L234 285Q243 283 244 292L247 317Z" fill="#b887d5" stroke-width="6.5"/>
+    </g>
+
+    <g id="face">
+      <path d="M303 240C345 210 473 210 547 240 554 291 558 350 558 378 560 413 555 450 542 478 523 514 494 534 454 541 413 548 375 539 343 524 310 507 286 484 274 454 263 426 263 391 273 362Z" fill="url(#skin-peach)" stroke="#994b42" stroke-width="6.5"/>
+      <path d="M278 433C297 481 330 506 369 520 399 530 432 532 461 525 496 518 522 501 540 480 522 513 493 532 454 538 413 545 376 536 344 521 312 505 287 481 275 452Z" fill="#e89783"/>
+      <path d="M302 308C347 314 453 313 546 310L549 324C497 320 447 322 404 320 365 320 327 317 300 320Z" fill="#f5ab9b" opacity=".65"/>
+    </g>
+
+    <g id="hair" fill="url(#hair-brown)" stroke="#48201d" stroke-width="7">
+      <path d="M259 313C260 269 269 222 291 190 313 159 357 151 397 151 443 152 489 162 521 190 551 218 565 256 564 290L562 308 519 308C516 292 510 277 503 267 507 285 505 299 499 307L471 307C472 281 461 251 449 238 454 261 449 294 444 307L376 310C375 293 372 277 366 267 365 282 360 300 353 309L307 306 300 339 278 350Z"/>
+      <path d="M299 181C327 161 361 156 395 157 440 157 485 168 514 190 484 165 441 151 397 151 357 151 324 157 299 181Z" fill="#814339" stroke="none" opacity=".3"/>
+    </g>
+
+    <g id="eyebrows" fill="none" stroke="#632c26" stroke-width="10">
+      <path d="M355 342C369 331 387 327 405 332"/>
+      <path d="M487 332C501 326 518 330 532 341"/>
+    </g>
+    <g id="eyelashes" fill="none" stroke="#7b3b30" stroke-width="6.5">
+      <path d="M361 368C354 367 350 365 348 361M355 379C349 379 344 377 342 376"/>
+      <path d="M528 370C534 367 538 364 541 360M533 380C540 378 545 375 548 373"/>
+    </g>
+    <g id="eyes">
+      <ellipse cx="388.6" cy="390.7" rx="37.6" ry="37.2" fill="#fffffb"/>
+      <ellipse cx="503.4" cy="391" rx="36.7" ry="36.9" fill="#fffffb"/>
+      <ellipse cx="387.3" cy="391.1" rx="20.1" ry="20.2" fill="#55231f"/>
+      <ellipse cx="496.8" cy="390.9" rx="20.2" ry="20.1" fill="#55231f"/>
+      <circle cx="396.5" cy="384.5" r="5.2" fill="#fffdf5"/>
+      <circle cx="505.6" cy="383.9" r="5.2" fill="#fffdf5"/>
+    </g>
+    <g id="cheeks" fill="#fa8f87">
+      <ellipse cx="352.1" cy="442.1" rx="23.3" ry="12" transform="rotate(3 352.1 442.1)"/>
+      <ellipse cx="518.2" cy="443" rx="22.5" ry="11.5" transform="rotate(3 518.2 443)"/>
+    </g>
+    <g id="nose" fill="none" stroke="#cf7968" stroke-width="6.5">
+      <path d="M450 415C463 412 472 419 470 429 469 439 455 442 445 437"/>
+    </g>
+    <g id="mouth" fill="none" stroke="#a24f43" stroke-width="6.5">
+      <path d="M401 461C421 476 450 481 469 468"/>
+      <path d="M392 465C399 464 403 460 405 453"/>
+    </g>
+
+    <g id="headphones" stroke="#303051" stroke-width="7">
+      <g id="right-earcup">
+        <path d="M578 330C598 333 611 355 611 384 612 413 602 436 587 447L574 449 562 377Z" fill="url(#earcup-purple)"/>
+        <path d="M564 315C586 316 599 344 599 381 600 414 592 443 575 458L548 467 542 455C555 421 561 379 552 340L548 312Z" fill="url(#headphone-shell)"/>
+        <path d="M550 312C568 316 580 338 581 373 583 410 571 448 555 463L541 469C555 435 560 402 558 369 558 348 554 325 550 312Z" fill="url(#headphone-cushion)" stroke-width="6"/>
+        <path d="M574 329C587 349 590 373 588 397 587 418 581 439 573 450" fill="none" stroke="#ed8ad9" stroke-width="4" opacity=".43"/>
+      </g>
+      <g id="left-earcup">
+        <path id="left-cushion" d="M236 315C248 305 265 309 278 318 300 333 310 364 311 392 312 427 302 456 284 469 270 479 249 477 232 468L204 435 204 353Z" fill="url(#headphone-cushion)"/>
+        <path d="M253 315C283 327 297 362 298 395 299 429 288 457 269 470L277 470C299 458 308 430 308 394 307 361 295 330 273 318 266 314 260 312 253 315Z" fill="#364169" stroke="none" opacity=".5"/>
+        <path id="left-shell" d="M210 326C222 314 236 311 246 317 267 329 278 358 279 391 281 426 271 456 254 469 241 478 222 470 207 458L195 397Z" fill="url(#headphone-shell)"/>
+        <path d="M225 321C241 321 255 342 261 362" fill="none" stroke="#f385d7" stroke-width="4" opacity=".15"/>
+        <path id="left-earcup-face" d="M210 329C233 329 252 356 254 390 257 425 241 455 219 458 195 461 177 436 175 401 172 365 188 332 210 329Z" fill="url(#earcup-purple)"/>
+        <path id="left-earcup-center" d="M207 355C220 354 230 371 232 392 234 412 225 430 214 432 200 434 189 417 188 397 186 377 194 357 207 355Z" fill="url(#earcup-pink)" stroke="none"/>
+      </g>
+    </g>
+  </g>
+</svg>
