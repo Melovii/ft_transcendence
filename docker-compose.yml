@@ -1,15 +1,17 @@
 # Containerized ft_transcendence stack.
 # Run with: make up   (or: docker compose up -d --build)
 #
-# Topology (Phases 0–2):
+# Topology (Phases 0–3):
 #   browser --HTTPS:443--> gateway (nginx) --/api--> auth-service --> postgres
-#                                            \----> grafana, prometheus (UIs)
+#                                            \----> grafana, prometheus, kibana
 #   prometheus --scrape--> auth-service, user-service, exporters, blackbox probe
+#   filebeat --container stdout--> logstash --normalize--> elasticsearch
 #
 # Networks:
-#   web — gateway-facing: services, UIs and exporters. The only network with
-#         published access (through the gateway's TLS listener).
-#   db  — auth-service/user-service/exporters <-> postgres, internal.
+#   web     — gateway-facing: services, UIs and exporters. The only network
+#             with published access (through the gateway's TLS listener).
+#   db      — auth-service/user-service/exporters <-> postgres, internal.
+#   logging — the ELK stack, internal; only kibana bridges to web.
 
 name: ftx
 
@@ -211,6 +213,121 @@ services:
       - web
     restart: unless-stopped
 
+  # ── ELK logging stack (issues #56–63) ─────────────────────────────────────
+  # Everything lives on the internal `logging` network — no outbound route,
+  # no published ports. Only Kibana also joins `web` so the gateway can
+  # proxy it at /kibana; Elasticsearch and Logstash are unreachable from
+  # outside the network (issue #63).
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.1.0
+    environment:
+      discovery.type: single-node
+      cluster.name: ftx-logging
+      xpack.security.enabled: "true"
+      # Plain HTTP inside the sealed `logging` network: nothing on it has
+      # outbound access or a published port, so internal TLS would protect
+      # traffic no one can reach (issue #63's evaluation).
+      xpack.security.http.ssl.enabled: "false"
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs -u elastic:${ELASTIC_PASSWORD} http://localhost:9200/_cluster/health >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+    networks:
+      - logging
+    restart: unless-stopped
+
+  # One-shot: ILM policies, index templates, least-privilege service users.
+  elasticsearch-setup:
+    image: curlimages/curl:8.11.1
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      LOGSTASH_PASSWORD: ${LOGSTASH_PASSWORD}
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD}
+    volumes:
+      - ./scripts/elk-setup.sh:/elk-setup.sh:ro
+    entrypoint: ["sh", "/elk-setup.sh"]
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - logging
+    restart: "no"
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:9.1.0
+    environment:
+      LS_JAVA_OPTS: -Xms256m -Xmx256m
+      LOGSTASH_USER: logstash_writer
+      LOGSTASH_PASSWORD: ${LOGSTASH_PASSWORD}
+      APP_ENV: ${APP_ENV}
+    volumes:
+      - ./logging/logstash/pipeline.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      elasticsearch-setup:
+        condition: service_completed_successfully
+    networks:
+      - logging
+    restart: unless-stopped
+
+  # Collects every container's stdout and ships it to Logstash. The registry
+  # lives in a named volume so restarts resume at the acknowledged offset.
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:9.1.0
+    user: root
+    volumes:
+      - ./logging/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - filebeat-data:/usr/share/filebeat/data
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - logstash
+    networks:
+      - logging
+    restart: unless-stopped
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:9.1.0
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      # Kibana authenticates to Elasticsearch as the built-in low-privilege
+      # kibana_system user, not the superuser (issue #63). Humans log in
+      # with the generated `elastic` credentials at /kibana.
+      ELASTICSEARCH_USERNAME: kibana_system
+      ELASTICSEARCH_PASSWORD: ${KIBANA_SYSTEM_PASSWORD}
+      SERVER_BASEPATH: /kibana
+      SERVER_REWRITEBASEPATH: "true"
+      SERVER_PUBLICBASEURL: https://localhost:${HTTPS_PORT}/kibana
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - web
+      - logging
+    restart: unless-stopped
+
+  # One-shot: ftx-logs-app data view + saved searches + logging dashboard.
+  kibana-setup:
+    image: curlimages/curl:8.11.1
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+    volumes:
+      - ./scripts/kibana-setup.sh:/kibana-setup.sh:ro
+      - ./logging/kibana/dashboards.ndjson:/kibana/dashboards.ndjson:ro
+    entrypoint: ["sh", "/kibana-setup.sh"]
+    depends_on:
+      - kibana
+    networks:
+      - logging
+    restart: "no"
+
   gateway:
     build:
       context: .
@@ -223,6 +340,7 @@ services:
       - auth-service
       - prometheus
       - grafana
+      - kibana
     networks:
       - web
     restart: unless-stopped
@@ -231,8 +349,12 @@ networks:
   web:
   db:
     internal: true
+  logging:
+    internal: true
 
 volumes:
   pgdata:
   prometheus-data:
   grafana-data:
+  esdata:
+  filebeat-data:

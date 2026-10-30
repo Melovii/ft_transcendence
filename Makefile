@@ -10,6 +10,7 @@ up: cert monitoring-auth ## Build and start the whole stack (detached)
 	@echo "app:        https://localhost"
 	@echo "grafana:    https://localhost/grafana    (login: GRAFANA_ADMIN_USER)"
 	@echo "prometheus: https://localhost/prometheus  (basic auth: PROMETHEUS_USER)"
+	@echo "kibana:     https://localhost/kibana     (login: elastic)"
 	@echo "first run takes a few minutes to build images"
 
 down: ## Stop the stack (keeps data)

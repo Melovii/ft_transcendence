@@ -1,0 +1,44 @@
+# Filebeat — container log collection (issue #58).
+#
+# Reads the Docker json-file log of every container, enriches each line with
+# Docker metadata (container name, image) and ships it to Logstash. Log
+# collection is stdout-only: services never write log files.
+
+# Filebeat 9 removed the old `container` input: the filestream input with
+# the container parser is its replacement — it unpacks the json-file
+# envelope (log/stream/time) into proper fields.
+filebeat.inputs:
+  - type: filestream
+    id: docker-containers
+    paths:
+      - /var/lib/docker/containers/*/*.log
+    parsers:
+      - container: ~
+    # Rotated/compressed logs are never re-read; live files only.
+    prospector.scanner.exclude_files: ['\.gz$']
+
+processors:
+  - add_docker_metadata: ~
+  # Logstash's own stdout is deliberately excluded from the pipeline: it
+  # logs a warning containing the full raw line for every input line that
+  # fails JSON parsing, so feeding its output back into itself creates a
+  # self-amplifying loop (each warning about its own warning grows the
+  # line by another layer of escaping). Its logs remain available with
+  # `docker compose logs logstash`.
+  - drop_event:
+      when:
+        equals:
+          container.labels.com_docker_compose_service: "logstash"
+
+output.logstash:
+  hosts: ["logstash:5044"]
+  # Built-in resilience (issue #58): a line is only acknowledged — and its
+  # offset recorded in the registry — after Logstash confirms it. While
+  # Logstash is down Filebeat backs off and retries, so a short pipeline
+  # outage delays logs instead of losing them.
+  loadbalance: true
+
+# Filebeat's own logs go to stdout: visible with `docker compose logs
+# filebeat`, and not written to files inside the container.
+logging.level: info
+logging.to_files: false
