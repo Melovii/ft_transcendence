@@ -150,3 +150,25 @@ path — cardinality stays bounded. `/metrics` sits outside `/api/v1` like
 `/healthz`: the gateway does not proxy it, only Prometheus (over `web`) and
 compose healthchecks use it. Add your compose service to
 `monitoring/prometheus.yml` as a scrape target when you land.
+
+## 9. Logging contract (issues #56–63)
+
+Everything below is already provided by `backend/shared/logging` — mount the
+logger the way `auth-service/cmd/server/main.go` does and you are compliant.
+The contract is what the ELK pipeline (`logging/` in compose) expects:
+
+| Field | Source | Notes |
+|---|---|---|
+| `time` | `shared/logging` | UTC RFC3339Nano; Logstash maps it to `@timestamp`. |
+| `level` | `shared/logging` | `debug`\|`info`\|`warn`\|`error`; Kibana filters on it. |
+| `msg` | `shared/logging` | Human-readable event name (e.g. `http_request`). |
+| `service` | `shared/logging` | Fixed per process; this is what Kibana groups by. |
+| `request_id` | request-id middleware | The correlation id: one login = one `request_id` across every line it logs. |
+
+- **stdout/stderr only** — never log to files. Filebeat reads container stdout;
+  `restart: unless-stopped` and log rotation are the platform's job.
+- **Environment variables** (validated at startup by `shared/logging`):
+  `APP_ENV` (`development`\|`production`\|`test`), `LOG_FORMAT` (`json` in
+  production), `LOG_LEVEL`. Logstash tags every event with the environment too.
+- Extra structured attributes on individual log lines are fine — they become
+  searchable Kibana fields automatically.

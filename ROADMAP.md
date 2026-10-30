@@ -180,6 +180,21 @@ request produced; show the ILM policy; try opening Elasticsearch directly — un
 policy is also an anti-tampering control; the pipeline telemetry → query → detection is
 what a SOC does daily.
 
+**Status: built and verified (2026-10-30).** Filebeat `filestream` input (container
+parser) ships every container's stdout to Logstash — not the GELF driver above; the
+plain HTTP `logging` network is `internal: true`, no published ports, Kibana is the only
+bridge to `web` behind the gateway at /kibana (Elasticsearch security login, generated
+credentials). JSON parse failure routes plain-text infra logs to daily `ftx-logs-raw-*`
+indices (also the dead-letter path); structured logs land behind the `ftx-logs-app`
+rollover alias with ILM hot→delete 30d, roll over at 1d/10 GB (verified hot/rollover
+via `_ilm/explain`). The gateway forwards `X-Request-Id`, so one id spans gateway +
+service logs — a login traced through /api/v1/auth/session found in Kibana. Stopping
+Logstash mid-traffic: all 10 traced requests indexed after restart, zero loss; Filebeat
+restart resumes from its registry volume with no duplicates. Logstash's own stdout is
+excluded from the pipeline (feeding it back is a self-amplifying warning loop).
+Elasticsearch and Logstash unreachable from the host; Kibana data endpoints 401
+without credentials. Snapshots/archiving are deferred to Phase 1 with the backup story.
+
 ---
 
 ## Phase 4 — Microservices (Major, 2 pts — coordinate with team)
