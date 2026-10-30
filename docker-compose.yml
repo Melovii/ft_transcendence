@@ -83,13 +83,6 @@ services:
         condition: service_healthy
       migrate:
         condition: service_completed_successfully
-    healthcheck:
-      # Public contract endpoint (alpine has busybox wget; user-service's
-      # distroless image can't do this).
-      test: ["CMD", "wget", "-qO-", "http://localhost:8080/api/v1/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 6
     networks:
       - web
       - db
