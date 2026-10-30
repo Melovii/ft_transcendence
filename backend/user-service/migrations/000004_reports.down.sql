@@ -1,0 +1,2 @@
+DROP FUNCTION users.file_report(BIGINT, BIGINT, TEXT, TEXT, BIGINT, INTERVAL);
+DROP TABLE users.reports;
