@@ -15,8 +15,8 @@ The platform provides:
 | Networks | `web` (gateway-facing) and `db` (internal, postgres). Join only what you use. |
 | Config | Environment variables only, validated at startup, never files baked into images. |
 | Logs | Structured JSON to **stdout** — the ELK pipeline (issues #56–63) ships container stdout. Nothing else. |
-| Metrics | `/metrics` on your service port; Prometheus (issues #73–79) scrapes over the `web` network. |
-| Health | `GET /api/v1/health` per the Bruno contract; compose healthchecks build on it. |
+| Metrics | `/metrics` on your service port, outside `/api/v1`; Prometheus (issues #73–79) scrapes over the `web` network. Use `shared/metrics` (below). |
+| Health | `GET /api/v1/health` per the Bruno contract; compose healthchecks build on it. Liveness/readiness probes may also live outside `/api/v1` (see user-service's `/healthz` and `/readyz`). |
 
 ## 1. Directory and module
 
@@ -125,3 +125,28 @@ Validate the JWT access token locally with the shared `JWT_SECRET` — do not
 call auth-service per request. Auth owns issuance and refresh; every other
 service only verifies signatures. This keeps services independently operable:
 stopping auth-service must not take down a running game.
+
+## 8. Metrics (issues #73–79)
+
+`backend/shared/metrics` provides the platform's Prometheus instrumentation.
+Mounting it is three lines in your server setup (copy from
+`auth-service/internal/server/http_server.go`):
+
+```go
+router.Use(requestid.Middleware(), requestLogger(logger), metrics.Middleware("my-service"), recovery)
+router.GET("/metrics", metrics.Handler())
+```
+
+Conventions — keep these names so dashboards and alerts work for every
+service without per-service glue:
+
+| Metric | Type | Labels |
+|---|---|---|
+| `http_requests_total` | counter | `service`, `method`, `route`, `status` |
+| `http_request_duration_seconds` | histogram (s) | `service`, `route` |
+
+The `route` label is Gin's route pattern (`/api/v1/auth/login`), never the raw
+path — cardinality stays bounded. `/metrics` sits outside `/api/v1` like
+`/healthz`: the gateway does not proxy it, only Prometheus (over `web`) and
+compose healthchecks use it. Add your compose service to
+`monitoring/prometheus.yml` as a scrape target when you land.

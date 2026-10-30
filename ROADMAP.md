@@ -121,6 +121,11 @@ immutable/offline (ransomware deletes reachable backups first).
 
 **Goal:** the monitoring Major module (2 pts).
 
+**Status: built and verified (2026-10-30).** All six scrape targets up, alert
+firing/recovery tested (ServiceDown on a stopped auth-service), Grafana
+behind `/grafana` with a generated admin password, Prometheus UI behind
+`/prometheus` behind nginx basic auth. Zero extra published ports.
+
 **Build:**
 
 ```
@@ -133,9 +138,10 @@ monitoring/
     └── alerting/            # alert notification channels
 ```
 
-- Prometheus scrapes: auth-service metrics endpoint (needs a small Gin middleware with
-  `client_golang`: request rate, error rate, latency histogram — another small backend PR),
-  postgres-exporter, node-exporter.
+- Prometheus scrapes: auth-service and user-service metrics endpoints (done:
+  `backend/shared/metrics` middleware, convention in docs/NEW-SERVICE.md §8),
+  postgres-exporter, node-exporter, plus a blackbox probe through the public
+  HTTPS chain so service-down means what a user experiences.
 - Grafana behind the gateway with its own login; never publishes a port directly.
 - Alert rules: service down > 1m, p95 latency, DB disk, backup file age (feeds Phase 1).
 
