@@ -29,6 +29,12 @@ scrape_configs:
     static_configs:
       - targets: ["user-service:8080"]
 
+  # Platform view: service liveness probes and backup ages for alerting
+  # (Phase 1's status service; feeds BackupStale and PostgresDown).
+  - job_name: status-service
+    static_configs:
+      - targets: ["status:8080"]
+
   # Infrastructure exporters.
   - job_name: postgres-exporter
     static_configs:

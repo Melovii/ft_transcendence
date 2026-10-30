@@ -48,6 +48,28 @@ groups:
 
   - name: infrastructure
     rules:
+      # Postgres is the state that matters; its exporter lives on `web`, so
+      # ServiceDown above cannot see a database outage — this probe does.
+      - alert: PostgresDown
+        expr: platform_service_up{service="postgres"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "PostgreSQL is unreachable"
+          description: "The status service's probe of the postgres exporter reports pg_up = 0."
+
+      # An untested backup is a hope, not a control — and a stale one is no
+      # backup at all. -1 means the kind never produced an artifact.
+      - alert: BackupStale
+        expr: platform_backup_age_seconds == -1 or platform_backup_age_seconds > 26 * 60 * 60
+        for: 1h
+        labels:
+          severity: critical
+        annotations:
+          summary: "{{ $labels.kind | title }} backups are stale"
+          description: "No {{ $labels.kind }} backup newer than 26h ({{ $value }}). Check the backup service and run docs/dr.md."
+
       - alert: HighCPU
         expr: 100 * (1 - avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m]))) > 85
         for: 10m

@@ -213,6 +213,25 @@ services:
       - web
     restart: unless-stopped
 
+  # ── status page (Phase 1) ───────────────────────────────────────────────────
+  # Polls every backend's health endpoint every 10s and serves the public
+  # status page through the gateway, plus platform_service_up /
+  # platform_backup_age_seconds metrics for alerting. Backups are watched
+  # read-only; the backup service (below) writes them.
+  status:
+    build:
+      context: ./backend
+      dockerfile: status-service/Dockerfile
+    environment:
+      APP_ENV: ${APP_ENV}
+      LOG_FORMAT: ${LOG_FORMAT}
+      LOG_LEVEL: ${LOG_LEVEL}
+    volumes:
+      - backups:/backups:ro
+    networks:
+      - web
+    restart: unless-stopped
+
   # ── ELK logging stack (issues #56–63) ─────────────────────────────────────
   # Everything lives on the internal `logging` network — no outbound route,
   # no published ports. Only Kibana also joins `web` so the gateway can
@@ -358,3 +377,4 @@ volumes:
   grafana-data:
   esdata:
   filebeat-data:
+  backups:
