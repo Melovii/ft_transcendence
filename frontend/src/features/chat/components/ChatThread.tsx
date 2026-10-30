@@ -77,6 +77,8 @@ export function ChatThread({
       />
       {channel.access === 'ACTIVE' ? (
         <Composer channelId={channelId} conversation={conversation} />
+      ) : channel.access === 'READ_ONLY' ? (
+        <ReadOnlyNotice />
       ) : (
         <AccessNotice channel={channel} onOpenProfile={onOpenProfile} />
       )}
@@ -481,7 +483,9 @@ function PendingBubble({
     failed &&
     (pending.failure === 'OFFLINE' ||
       pending.failure === 'TIMEOUT' ||
-      pending.failure === 'UNAVAILABLE');
+      pending.failure === 'UNAVAILABLE' ||
+      // Refused during the match: it can go again once chat reopens.
+      (pending.failure === 'READ_ONLY' && conversation.channel?.access === 'ACTIVE'));
 
   return (
     <div className={styles.outgoingRow}>
@@ -600,6 +604,20 @@ function Composer({ channelId, conversation }: { channelId: number; conversation
         )}
       </p>
     </form>
+  );
+}
+
+/**
+ * In place of the composer while the user's match runs: messages stay readable, sending
+ * waits until the match pauses or ends. The server says when either happens.
+ */
+function ReadOnlyNotice() {
+  const { t } = useTranslation();
+  return (
+    <div role="status" className={styles.accessNotice}>
+      <Icon name="timer" className="text-[20px] desktop:text-[16px]" />
+      <p>{t('chat.access.gameRunning')}</p>
+    </div>
   );
 }
 

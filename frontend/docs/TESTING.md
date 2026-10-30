@@ -24,8 +24,7 @@ mockSockets.scenario('opponent-turn'); // BLUE is playing, you wait
 mockSockets.scenario('game-over'); // RED won
 mockSockets.scenario('assassin-loss'); // RED lost on the assassin
 mockSockets.scenario('paused'); // staffing pause
-mockSockets.scenario('spectating'); // you watch a match
-mockSockets.scenario('spectator-claim'); // you can take a free seat
+mockSockets.scenario('seat-claim'); // you joined a paused match: take the free seat
 ```
 
 To get a room page: log in, click **Create Room**, confirm. The full scenario list is in
@@ -104,12 +103,12 @@ Alternative: start with `VITE_MOCK_AUTH=session-expired`.
 
 ### Join by code
 
-| Code     | Expected                                                                          |
-| -------- | --------------------------------------------------------------------------------- |
-| `QWER12` | Preview shows WAITING, 2 / 8 players. Join opens the room; you enter as spectator |
-| `FULL44` | Preview shows FULL; Join is refused                                               |
-| `BUSY77` | Preview shows IN GAME; Join opens the match as spectator                          |
-| `ZZZZZZ` | Room not found                                                                    |
+| Code     | Expected                                                                            |
+| -------- | ----------------------------------------------------------------------------------- |
+| `QWER12` | Preview shows WAITING, 2 / 8 players. Join opens the room; you enter without a seat |
+| `FULL44` | Preview shows FULL; Join is refused                                                 |
+| `BUSY77` | Preview shows IN GAME; Join is not offered while the match runs                     |
+| `ZZZZZZ` | Room not found                                                                      |
 
 ### Route recovery
 
@@ -119,11 +118,11 @@ Alternative: start with `VITE_MOCK_AUTH=session-expired`.
 
 ### Team, role and ready
 
-1. Join `QWER12`. You start as spectator.
+1. Join `QWER12`. You start without a seat; you appear under "Choosing a seat".
 2. Pick a team, then a role. The seat is claimed in one step (`room.role.select`).
 3. Try BLUE Spymaster: `word_wizard` holds it, so the seat is not offered.
 4. Mark ready, then unready.
-5. Choose "Watch instead" to go back to spectating.
+5. The room cannot start while anyone is still choosing a seat.
 
 ### Other players move
 
@@ -136,8 +135,8 @@ mockSockets.room().setReady(47, true);
 mockSockets.room().playerLeave(47);
 ```
 
-Expected: the member appears as spectator, moves to BLUE Operative, shows ready, then
-disappears.
+Expected: the member appears under "Choosing a seat", moves to BLUE Operative, shows
+ready, then disappears. A join during the countdown stops it with a notice.
 
 ### Host: settings and kick
 
@@ -149,7 +148,10 @@ disappears.
 4. As non-host: join `QWER12`, then run `mockSockets.room().kick(42)`. Expected: you
    return to the Lobby with a kick notice.
 5. As host, change the turn timer in the room header (No limit, 60, 90 or 120 seconds).
-   Non-hosts see it read-only. The word language is always English.
+   Non-hosts see it read-only.
+6. As host, change **Language** in the room header: English → Türkçe → Français. Every
+   member sees the new value; a reconnect (`mockSockets.room().dropConnection(500)`)
+   keeps it. Non-hosts see it read-only; the interface language does not change.
 
 ### Countdown and start
 
@@ -160,17 +162,17 @@ disappears.
 
 ### Leave
 
-| State            | How                                 | Expected                            |
-| ---------------- | ----------------------------------- | ----------------------------------- |
-| Lobby player     | Leave button                        | Confirmation, then Lobby            |
-| Spectator        | Leave button                        | Confirmation that you stop watching |
-| Match, Operative | `scenario('operative-turn')`, Leave | Warning about the leave penalty     |
-| Match, Spymaster | `scenario('spymaster-turn')`, Leave | Heavier penalty warning             |
-| Result screen    | `scenario('game-over')`, Exit       | Leaves at once, no dialog           |
+| State            | How                                 | Expected                        |
+| ---------------- | ----------------------------------- | ------------------------------- |
+| Lobby player     | Leave button                        | Confirmation, then Lobby        |
+| Match, Operative | `scenario('operative-turn')`, Leave | Warning about the leave penalty |
+| Match, Spymaster | `scenario('spymaster-turn')`, Leave | Heavier penalty warning         |
+| Result screen    | `scenario('game-over')`, Exit       | Leaves at once, no dialog       |
 
 ### Invites
 
-1. In a room, open **Invite Friends**. Invite `red_agent` (online). Expected: success.
+1. In a room, open `red_agent`'s profile and press **Invite**, or press **Invite** beside
+   `red_agent` in the chat panel's Friends tab. Expected: Invite Sent.
 2. Invite `blue_agent` (offline). Expected: the offline error.
 3. Receive an invite:
 
@@ -187,7 +189,10 @@ disappears.
 1. `mockSockets.scenario('spymaster-turn')`.
 2. Verify: every card shows its team color (RED, BLUE, neutral, assassin).
 3. Give a clue: one word and a number from 1 to 9. Try two words or an empty word to
-   see validation.
+   see validation. Type a board word in any case (for example `Ocean`): Give Clue stays
+   disabled with "This clue cannot be used because it is one of the words on the board."
+   From the console, `mockSockets.room().submitClue('<a board word>', 2)` is refused and
+   nothing changes.
 4. Expected after submit: the clue shows in the turn header; you wait while RED
    guesses. Simulate the guesses:
 
@@ -198,10 +203,14 @@ disappears.
 
 ### Operative
 
-1. `mockSockets.scenario('operative-turn')`. The clue is `ocean 2` (3 guesses).
+1. `mockSockets.scenario('operative-turn')`. The clue is `sea 2` (3 guesses).
 2. Verify: unrevealed cards show no team color.
-3. Click a card. Expected: it reveals its color; guesses left decrease.
-4. Use the end-turn control. Expected: the turn moves to BLUE.
+3. Click a card. Expected: it is only marked as selected; nothing is revealed. Click
+   another card: the selection moves. Revealed cards cannot be selected.
+4. Press **Confirm Guess**. Expected: the card reveals its color for every player;
+   guesses left decrease. Confirm Guess is disabled until a card is selected and while
+   the guess is on its way, so it cannot be sent twice.
+5. Use the end-turn control. Expected: the turn moves to BLUE.
 
 ### Turn outcomes
 
@@ -267,12 +276,21 @@ mockSockets.room().passTurn();
 5. Pause the game with `mockSockets.room().playerLeave(44)`. Expected: the countdown
    disappears. Restore staffing (see above): the turn resumes with the time it had left.
 
-### Spectator
+### Match history
 
-1. `mockSockets.scenario('spectating')`, or join `BUSY77`.
-2. Verify: the SPECTATOR badge; no card colors before reveal; no controls.
-3. `mockSockets.scenario('spectator-claim')`: a RED Operative seat is free. Take it.
-   Expected: you become RED Operative in the running match.
+1. `mockSockets.scenario('operative-turn')`. Under the board, **Match History** shows the
+   newest action; open it to see every action, newest first.
+2. Play: `mockSockets.guess('RED')`, `mockSockets.room().passTurn()`. Expected: entries
+   for the reveal, the pass and the turn change appear in order.
+3. `mockSockets.room().dropConnection(500)`. Expected: the same history after reconnect.
+4. As an Operative, no entry names the color of an unrevealed card.
+
+### Joining a paused match
+
+1. `mockSockets.scenario('seat-claim')`: you joined a match paused for a missing RED
+   Operative. Expected: the board shows no colors; the Game Paused dialog offers the seat.
+2. Take it. Expected: play resumes and you are RED Operative.
+3. If play resumes before you take a seat, you are returned to the Lobby with a notice.
 
 ## Real-Time and Reconnection
 
@@ -295,6 +313,11 @@ frame is also logged in the console.
 1. Open the profile menu, then Profile.
 2. Change the username. Try `red_agent` (taken) and an invalid value.
 3. Pick a preset avatar. Upload an image; a file above 2 MB is refused.
+   Expected: a new username or avatar shows everywhere at once, without a reload: the
+   profile menu, your seat in the Ready Room or the Game, the room chat, and the names in
+   Match History. Try it during a running match too; the game does not change.
+   `mockApi.server.profileUpdateBy(43, { username: 'agent_red' })` renames a friend:
+   the friend list, your direct conversation and the room follow.
 4. Delete the account: the confirmation needs the exact username. Expected: back to
    the Landing page with "Your account was deleted."
 
@@ -305,9 +328,44 @@ online status. Report the user once; a second report answers `ALREADY_REPORTED`.
 
 ### Friends
 
-1. The list shows `red_agent`, `blue_master` (online) and `blue_agent` (offline).
-2. Search users, add `word_wizard`, remove `blue_agent`.
-3. Add an existing friend: `ALREADY_FRIENDS`.
+1. The list shows `red_agent`, `blue_master` (online) and `blue_agent` (offline), and a
+   friend request from `clue_crafter` with Accept and Decline. The Friends button shows
+   the waiting request.
+2. Search `word_wizard` and press **Add Friend**. Expected: Request Sent; the button
+   cannot be pressed again. Run `mockApi.server.acceptFriendRequestBy(48)`. Expected:
+   `word_wizard` joins the friend list without a reload.
+3. Send a request to `silent_scout`, then run `mockApi.server.declineFriendRequestBy(51)`.
+   Expected: back to Add Friend; no friendship.
+4. Send a request to `night_owl`, then press **Cancel** on it (in the dialog's sent
+   requests, in search, or **Cancel Request** on the profile). Expected: back to Add
+   Friend; the request is gone for both users.
+5. Accept `clue_crafter`'s request. Decline one from
+   `mockApi.server.friendRequestFrom(46)`.
+
+### Blocking
+
+1. Open `red_agent`'s profile and press **Block User**. Expected: the friendship, Message
+   and Invite disappear; the button reads **Unblock User**.
+2. Expected: the direct chat with `red_agent` is closed, and search shows `red_agent` as
+   Blocked.
+3. **Unblock User**. Expected: the suspended friendship returns; a request cancelled by
+   the block does not.
+4. Run `mockApi.server.blockedBy(46)`, then search `extra_red` and press Add Friend.
+   Expected: "You cannot send a friend request to this user." The block itself is never
+   shown.
+
+### Chat during a match
+
+1. Start a match (`mockSockets.room().configureStartable('OPERATIVE')`) and open the chat.
+   Expected: room and direct conversations are readable, and the composer is replaced by
+   "Chat is unavailable while the game is active."
+2. `mockSockets.room().playerLeave(43)` pauses the match. Expected: the chat button and
+   panel stay above the Game Paused dialog and are not dimmed; the composer returns and
+   sending works. Tab from the dialog's Leave Game moves into the chat and back. Restore
+   staffing: the chat becomes read only again.
+3. Unread counts: with the panel closed, `mockSockets.chat.directMessage(44, 'hi')`.
+   Expected: a badge on the chat button and on the conversation; opening it clears them.
+   Your own messages never count.
 
 ### Chat
 

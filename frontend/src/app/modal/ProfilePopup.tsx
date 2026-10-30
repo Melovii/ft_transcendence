@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { openDirectChat } from '@features/chat/hooks/useChat';
-import { useFriendship } from '@features/friends/hooks/useFriendship';
+import { useRelationship } from '@features/friends/hooks/useRelationship';
 import { ProfileModal } from '@features/profile/components/ProfileModal';
 import type { InviteUnavailableReason } from '@features/profile/hooks/useInviteToRoom';
 import { useRoomStore } from '@features/room/store/roomStore';
@@ -10,7 +10,7 @@ import { useSessionStore } from '@shared/stores';
 
 /**
  * The Profile pop-up with everything it needs from other features, joined here at app
- * level so no feature imports another: the friendship from `friends`, the room the user
+ * level so no feature imports another: the relationship and its actions from `friends`, the room the user
  * is in from the room store, GAME HISTORY from `stats`, Message from `chat`, and the Room
  * Owner's Remove from Room, which the room screen confirms.
  *
@@ -30,7 +30,7 @@ export function ProfilePopup({ userId, onClose }: { userId: number; onClose: () 
 }
 
 function OtherProfile({ userId, onClose }: { userId: number; onClose: () => void }) {
-  const friendship = useFriendship(userId);
+  const friendship = useRelationship(userId);
   const activeRoomId = useSessionStore((state) => state.activeRoomId);
   const room = useRoomStore((state) =>
     state.room && state.room.room_id === activeRoomId ? state.room : null,

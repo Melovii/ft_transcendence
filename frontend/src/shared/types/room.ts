@@ -9,14 +9,11 @@
 import type { Score, Team } from './common';
 import type { Game } from './game';
 
-/** The two roles that play. A participant holds one of them and a team. */
-export type PlayingRole = 'SPYMASTER' | 'OPERATIVE';
-
 /**
- * Every member holds one role. A `SPECTATOR` has `team: null`, is never ready, does not
- * count toward the start conditions and receives the Operative-safe board.
+ * The two roles. There is no spectator: a member holds one of them and a team, or is
+ * unseated (`team: null`, `role: null`) while choosing a seat.
  */
-export type RoomRole = PlayingRole | 'SPECTATOR';
+export type PlayingRole = 'SPYMASTER' | 'OPERATIVE';
 
 export type RoomStatus = 'WAITING' | 'COUNTDOWN' | 'IN_GAME' | 'POST_GAME' | 'CLOSED';
 
@@ -28,8 +25,8 @@ export type MemberState = 'IN_LOBBY' | 'IN_GAME' | 'POST_GAME';
 
 /**
  * Room capacity bounds. `max_players` is chosen at creation (default 8) and can be changed
- * by the host while `WAITING`, never below the current `player_count`. Participants and
- * spectators both count. The minimum equals the smallest startable room.
+ * by the host while `WAITING`, never below the current `player_count`. Every member counts,
+ * seated or not. The minimum equals the smallest startable room.
  */
 export const ROOM_CAPACITY = { min: 4, max: 20, default: 8 } as const;
 
@@ -40,8 +37,12 @@ export const ROOM_CAPACITY = { min: 4, max: 20, default: 8 } as const;
 export const TURN_TIMER_OPTIONS = [null, 60, 90, 120] as const;
 export type TurnTimerSeconds = (typeof TURN_TIMER_OPTIONS)[number];
 
-/** Word-pack languages a room can use; the first is the default. */
-export const ROOM_LANGUAGES = ['en'] as const;
+/**
+ * Word-pack languages a room can use; the first is the default. This is a game setting
+ * that picks the board's words, not the interface language.
+ */
+export const ROOM_LANGUAGES = ['en', 'tr', 'fr'] as const;
+export type RoomLanguage = (typeof ROOM_LANGUAGES)[number];
 
 /** `^[A-Z0-9]{6}$` — the one canonical shareable room-code format. */
 export const ROOM_CODE_PATTERN = /^[A-Z0-9]{6}$/;
@@ -51,10 +52,10 @@ export interface RoomMember {
   username: string;
   /** Same-origin URL of the member's current avatar. */
   avatar_url: string;
-  /** `null` while the member spectates. */
+  /** `null` while the member is unseated. */
   team: Team | null;
-  /** Every member joins as `SPECTATOR` and claims a `{team, role}` pair later. */
-  role: RoomRole;
+  /** Every member joins unseated (`null`) and claims a `{team, role}` pair later. */
+  role: PlayingRole | null;
   ready: boolean;
   state: MemberState;
   is_host: boolean;

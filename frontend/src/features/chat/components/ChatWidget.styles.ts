@@ -131,6 +131,24 @@ export const row: string =
 
 export const rowStatic: string = `${rowBase} cursor-default`;
 
+/** A friend's row with Invite beside it: the conversation fills the row, Invite sits at its end. */
+export const rowWithAction: string = 'flex items-center gap-[8px]';
+
+const inviteBase: string =
+  'inline-flex h-[32px] shrink-0 items-center gap-[5px] rounded-pill border-(length:--stroke-default) ' +
+  'px-[12px] text-sm leading-none font-bold transition-colors duration-150 ' +
+  'desktop:h-[28px] desktop:px-[10px] desktop:text-[11px]';
+
+/** Invite: the profile's outline coral button at the size of a chat row. */
+export const invite = {
+  ready:
+    `${inviteBase} border-secondary-dark bg-surface text-secondary-dark ` +
+    'not-aria-disabled:hover:bg-secondary-dark/10',
+  sending: `${inviteBase} border-secondary-dark bg-surface text-secondary-dark opacity-70`,
+  sent: `${inviteBase} border-success-deep bg-success-soft text-surface`,
+  unavailable: `${inviteBase} cursor-default border-disabled bg-disabled text-text-muted`,
+};
+
 export const rowAvatar: string =
   'h-[46px] w-[46px] text-2xl desktop:h-[37px] desktop:w-[37px] desktop:text-lg';
 

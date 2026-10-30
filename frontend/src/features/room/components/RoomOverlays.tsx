@@ -37,9 +37,7 @@ export function LeaveRoomDialog({
       ? 'room.leave.game.body.SPYMASTER'
       : action.kind === 'LEAVE_GAME_OPERATIVE'
         ? 'room.leave.game.body.OPERATIVE'
-        : action.kind === 'LEAVE_SPECTATING'
-          ? 'room.leave.room.bodySpectator'
-          : 'room.leave.room.body';
+        : 'room.leave.room.body';
   const leaving = status === 'LEAVING';
 
   return (
@@ -67,7 +65,7 @@ export function KickDialog({ kick, inMatch }: { kick: KickMember; inMatch: boole
   const { target } = kick;
   if (!target) return null;
   const kicking = kick.status === 'KICKING';
-  const playing = inMatch && target.role !== 'SPECTATOR';
+  const playing = inMatch && target.role !== null;
 
   return (
     <ConfirmDialog

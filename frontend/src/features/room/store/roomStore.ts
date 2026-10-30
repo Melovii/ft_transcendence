@@ -23,10 +23,11 @@ export interface CountdownCancellation {
 
 /**
  * Why the server ended this player's membership, told just before it closed the socket:
- * the host removed them, their result screen timed out, or the room shut down because a
- * team stayed short of players.
+ * the host removed them, their result screen timed out, the paused match they joined
+ * resumed before they took a seat, or the room shut down because a team stayed short of
+ * players.
  */
-export type RoomExit = 'KICKED' | 'POST_GAME_TIMEOUT' | 'INSUFFICIENT_PLAYERS';
+export type RoomExit = 'KICKED' | 'POST_GAME_TIMEOUT' | 'SEAT_UNAVAILABLE' | 'INSUFFICIENT_PLAYERS';
 
 interface RoomState {
   room: Room | null;
@@ -130,6 +131,7 @@ export const useRoomStore = create<RoomState>((set, get) => ({
           if (event.payload.player.user_id !== self) return;
           if (event.payload.reason === 'KICKED_BY_HOST') set({ exit: 'KICKED' });
           if (event.payload.reason === 'POST_GAME_TIMEOUT') set({ exit: 'POST_GAME_TIMEOUT' });
+          if (event.payload.reason === 'SEAT_UNAVAILABLE') set({ exit: 'SEAT_UNAVAILABLE' });
         }
         return;
       }

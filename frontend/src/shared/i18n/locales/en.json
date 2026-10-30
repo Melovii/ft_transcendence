@@ -380,7 +380,8 @@
 				"waiting": "WAITING",
 				"full": "FULL",
 				"inGame": "IN GAME",
-				"closed": "NOT OPEN"
+				"closed": "NOT OPEN",
+				"seatOpen": "SEAT OPEN"
 			},
 			"submit": "Join Room",
 			"joining": "Joining",
@@ -394,8 +395,9 @@
 				"full": "This room is full.",
 				"notJoinable": "This room isn't taking new players right now."
 			},
-			"spectate": "Join to Watch",
-			"notJoinable": "Not Open"
+			"notJoinable": "Not Open",
+			"takeSeat": "Join to Take a Seat",
+			"inGame": "Match in Progress"
 		},
 		"feedback": {
 			"createFailedTitle": "Couldn't create the room",
@@ -440,8 +442,7 @@
 			"room": {
 				"title": "Leave Room?",
 				"body": "You will leave this room and lose your team and role. Your seat opens for another player.",
-				"confirm": "Leave Room",
-				"bodySpectator": "You'll leave this room and return to the lobby."
+				"confirm": "Leave Room"
 			},
 			"game": {
 				"title": "Leave Game?",
@@ -461,7 +462,8 @@
 				"PLAYER_LEFT": "Countdown stopped: {{username}} left the room.",
 				"TEAM_CHANGED": "Countdown stopped: {{username}} changed team.",
 				"ROLE_CHANGED": "Countdown stopped: {{username}} changed role.",
-				"PLAYER_KICKED": "Countdown stopped: {{username}} was removed from the room."
+				"PLAYER_KICKED": "Countdown stopped: {{username}} was removed from the room.",
+				"PLAYER_JOINED": "Countdown stopped: {{username}} joined and needs a seat."
 			}
 		},
 		"ready": {
@@ -512,7 +514,7 @@
 			"role": {
 				"SPYMASTER": "Spymaster",
 				"OPERATIVE": "Operative",
-				"SPECTATOR": "Spectator"
+				"NONE": "No role yet"
 			},
 			"status": {
 				"ready": "Ready!",
@@ -542,7 +544,7 @@
 			"change": "Change",
 			"choose": "Choose",
 			"hints": {
-				"teamFirst": "Choose a team, then a role. Until then you're watching.",
+				"teamFirst": "Choose a team, then a role. The match starts once everyone has a seat.",
 				"spymasterTaken": "{{username}} is this team's Spymaster.",
 				"locked": "The match is starting, so your setup is locked.",
 				"hostOnly": "Only the room owner can change the room size.",
@@ -553,7 +555,8 @@
 					"POST_GAME_PENDING": "Some players are still viewing the last result."
 				},
 				"claim": "Choose a role to join the {{team}} team.",
-				"timerHostOnly": "Only the room owner can change the turn timer."
+				"timerHostOnly": "Only the room owner can change the turn timer.",
+				"languageHostOnly": "Only the room owner can change the room language."
 			},
 			"errors": {
 				"roleConflict": "Another player just took this team's Spymaster seat.",
@@ -565,10 +568,11 @@
 				"offline": "You're offline. Try again once you're reconnected.",
 				"generic": "That didn't work. Try again.",
 				"postGamePending": "Wait until everyone is back from the last result.",
-				"timer": "That turn timer isn't available. Pick one from the list."
+				"timer": "That turn timer isn't available. Pick one from the list.",
+				"languageHostOnly": "Only the room host can change the room language.",
+				"language": "That language isn't available. Pick one from the list."
 			},
-			"spectators": "Spectators",
-			"spectate": "Watch instead"
+			"unseated": "Choosing a seat"
 		},
 		"recovery": {
 			"notMember": "You are no longer in that room.",
@@ -578,7 +582,8 @@
 			"legacy": "You're still in a room from an older version of the game, which can't be opened here. It closes on its own once it ends.",
 			"kicked": "The room owner removed you from the room.",
 			"postGameTimeout": "You didn't choose in time, so you left the room after the match.",
-			"insufficientPlayers": "The room closed: a team stayed without a player it needed. The match didn't count."
+			"insufficientPlayers": "The room closed: a team stayed without a player it needed. The match didn't count.",
+			"seatUnavailable": "The match resumed before you took a seat, so you left the room."
 		},
 		"invites": {
 			"title": "{{username}} invited you to play",
@@ -590,11 +595,11 @@
 		},
 		"settings": {
 			"timer": "Turn timer",
-			"language": "Words",
+			"language": "Language",
 			"noLimit": "No limit",
 			"seconds_one": "{{count}} second",
 			"seconds_other": "{{count}} seconds",
-			"ownerYou": "You're the room owner. You can remove players, change the room size and set the turn timer.",
+			"ownerYou": "You're the room owner. You can remove players, change the room size, set the turn timer and choose the room language.",
 			"ownerOnly": "Only the room owner can change the room settings."
 		},
 		"kick": {
@@ -661,9 +666,10 @@
 			"opponentClue": "{{team}} Spymaster Is Choosing",
 			"opponentBody": "Wait for your turn. Cards can't be picked right now.",
 			"spymasterOpponentBody": "Wait for your turn to give a clue.",
-			"spectatingBody": "You're watching this match. Take a free seat when one opens.",
 			"pausedTitle": "Waiting for Players…",
-			"pausedBody": "A team is missing a player. Play resumes when the seat is taken."
+			"pausedBody": "A team is missing a player. Play resumes when the seat is taken.",
+			"unseatedTitle": "Take the Free Seat",
+			"unseatedBody": "Choose the free seat to play in this match."
 		},
 		"pass": {
 			"action": "Pass",
@@ -678,7 +684,7 @@
 			"openProfile": "Open {{username}}'s profile"
 		},
 		"card": {
-			"pick": "Pick {{word}}",
+			"pick": "Select {{word}}",
 			"key": "{{word}}, {{affiliation}}",
 			"revealed": "{{word}}, revealed: {{affiliation}}",
 			"affiliation": {
@@ -686,7 +692,8 @@
 				"BLUE": "Blue agent",
 				"NEUTRAL": "Bystander",
 				"ASSASSIN": "Assassin"
-			}
+			},
+			"selected": "{{word}}, selected"
 		},
 		"leave": "Leave Game",
 		"results": {
@@ -708,13 +715,14 @@
 			"invalidClue": "The clue must be one word of up to 30 letters.",
 			"invalidNumber": "Choose a number from 1 to 9.",
 			"invalidCard": "That card isn't on this board.",
-			"alreadyRevealed": "That card was already revealed.",
 			"noGuesses": "Your team has no guesses left.",
 			"notYourTurn": "It isn't your turn any more.",
 			"roleForbidden": "Your role can't do that.",
 			"finished": "The match is already over.",
 			"offline": "You're offline. Try again once the connection is back.",
-			"generic": "Something went wrong. Try again."
+			"generic": "Something went wrong. Try again.",
+			"guessInvalid": "This guess is no longer valid.",
+			"clueOnBoard": "This clue cannot be used because it is one of the words on the board."
 		},
 		"staffing": {
 			"title": "Game Paused",
@@ -740,6 +748,33 @@
 			"claimTitle": "Take a free seat",
 			"claim": "{{team}} {{role}}",
 			"claimClosed": "That seat can't be taken right now."
+		},
+		"guess": {
+			"confirm": "Confirm Guess",
+			"confirming": "Confirming…",
+			"confirmLabel": "Confirm guess: {{word}}",
+			"selected": "Selected: {{word}}. Confirm to guess it."
+		},
+		"log": {
+			"title": "Match History",
+			"empty": "Nothing has happened yet.",
+			"started": "{{team}} Team starts the match",
+			"clue": "{{team}} Spymaster {{username}} gave the clue \"{{word}}\" — {{number}}",
+			"revealed": "{{username}} selected \"{{word}}\" — {{affiliation}}",
+			"passed": "{{username}} ended the {{team}} Team's turn",
+			"turn": "Turn changed to {{team}} Team",
+			"timeUp": "{{previous}} Team ran out of time — {{team}} Team's turn",
+			"paused": "Paused: {{username}} left the {{team}} Team",
+			"resumed": "Play resumed — {{team}} Team's turn",
+			"won": "{{team}} Team wins",
+			"wonAssassin": "{{team}} Team wins — the assassin was revealed",
+			"cancelled": "Match cancelled: a team stayed short of players",
+			"color": {
+				"RED": "Red",
+				"BLUE": "Blue",
+				"NEUTRAL": "Neutral",
+				"ASSASSIN": "Assassin"
+			}
 		}
 	},
 	"profile": {
@@ -759,14 +794,18 @@
 		},
 		"friend": {
 			"add": "Add Friend",
-			"adding": "Adding…",
 			"remove": "Remove Friend",
 			"removing": "Removing…",
 			"loadFailed": "Your friends list couldn't load.",
-			"failed": {
-				"ADDING": "Couldn't add this friend. Try again.",
-				"REMOVING": "Couldn't remove this friend. Try again."
-			}
+			"sending": "Sending…",
+			"requestSent": "Request Sent",
+			"accept": "Accept",
+			"accepting": "Accepting…",
+			"decline": "Decline",
+			"declining": "Declining…",
+			"received": "{{username}} sent you a friend request.",
+			"cancel": "Cancel Request",
+			"cancelling": "Cancelling…"
 		},
 		"message": "Message",
 		"invite": {
@@ -851,6 +890,13 @@
 				"INVALID": "The report couldn't be accepted. Check the reason and details.",
 				"FAILED": "The report couldn't be sent. Try again."
 			}
+		},
+		"block": {
+			"block": "Block User",
+			"blocking": "Blocking…",
+			"unblock": "Unblock User",
+			"unblocking": "Unblocking…",
+			"hint": "You blocked {{username}}. You can't message, invite or befriend each other until you unblock them."
 		}
 	},
 	"chat": {
@@ -947,7 +993,8 @@
 				"TIMEOUT": "Not sent yet: the server didn't answer.",
 				"UNAVAILABLE": "Not sent: chat is unavailable right now.",
 				"REVOKED": "Not sent: you can't message this chat anymore.",
-				"INVALID": "Not sent: the message was rejected."
+				"INVALID": "Not sent: the message was rejected.",
+				"READ_ONLY": "Not sent: chat is unavailable while the game is active."
 			}
 		},
 		"access": {
@@ -960,10 +1007,14 @@
 				"KICKED_BY_HOST": "You were removed from this room, so its chat is closed.",
 				"POST_GAME_TIMEOUT": "Room chat closed after the game.",
 				"ROOM_CLOSED": "This room has closed."
-			}
+			},
+			"gameRunning": "Chat is unavailable while the game is active. It opens again when the game is paused or over."
 		},
 		"unknownPlayer": "Player",
-		"retry": "Try again"
+		"retry": "Try again",
+		"invite": {
+			"label": "Invite {{username}} to your room"
+		}
 	},
 	"settings": {
 		"title": "Settings",
@@ -1063,7 +1114,7 @@
 	},
 	"friends": {
 		"title": "Friends",
-		"subtitle": "Your friends and players to add.",
+		"subtitle": "Your friends, requests and players to add.",
 		"count_one": "{{count}} friend",
 		"count_other": "{{count}} friends",
 		"openLabel_one": "Friends, {{count}} friend",
@@ -1079,7 +1130,7 @@
 		"search": {
 			"label": "Search players by username",
 			"placeholder": "Search by username",
-			"hint": "Up to {{max}} characters. Friendship is instant: there is nothing to accept.",
+			"hint": "Up to {{max}} characters. A friend request needs the other player to accept it.",
 			"resultsTitle": "Search results",
 			"resultCount_one": "{{count}} player found",
 			"resultCount_other": "{{count}} players found",
@@ -1089,13 +1140,43 @@
 			"emptyTitle": "No players found",
 			"emptyBody": "No username contains “{{term}}”.",
 			"alreadyFriend": "Friend",
-			"add": "Add",
-			"adding": "Adding…",
-			"addLabel": "Add {{username}} as a friend",
-			"addNotFound": "This player no longer exists.",
-			"addFailed": "Couldn't add this player. Try again.",
+			"add": "Add Friend",
+			"adding": "Sending…",
+			"addLabel": "Send {{username}} a friend request",
 			"more": "Show more",
-			"loadingMore": "Loading…"
+			"loadingMore": "Loading…",
+			"blocked": "Blocked"
+		},
+		"requests": {
+			"incomingTitle_one": "{{count}} friend request",
+			"incomingTitle_other": "{{count}} friend requests",
+			"outgoingTitle_one": "{{count}} request sent",
+			"outgoingTitle_other": "{{count}} requests sent",
+			"sent": "Request Sent",
+			"accept": "Accept",
+			"accepting": "Accepting…",
+			"acceptLabel": "Accept {{username}}'s friend request",
+			"decline": "Decline",
+			"declining": "Declining…",
+			"declineLabel": "Decline {{username}}'s friend request",
+			"waiting_one": "{{count}} friend request waiting",
+			"waiting_other": "{{count}} friend requests waiting",
+			"cancel": "Cancel",
+			"cancelling": "Cancelling…",
+			"cancelLabel": "Cancel your friend request to {{username}}"
+		},
+		"errors": {
+			"blocked": "You cannot send a friend request to this user.",
+			"cannotAccept": "You can't accept this request.",
+			"notFound": "This player no longer exists.",
+			"requestGone": "This request is no longer pending.",
+			"REQUEST": "Couldn't send the friend request. Try again.",
+			"ACCEPT": "Couldn't accept the request. Try again.",
+			"DECLINE": "Couldn't decline the request. Try again.",
+			"REMOVE": "Couldn't remove this friend. Try again.",
+			"BLOCK": "Couldn't block this user. Try again.",
+			"UNBLOCK": "Couldn't unblock this user. Try again.",
+			"CANCEL": "Couldn't cancel the request. Try again."
 		}
 	}
 }

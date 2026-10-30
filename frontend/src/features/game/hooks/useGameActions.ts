@@ -2,6 +2,11 @@
  * The player's game commands — give a clue, pick a card, pass — with the feedback the
  * board shows while one is in flight and after the server turns one down.
  *
+ * Guessing takes two steps. Selecting a card only marks it here, on this client: nothing
+ * is sent and nothing is revealed, and selecting another card replaces the selection.
+ * Confirm Guess then sends the selected card as `game.card.guess`, and the server decides
+ * what the card is.
+ *
  * Nothing on the board changes when a command is sent. The clue, the revealed card, the
  * score and the next turn appear when the server's `game.*` events arrive, for this client
  * and every other one alike, so a pick that loses a race with a teammate's never shows a
@@ -47,11 +52,13 @@ function messageFor(error: unknown): string {
   const code = error instanceof RoomCommandError ? error.code : null;
   switch (code) {
     case 'INVALID_CLUE':
-      return 'game.errors.invalidClue';
+      return error instanceof RoomCommandError && error.details.reason === 'WORD_ON_BOARD'
+        ? 'game.errors.clueOnBoard'
+        : 'game.errors.invalidClue';
     case 'INVALID_CLUE_NUMBER':
       return 'game.errors.invalidNumber';
     case 'CARD_ALREADY_REVEALED':
-      return 'game.errors.alreadyRevealed';
+      return 'game.errors.guessInvalid';
     case 'INVALID_CARD':
       return 'game.errors.invalidCard';
     case 'NO_GUESSES_REMAINING':
@@ -75,8 +82,8 @@ export function useGameActions() {
   const connection = useRoomConnection();
   const online = useConnectionStore((state) => state.room.status === 'OPEN');
   const [pending, setPending] = useState<GameAction | null>(null);
-  /** The card whose pick is on its way to the server. */
-  const [pickedCard, setPickedCard] = useState<number | null>(null);
+  /** The card selected for Confirm Guess; it stays marked while its guess is on its way. */
+  const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<GameFeedback | null>(null);
   const busy = useRef(false);
   const mounted = useRef(true);
@@ -113,7 +120,7 @@ export function useGameActions() {
         busy.current = false;
         if (mounted.current) {
           setPending(null);
-          setPickedCard(null);
+          if (action === 'guess') setSelectedCard(null);
         }
       }
     },
@@ -122,7 +129,7 @@ export function useGameActions() {
 
   return {
     pending,
-    pickedCard,
+    selectedCard,
     feedback,
     dismissFeedback: useCallback(() => setFeedback(null), []),
     /** Resolves `true` once the server accepted the clue. */
@@ -131,14 +138,21 @@ export function useGameActions() {
         run('clue', () => connection.request('game.clue.submit', { word, number })),
       [connection, run],
     ),
-    guessCard: useCallback(
-      (cardId: number) => {
-        if (busy.current || connection.getStatus() !== 'OPEN') return;
-        setPickedCard(cardId);
-        void run('guess', () => connection.request('game.card.guess', { card_id: cardId }));
-      },
-      [connection, run],
-    ),
+    /** Mark a card for Confirm Guess, replacing any earlier selection. Sends nothing. */
+    selectCard: useCallback((cardId: number) => {
+      if (busy.current) return;
+      setSelectedCard(cardId);
+      setFeedback(null);
+    }, []),
+    clearSelection: useCallback(() => {
+      if (!busy.current) setSelectedCard(null);
+    }, []),
+    /** Send the selected card as the team's guess; the server reveals it, or refuses. */
+    confirmGuess: useCallback(() => {
+      if (busy.current || selectedCard === null || connection.getStatus() !== 'OPEN') return;
+      const cardId = selectedCard;
+      void run('guess', () => connection.request('game.card.guess', { card_id: cardId }));
+    }, [connection, run, selectedCard]),
     passTurn: useCallback(
       () => void run('pass', () => connection.request('game.turn.pass', {})),
       [connection, run],

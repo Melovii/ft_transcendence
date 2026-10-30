@@ -2,8 +2,9 @@
  * Join Room by code: `GET /api/v2/rooms/lookup/{room_code}`, then
  * `POST /api/v2/rooms/{room_id}/members`.
  *
- * A room that is counting down or playing still takes players: they join as spectators and
- * may claim a free seat from inside.
+ * A lobby takes players while it waits or counts down; a match takes a joiner only while it
+ * is paused for a missing player, to fill that seat. Every joiner arrives without a seat and
+ * claims one from inside.
  *
  * As soon as the field holds a well-formed code, the lookup runs and the dialog previews
  * the room's occupancy and status. The preview only decides what the dialog offers; Join

@@ -1,5 +1,6 @@
 /**
- * INVITE on a friend's profile: invite them into the room the signed-in user is in now.
+ * INVITE for a friend — on their profile and beside them in the chat panel: invite them
+ * into the room the signed-in user is in now, through the one room invitation endpoint.
  *
  * `room` is that room as its live snapshot has it, or `null` outside a room. The button's
  * state is derived from it on every render, so a room that fills up, starts, or gains the
@@ -50,8 +51,11 @@ const REASON_BY_CODE: Record<string, InviteUnavailableReason> = {
   NOT_ROOM_MEMBER: 'NO_ACTIVE_ROOM',
 };
 
+/** The friend as the invite needs them: who they are and whether they are online. */
+export type InviteTarget = Pick<ProfileView, 'user_id' | 'is_online'>;
+
 /** What a server refusal depended on; when any of it changes, the refusal no longer holds. */
-function contextOf(room: Room | null, friend: ProfileView): string {
+function contextOf(room: Room | null, friend: InviteTarget): string {
   return room
     ? `${room.room_id}|${room.status}|${room.post_game ? 1 : 0}|${room.player_count}|${room.max_players}|${friend.is_online}`
     : 'none';
@@ -68,7 +72,7 @@ function roomReason(room: Room | null, friendId: number): InviteUnavailableReaso
 }
 
 export function useInviteToRoom(
-  friend: ProfileView,
+  friend: InviteTarget,
   room: Room | null,
   /** Told when the server refuses, so the caller can re-read what it found stale. */
   onRefused?: (reason: InviteUnavailableReason) => void,

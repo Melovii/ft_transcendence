@@ -12,9 +12,12 @@
 import { REPORT_DETAILS_MAX, REPORT_REASONS, ROOM_CAPACITY } from '@shared/types';
 import type {
   ApiErrorBody,
+  BlockResponse,
   ReportUserResponse,
   Friend,
   FriendListResponse,
+  FriendRequest,
+  FriendRequestListResponse,
   HealthResponse,
   InviteFriendResponse,
   LoginResponse,
@@ -22,6 +25,7 @@ import type {
   OwnProfile,
   PublicProfile,
   RefreshResponse,
+  Relationship,
   RegisterResponse,
   RestErrorCode,
   Room,
@@ -48,6 +52,7 @@ import type { MockApiConfig, MockEndpoint, MockOutcome } from './config';
 import {
   AVATAR_PRESETS,
   SEED_FRIEND_IDS,
+  SEED_INCOMING_REQUEST_IDS,
   SEED_MATCHES,
   SEED_ROOM_MEMBERS,
   SELF_USER_ID,
@@ -157,10 +162,37 @@ const roomPattern = (suffix: string): RegExp =>
 const isPositiveInt = (value: unknown): value is number =>
   typeof value === 'number' && Number.isInteger(value) && value > 0;
 
+const blockedError = (userId: number) =>
+  new HttpError(403, 'RELATIONSHIP_BLOCKED', 'You cannot send a friend request to this user.', {
+    user_id: userId,
+  });
+const requestNotFound = (requestId: number) =>
+  new HttpError(404, 'REQUEST_NOT_FOUND', `Friend request ${requestId} is not pending for you.`, {
+    request_id: requestId,
+  });
+
+/** A pending request between the signed-in user and another user. */
+interface MockFriendRequest {
+  request_id: number;
+  from_user_id: number;
+  to_user_id: number;
+  created_at: string;
+}
+
 export class MockApiServer {
   private readonly config: MockApiConfig;
   private accounts: MockAccount[] = [];
+  /**
+   * Friendships of the signed-in user, active or suspended by a block. Only an active one
+   * (no block either way) counts as a friend anywhere.
+   */
   private friendIds = new Set<number>();
+  /** Users the signed-in user blocks. */
+  private blockedIds = new Set<number>();
+  /** Users who block the signed-in user; never revealed, only enforced. */
+  private blockedByIds = new Set<number>();
+  private requests = new Map<number, MockFriendRequest>();
+  private nextRequestId = 701;
   private sessionUserId: number | null = null;
   /** `false` models an expired `ft_session` whose `ft_refresh` still works. */
   private accessValid = true;
@@ -180,7 +212,7 @@ export class MockApiServer {
     mockSession.authorized = () => this.isAuthenticated();
     // The mock Channel Service asks this server, as the real one asks User/Auth.
     mockDirectory.selfId = () => this.sessionUserId ?? SELF_USER_ID;
-    mockDirectory.isFriend = (userId) => this.friendIds.has(userId);
+    mockDirectory.isFriend = (userId) => this.isActiveFriend(userId);
     mockDirectory.user = (userId) => {
       const account = this.accounts.find((a) => a.user_id === userId);
       return account
@@ -210,6 +242,13 @@ export class MockApiServer {
   reset(): void {
     this.accounts = seedAccounts();
     this.friendIds = new Set(SEED_FRIEND_IDS);
+    this.blockedIds = new Set();
+    this.blockedByIds = new Set();
+    this.requests = new Map();
+    this.nextRequestId = 701;
+    for (const fromId of SEED_INCOMING_REQUEST_IDS) {
+      this.addRequest(fromId, SELF_USER_ID, new Date(Date.now() - 3_600_000).toISOString());
+    }
     this.rooms.forEach((_entry, id) => mockRooms.delete(id));
     this.rooms = new Map();
     this.nextRoomId = 1001;
@@ -252,6 +291,242 @@ export class MockApiServer {
     return this.respondError(
       new HttpError(404, 'VALIDATION_ERROR', `No route for ${method} ${path}.`),
     );
+  }
+
+  /* ------------------------------ other users act -------------------------- */
+
+  /** `userId` sends the signed-in user a friend request. */
+  friendRequestFrom(userId: number): void {
+    const me = this.sessionUserId ?? SELF_USER_ID;
+    if (this.relationshipTo(userId) !== 'NONE' || this.blockedByIds.has(userId)) {
+      console.warn(
+        `[mock api] ${userId} cannot send a request now (${this.relationshipTo(userId)}).`,
+      );
+      return;
+    }
+    const request = this.addRequest(userId, me);
+    mockChat.notify('friend.request.received', { request: this.toRequest(request) });
+  }
+
+  /** `userId` accepts the signed-in user's pending request. */
+  acceptFriendRequestBy(userId: number): void {
+    const request = this.pendingBetween(this.sessionUserId ?? SELF_USER_ID, userId);
+    if (!request) {
+      console.warn(`[mock api] no pending request to ${userId}.`);
+      return;
+    }
+    this.resolveAccepted(request);
+  }
+
+  /** `userId` declines the signed-in user's pending request. */
+  declineFriendRequestBy(userId: number): void {
+    const request = this.pendingBetween(this.sessionUserId ?? SELF_USER_ID, userId);
+    if (!request) {
+      console.warn(`[mock api] no pending request to ${userId}.`);
+      return;
+    }
+    this.resolve(request, 'DECLINED');
+  }
+
+  /** `userId` blocks (or, with `false`, unblocks) the signed-in user. */
+  blockedBy(userId: number, blocking = true): void {
+    if (blocking)
+      this.applyBlock(userId, () => this.blockedByIds.add(userId), 'FRIENDSHIP_REMOVED');
+    else this.liftBlock(userId, () => this.blockedByIds.delete(userId));
+  }
+
+  /** `userId` changes their username or avatar, as `Update own profile` would. */
+  profileUpdateBy(userId: number, profile: { username?: string; avatar_url?: string }): void {
+    const account = this.accounts.find((a) => a.user_id === userId);
+    if (!account) {
+      console.warn(`[mock api] no account ${userId}.`);
+      return;
+    }
+    if (profile.username !== undefined) account.username = profile.username;
+    if (profile.avatar_url !== undefined) account.avatar_url = profile.avatar_url;
+    this.profileChanged(account, profile);
+  }
+
+  /**
+   * A confirmed username or avatar change reaches every view of the user: the members of
+   * their active room through `room.player.updated`, and on the chat socket the user's own
+   * sessions, their friends and the other side of a pending request.
+   */
+  private profileChanged(
+    account: MockAccount,
+    changed: { username?: string; avatar_url?: string },
+  ): void {
+    const roomId = this.activeRoomId(account.user_id);
+    if (roomId !== null) mockRooms.get(roomId)?.updateMemberProfile(account.user_id, changed);
+    const me = this.sessionUserId ?? SELF_USER_ID;
+    const relationship = account.user_id === me ? null : this.relationshipTo(account.user_id);
+    if (
+      relationship === null ||
+      ['FRIENDS', 'REQUEST_SENT', 'REQUEST_RECEIVED'].includes(relationship)
+    ) {
+      mockChat.notify('user.profile.updated', {
+        user_id: account.user_id,
+        username: account.username,
+        avatar_url: account.avatar_url,
+      });
+    }
+  }
+
+  /* ------------------------------ relationships ----------------------------- */
+
+  private isActiveFriend(userId: number): boolean {
+    return (
+      this.friendIds.has(userId) && !this.blockedIds.has(userId) && !this.blockedByIds.has(userId)
+    );
+  }
+
+  /** The signed-in user's view; a block by the other user reads as `NONE`. */
+  private relationshipTo(userId: number): Relationship {
+    if (this.blockedIds.has(userId)) return 'BLOCKED';
+    if (this.isActiveFriend(userId)) return 'FRIENDS';
+    if (this.blockedByIds.has(userId)) return 'NONE';
+    const me = this.sessionUserId ?? SELF_USER_ID;
+    const request = this.pendingBetween(me, userId) ?? this.pendingBetween(userId, me);
+    if (!request) return 'NONE';
+    return request.from_user_id === me ? 'REQUEST_SENT' : 'REQUEST_RECEIVED';
+  }
+
+  private relationshipFields(userId: number): {
+    relationship: Relationship;
+    friend_request_id: number | null;
+  } {
+    const relationship = this.relationshipTo(userId);
+    const me = this.sessionUserId ?? SELF_USER_ID;
+    const request =
+      relationship === 'REQUEST_SENT' || relationship === 'REQUEST_RECEIVED'
+        ? (this.pendingBetween(me, userId) ?? this.pendingBetween(userId, me))
+        : undefined;
+    return { relationship, friend_request_id: request?.request_id ?? null };
+  }
+
+  private pendingBetween(fromId: number, toId: number): MockFriendRequest | undefined {
+    return [...this.requests.values()].find(
+      (r) => r.from_user_id === fromId && r.to_user_id === toId,
+    );
+  }
+
+  private addRequest(fromId: number, toId: number, createdAt = new Date().toISOString()) {
+    const request: MockFriendRequest = {
+      request_id: this.nextRequestId++,
+      from_user_id: fromId,
+      to_user_id: toId,
+      created_at: createdAt,
+    };
+    this.requests.set(request.request_id, request);
+    return request;
+  }
+
+  private userOf(userId: number) {
+    const account = this.accounts.find((a) => a.user_id === userId);
+    return {
+      user_id: userId,
+      username: account?.username ?? `user_${userId}`,
+      avatar_url: account?.avatar_url ?? '',
+    };
+  }
+
+  private toRequest(request: MockFriendRequest): FriendRequest {
+    return {
+      request_id: request.request_id,
+      from_user: this.userOf(request.from_user_id),
+      to_user: this.userOf(request.to_user_id),
+      status: 'PENDING',
+      created_at: request.created_at,
+    };
+  }
+
+  private toFriend(userId: number): Friend {
+    const account = this.accounts.find((a) => a.user_id === userId);
+    return { ...this.userOf(userId), is_online: account?.is_online ?? false };
+  }
+
+  /** The other user of a request, from the signed-in user's side. */
+  private otherOf(request: MockFriendRequest): number {
+    const me = this.sessionUserId ?? SELF_USER_ID;
+    return request.from_user_id === me ? request.to_user_id : request.from_user_id;
+  }
+
+  /** `userId` withdraws the request they sent the signed-in user. */
+  cancelFriendRequestBy(userId: number): void {
+    const request = this.pendingBetween(userId, this.sessionUserId ?? SELF_USER_ID);
+    if (!request) {
+      console.warn(`[mock api] no pending request from ${userId}.`);
+      return;
+    }
+    this.resolve(request, 'CANCELLED');
+  }
+
+  private resolve(request: MockFriendRequest, status: 'DECLINED' | 'CANCELLED'): void {
+    this.requests.delete(request.request_id);
+    mockChat.notify('friend.request.resolved', {
+      request_id: request.request_id,
+      from_user_id: request.from_user_id,
+      to_user_id: request.to_user_id,
+      status,
+    });
+  }
+
+  /** Resolving the request and adding the friendship are one step, so it happens once. */
+  private resolveAccepted(request: MockFriendRequest): Friend {
+    this.requests.delete(request.request_id);
+    const other = this.otherOf(request);
+    this.friendIds.add(other);
+    const friend = this.toFriend(other);
+    mockChat.notify('friend.request.resolved', {
+      request_id: request.request_id,
+      from_user_id: request.from_user_id,
+      to_user_id: request.to_user_id,
+      status: 'ACCEPTED',
+      friend,
+    });
+    mockChat.friendshipChanged(other, true);
+    return friend;
+  }
+
+  /**
+   * A block, either way: pending requests between the two users are cancelled and their
+   * friendship is suspended, all in one step.
+   */
+  private applyBlock(
+    userId: number,
+    add: () => void,
+    reason: 'USER_BLOCKED' | 'FRIENDSHIP_REMOVED',
+  ): void {
+    const wasFriend = this.isActiveFriend(userId);
+    add();
+    for (const request of [...this.requests.values()]) {
+      if (this.otherOf(request) === userId) this.resolve(request, 'CANCELLED');
+    }
+    if (wasFriend) {
+      mockChat.notify('friend.removed', { user_id: userId });
+      mockChat.friendshipChanged(userId, false, reason);
+    }
+  }
+
+  /** Lifting a block restores a suspended friendship once no block is left; nothing else. */
+  private liftBlock(userId: number, remove: () => void): void {
+    const wasFriend = this.isActiveFriend(userId);
+    remove();
+    if (!wasFriend && this.isActiveFriend(userId)) {
+      mockChat.notify('friend.restored', { friend: this.toFriend(userId) });
+      mockChat.friendshipChanged(userId, true);
+    }
+  }
+
+  private requireUser(userId: unknown, field = 'user_id'): MockAccount {
+    if (!isPositiveInt(userId)) throw validation(`${field} must be a positive integer.`, field);
+    const account = this.accounts.find((a) => a.user_id === userId);
+    if (!account) {
+      throw new HttpError(404, 'USER_NOT_FOUND', `User ${userId} was not found.`, {
+        user_id: userId,
+      });
+    }
+    return account;
   }
 
   /* ------------------------------ forced outcomes --------------------------- */
@@ -331,7 +606,7 @@ export class MockApiServer {
     // Full: 4 of 4 players.
     this.addRoom('FULL44', 4, players(SEED_ROOM_MEMBERS.full));
 
-    // Already playing: joining it means watching as a spectator.
+    // Already playing: not joinable while its match runs.
     const playing = this.addRoom('BUSY77', 8, players(SEED_ROOM_MEMBERS.playing));
     const seats = [
       [shark, 'RED', 'SPYMASTER'],
@@ -626,7 +901,10 @@ export class MockApiServer {
                 },
               );
             }
-            account.username = next;
+            if (next !== account.username) {
+              account.username = next;
+              this.profileChanged(account, { username: next });
+            }
           }
           return ok(toOwnProfile(account, this.activeRoomId(account.user_id)));
         },
@@ -667,6 +945,9 @@ export class MockApiServer {
             mockRooms.get(roomId)?.playerLeave(account.user_id, 'ACCOUNT_DELETED');
           this.accounts = this.accounts.filter((a) => a.user_id !== account.user_id);
           this.friendIds = new Set();
+          this.blockedIds = new Set();
+          this.blockedByIds = new Set();
+          this.requests = new Map();
           this.sessionUserId = null;
           this.refreshValid = false;
           return noContent;
@@ -783,7 +1064,7 @@ export class MockApiServer {
           user_id: a.user_id,
           username: a.username,
           avatar_url: a.avatar_url,
-          is_friend: this.friendIds.has(a.user_id),
+          ...this.relationshipFields(a.user_id),
         }));
         return ok({
           results,
@@ -821,7 +1102,9 @@ export class MockApiServer {
               user_id: userId,
             });
           }
-          return ok(toPublicProfile(account) satisfies PublicProfile);
+          return ok(
+            toPublicProfile(account, this.relationshipFields(userId)) satisfies PublicProfile,
+          );
         },
         {
           'not-found': () =>
@@ -850,6 +1133,7 @@ export class MockApiServer {
           }
           const account = this.self();
           account.avatar_url = URL.createObjectURL(file);
+          this.profileChanged(account, { avatar_url: account.avatar_url });
           return ok({ avatar_url: account.avatar_url } satisfies UploadAvatarResponse);
         },
         {
@@ -882,7 +1166,9 @@ export class MockApiServer {
               { field: 'preset_id' },
             );
           }
-          this.self().avatar_url = preset.avatar_url;
+          const account = this.self();
+          account.avatar_url = preset.avatar_url;
+          this.profileChanged(account, { avatar_url: preset.avatar_url });
           return ok({ avatar_url: preset.avatar_url } satisfies UploadAvatarResponse);
         },
         {
@@ -905,7 +1191,7 @@ export class MockApiServer {
           throw validation('offset must be a non-negative integer.', 'offset');
         }
         const all: Friend[] = this.accounts
-          .filter((a) => this.friendIds.has(a.user_id))
+          .filter((a) => this.isActiveFriend(a.user_id))
           .sort(
             (a, b) =>
               a.username.toLowerCase().localeCompare(b.username.toLowerCase()) ||
@@ -926,43 +1212,133 @@ export class MockApiServer {
         } satisfies FriendListResponse);
       }),
 
+      route('listFriendRequests', 'GET', /^\/friends\/requests$/, true, () => {
+        const me = selfId();
+        const newest = (a: MockFriendRequest, b: MockFriendRequest) =>
+          b.created_at.localeCompare(a.created_at) || b.request_id - a.request_id;
+        const all = [...this.requests.values()].sort(newest);
+        return ok({
+          incoming: all.filter((r) => r.to_user_id === me).map((r) => this.toRequest(r)),
+          outgoing: all.filter((r) => r.from_user_id === me).map((r) => this.toRequest(r)),
+        } satisfies FriendRequestListResponse);
+      }),
+
       route(
-        'addFriend',
+        'sendFriendRequest',
         'POST',
-        /^\/friends$/,
+        /^\/friends\/requests$/,
         true,
         ({ options }) => {
-          const { user_id: userId } = bodyOf<{ user_id: number }>(options);
-          if (!isPositiveInt(userId) || userId === selfId()) {
-            throw validation('user_id must be a positive integer other than your own.', 'user_id');
-          }
-          const account = this.accounts.find((a) => a.user_id === userId);
-          if (!account) {
-            throw new HttpError(404, 'USER_NOT_FOUND', `User ${userId} was not found.`, {
-              user_id: userId,
-            });
-          }
-          if (this.friendIds.has(userId)) {
+          const me = selfId();
+          const { user_id: rawId } = bodyOf<{ user_id: number }>(options);
+          if (rawId === me)
+            throw validation('You cannot send a friend request to yourself.', 'user_id');
+          const userId = this.requireUser(rawId).user_id;
+          if (this.blockedIds.has(userId) || this.blockedByIds.has(userId))
+            throw blockedError(userId);
+          if (this.isActiveFriend(userId)) {
             throw new HttpError(409, 'ALREADY_FRIENDS', `User ${userId} is already a friend.`, {
               user_id: userId,
             });
           }
-          this.friendIds.add(userId);
-          mockChat.friendshipChanged(userId, true);
-          return created({
-            user_id: account.user_id,
-            username: account.username,
-            avatar_url: account.avatar_url,
-            is_online: account.is_online,
-          } satisfies Friend);
+          const sent = this.pendingBetween(me, userId);
+          if (sent) {
+            throw new HttpError(
+              409,
+              'REQUEST_ALREADY_SENT',
+              `A friend request to user ${userId} is already pending.`,
+              { user_id: userId, request_id: sent.request_id },
+            );
+          }
+          const received = this.pendingBetween(userId, me);
+          if (received) {
+            throw new HttpError(
+              409,
+              'REQUEST_ALREADY_RECEIVED',
+              `User ${userId} already sent you a friend request.`,
+              { user_id: userId, request_id: received.request_id },
+            );
+          }
+          const request = this.toRequest(this.addRequest(me, userId));
+          mockChat.notify('friend.request.received', { request });
+          return created(request);
         },
         {
+          forbidden: () => blockedError(45),
           'not-found': () =>
             new HttpError(404, 'USER_NOT_FOUND', 'User 9999 was not found.', { user_id: 9999 }),
           conflict: () =>
-            new HttpError(409, 'ALREADY_FRIENDS', 'User 43 is already a friend.', { user_id: 43 }),
-          'validation-error': () => validation('user_id must be a positive integer.', 'user_id'),
+            new HttpError(
+              409,
+              'REQUEST_ALREADY_SENT',
+              'A friend request to user 43 is already pending.',
+              {
+                user_id: 43,
+                request_id: 701,
+              },
+            ),
+          'validation-error': () =>
+            validation('You cannot send a friend request to yourself.', 'user_id'),
         },
+      ),
+
+      route(
+        'acceptFriendRequest',
+        'POST',
+        /^\/friends\/requests\/([^/]+)\/accept$/,
+        true,
+        ({ params }) => {
+          const requestId = Number(params[0]);
+          if (!isPositiveInt(requestId))
+            throw validation('request_id must be a positive integer.', 'request_id');
+          const request = this.requests.get(requestId);
+          if (!request || request.to_user_id !== selfId()) throw requestNotFound(requestId);
+          const other = request.from_user_id;
+          if (this.blockedIds.has(other) || this.blockedByIds.has(other)) throw blockedError(other);
+          return ok(this.resolveAccepted(request) satisfies Friend);
+        },
+        { 'not-found': () => requestNotFound(702) },
+      ),
+
+      route(
+        'declineFriendRequest',
+        'POST',
+        /^\/friends\/requests\/([^/]+)\/decline$/,
+        true,
+        ({ params }) => {
+          const requestId = Number(params[0]);
+          if (!isPositiveInt(requestId))
+            throw validation('request_id must be a positive integer.', 'request_id');
+          const request = this.requests.get(requestId);
+          if (!request || request.to_user_id !== selfId()) throw requestNotFound(requestId);
+          this.resolve(request, 'DECLINED');
+          return noContent;
+        },
+        { 'not-found': () => requestNotFound(702) },
+      ),
+
+      route(
+        'cancelFriendRequest',
+        'DELETE',
+        /^\/friends\/requests\/([^/]+)$/,
+        true,
+        ({ params }) => {
+          const requestId = Number(params[0]);
+          if (!isPositiveInt(requestId))
+            throw validation('request_id must be a positive integer.', 'request_id');
+          const request = this.requests.get(requestId);
+          if (!request || request.from_user_id !== selfId()) {
+            throw new HttpError(
+              404,
+              'REQUEST_NOT_FOUND',
+              `Friend request ${requestId} is not pending from you.`,
+              { request_id: requestId },
+            );
+          }
+          this.resolve(request, 'CANCELLED');
+          return noContent;
+        },
+        { 'not-found': () => requestNotFound(701) },
       ),
 
       route(
@@ -972,17 +1348,63 @@ export class MockApiServer {
         true,
         ({ params }) => {
           const userId = Number(params[0]);
-          if (!this.friendIds.delete(userId)) {
+          if (!this.isActiveFriend(userId)) {
             throw new HttpError(404, 'NOT_FRIENDS', `User ${params[0]} is not a friend.`, {
               user_id: userId,
             });
           }
+          this.friendIds.delete(userId);
+          mockChat.notify('friend.removed', { user_id: userId });
           mockChat.friendshipChanged(userId, false);
           return noContent;
         },
         {
           'not-found': () =>
             new HttpError(404, 'NOT_FRIENDS', 'User 9999 is not a friend.', { user_id: 9999 }),
+        },
+      ),
+
+      /* -------------------------------- blocking ----------------------------- */
+
+      route(
+        'blockUser',
+        'PUT',
+        /^\/users\/([^/]+)\/block$/,
+        true,
+        ({ params }) => {
+          const userId = Number(params[0]);
+          if (userId === selfId()) throw validation('You cannot block yourself.', 'user_id');
+          this.requireUser(userId);
+          if (!this.blockedIds.has(userId)) {
+            this.applyBlock(userId, () => this.blockedIds.add(userId), 'USER_BLOCKED');
+          }
+          return ok({
+            user_id: userId,
+            blocked_at: new Date().toISOString(),
+          } satisfies BlockResponse);
+        },
+        {
+          'not-found': () =>
+            new HttpError(404, 'USER_NOT_FOUND', 'User 9999 was not found.', { user_id: 9999 }),
+          'validation-error': () => validation('You cannot block yourself.', 'user_id'),
+        },
+      ),
+
+      route(
+        'unblockUser',
+        'DELETE',
+        /^\/users\/([^/]+)\/block$/,
+        true,
+        ({ params }) => {
+          const userId = Number(params[0]);
+          if (userId === selfId()) throw validation('You cannot unblock yourself.', 'user_id');
+          this.requireUser(userId);
+          this.liftBlock(userId, () => this.blockedIds.delete(userId));
+          return noContent;
+        },
+        {
+          'not-found': () =>
+            new HttpError(404, 'USER_NOT_FOUND', 'User 9999 was not found.', { user_id: 9999 }),
         },
       ),
 
@@ -1056,7 +1478,7 @@ export class MockApiServer {
             status: room.status,
             player_count: room.player_count,
             max_players: room.max_players,
-            joinable: room.status === 'WAITING' && !full && entry.server.joinable(),
+            joinable: !full && entry.server.joinable(),
           } satisfies RoomLookupResponse);
         },
         {
@@ -1169,7 +1591,7 @@ export class MockApiServer {
               user_id: userId,
             });
           }
-          if (!this.friendIds.has(userId)) {
+          if (!this.isActiveFriend(userId)) {
             throw new HttpError(404, 'NOT_FRIENDS', `User ${userId} is not a friend.`, {
               user_id: userId,
             });

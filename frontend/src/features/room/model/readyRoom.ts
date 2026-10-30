@@ -11,8 +11,8 @@ import type { Room, RoomMember, Team } from '@shared/types';
 
 /**
  * Seats drawn per team while it is short of players: a startable team needs a Spymaster
- * and at least one Operative. Only seats that can still be filled are drawn, by spectators
- * or by players the room still has room for.
+ * and at least one Operative. Only seats that can still be filled are drawn, by unseated
+ * members or by players the room still has room for.
  */
 const SEATS_PER_TEAM = 2;
 
@@ -26,8 +26,8 @@ export interface TeamRoster {
 export interface Rosters {
   red: TeamRoster;
   blue: TeamRoster;
-  /** Spectators: every member until they claim a team and a role, and whoever stays out. */
-  spectators: RoomMember[];
+  /** Members who have not claimed a team and a role yet; the room cannot start until they do. */
+  unseated: RoomMember[];
 }
 
 const byJoinOrder = (a: RoomMember, b: RoomMember): number =>
@@ -37,8 +37,8 @@ export function rosters(room: Room): Rosters {
   const members = [...room.players].sort(byJoinOrder);
   const red = members.filter((p) => p.team === 'RED' && isParticipant(p));
   const blue = members.filter((p) => p.team === 'BLUE' && isParticipant(p));
-  const spectators = members.filter((p) => !isParticipant(p));
-  let open = Math.max(0, room.max_players - room.player_count) + spectators.length;
+  const unseated = members.filter((p) => !isParticipant(p));
+  let open = Math.max(0, room.max_players - room.player_count) + unseated.length;
   const seats = (count: number): number => {
     const seatsShown = Math.min(Math.max(0, SEATS_PER_TEAM - count), open);
     open -= seatsShown;
@@ -47,15 +47,13 @@ export function rosters(room: Room): Rosters {
   return {
     red: { team: 'RED', members: red, emptySeats: seats(red.length) },
     blue: { team: 'BLUE', members: blue, emptySeats: seats(blue.length) },
-    spectators,
+    unseated,
   };
 }
 
-/** A member who holds a team and a playing role; spectators do neither. */
+/** A member who holds a team and a role; an unseated member holds neither. */
 export const isParticipant = (member: RoomMember): boolean =>
-  member.role !== 'SPECTATOR' && member.team !== null;
-
-export const participantCount = (room: Room): number => room.players.filter(isParticipant).length;
+  member.role !== null && member.team !== null;
 
 export const readyCount = (room: Room): number =>
   room.players.filter((p) => isParticipant(p) && p.ready).length;
@@ -93,14 +91,14 @@ export type ReadyState =
     };
 
 /**
- * Ready needs a team and a playing role (`TEAM_REQUIRED`, `ROLE_REQUIRED`), a waiting
- * room, and nobody still on the last result (`POST_GAME_PENDING`). Spectators never ready.
+ * Ready needs a team and a role (`TEAM_REQUIRED`, `ROLE_REQUIRED`), a waiting room, and
+ * nobody still on the last result (`POST_GAME_PENDING`).
  */
 export function readyState(room: Room, me: RoomMember): ReadyState {
   if (setupLocked(room)) return { kind: 'UNAVAILABLE', reason: 'LOCKED' };
   if (me.ready) return { kind: 'READY' };
   if (!me.team) return { kind: 'UNAVAILABLE', reason: 'TEAM_REQUIRED' };
-  if (me.role === 'SPECTATOR') return { kind: 'UNAVAILABLE', reason: 'ROLE_REQUIRED' };
+  if (!me.role) return { kind: 'UNAVAILABLE', reason: 'ROLE_REQUIRED' };
   if (postGamePending(room).length > 0) return { kind: 'UNAVAILABLE', reason: 'POST_GAME_PENDING' };
   return { kind: 'AVAILABLE' };
 }

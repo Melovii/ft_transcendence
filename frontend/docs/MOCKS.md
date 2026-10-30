@@ -90,7 +90,7 @@ friends, chat history and match history.
 | -------- | ---- | ---------------------- | -------------------------------------------------------- | ----------------------------------------------------------- |
 | `QWER12` | 1001 | `WAITING`, 2 of 8      | `word_wizard`, `redacted_rita`                           | Join a lobby with free seats; `in-room` session starts here |
 | `FULL44` | 1002 | `WAITING`, 4 of 4      | `extra_red`, `night_owl`, `clue_crafter`, `silent_scout` | Full room: join is refused with `ROOM_FULL`                 |
-| `BUSY77` | 1003 | `IN_GAME`, BLUE starts | `card_shark`, `mind_reader`, `lucky_guess`, `echo_ops`   | Running match: joining makes you a spectator                |
+| `BUSY77` | 1003 | `IN_GAME`, BLUE starts | `card_shark`, `mind_reader`, `lucky_guess`, `echo_ops`   | Running match: join is refused until a player leaves it     |
 
 Rooms created over mock REST get ids from `1004`. A room socket that connects to an id
 the mock REST server does not know starts in `VITE_MOCK_ROOM_SCENARIO`.
@@ -112,6 +112,8 @@ The room scenarios and `configureStartable()` use these players (`MOCK_BOTS` in
 
 - **Friends of `player_one`:** `red_agent` and `blue_master` (online), `blue_agent`
   (offline). None of them is in a room, so invites to them work.
+- **Friend requests:** `clue_crafter` (50) has sent `player_one` a request, waiting for
+  Accept or Decline. Nobody is blocked.
 - **Direct chat:** a short recent conversation with `red_agent`, and 64 older messages
   with `blue_master` for history paging.
 - **Match history:** five finished matches of `player_one` (`fixtures.ts`,
@@ -153,31 +155,36 @@ Outcomes: `success`, `validation-error`, `unauthorized`, `forbidden`, `not-found
 `unauthorized` works on every endpoint that needs a session. The others work only where
 the contract documents them; otherwise the console warns and the call succeeds.
 
-| Endpoint key         | Documented outcomes                                      |
-| -------------------- | -------------------------------------------------------- |
-| `register`           | `validation-error`, `conflict`                           |
-| `login`              | `unauthorized`, `validation-error`                       |
-| `refresh`            | `unauthorized`                                           |
-| `updateOwnProfile`   | `validation-error`, `conflict`                           |
-| `deleteOwnAccount`   | `validation-error`                                       |
-| `reportUser`         | `not-found`, `conflict`, `validation-error`              |
-| `getPublicProfile`   | `not-found`, `validation-error`                          |
-| `uploadAvatar`       | `validation-error`                                       |
-| `selectAvatarPreset` | `validation-error`                                       |
-| `addFriend`          | `not-found`, `conflict`, `validation-error`              |
-| `removeFriend`       | `not-found`                                              |
-| `createRoom`         | `conflict`, `validation-error`                           |
-| `lookupRoom`         | `not-found`, `validation-error`                          |
-| `joinRoom`           | `not-found`, `conflict`, `validation-error`              |
-| `getRoom`            | `not-found`, `forbidden`, `validation-error`             |
-| `leaveRoom`          | `not-found`, `forbidden`                                 |
-| `inviteFriend`       | `forbidden`, `not-found`, `conflict`, `validation-error` |
-| `openDirectChannel`  | `forbidden`, `not-found`, `validation-error`             |
-| `messageHistory`     | `forbidden`, `not-found`                                 |
+| Endpoint key           | Documented outcomes                                      |
+| ---------------------- | -------------------------------------------------------- |
+| `register`             | `validation-error`, `conflict`                           |
+| `login`                | `unauthorized`, `validation-error`                       |
+| `refresh`              | `unauthorized`                                           |
+| `updateOwnProfile`     | `validation-error`, `conflict`                           |
+| `deleteOwnAccount`     | `validation-error`                                       |
+| `reportUser`           | `not-found`, `conflict`, `validation-error`              |
+| `getPublicProfile`     | `not-found`, `validation-error`                          |
+| `uploadAvatar`         | `validation-error`                                       |
+| `selectAvatarPreset`   | `validation-error`                                       |
+| `sendFriendRequest`    | `forbidden`, `not-found`, `conflict`, `validation-error` |
+| `acceptFriendRequest`  | `not-found`                                              |
+| `declineFriendRequest` | `not-found`                                              |
+| `cancelFriendRequest`  | `not-found`                                              |
+| `blockUser`            | `not-found`, `validation-error`                          |
+| `unblockUser`          | `not-found`                                              |
+| `removeFriend`         | `not-found`                                              |
+| `createRoom`           | `conflict`, `validation-error`                           |
+| `lookupRoom`           | `not-found`, `validation-error`                          |
+| `joinRoom`             | `not-found`, `conflict`, `validation-error`              |
+| `getRoom`              | `not-found`, `forbidden`, `validation-error`             |
+| `leaveRoom`            | `not-found`, `forbidden`                                 |
+| `inviteFriend`         | `forbidden`, `not-found`, `conflict`, `validation-error` |
+| `openDirectChannel`    | `forbidden`, `not-found`, `validation-error`             |
+| `messageHistory`       | `forbidden`, `not-found`                                 |
 
 Endpoints with no documented error: `health`, `session`, `endSession`,
 `getOwnProfile`, `searchUsers`, `matchHistory`, `listAvatarPresets`, `listFriends`,
-`listChannels`.
+`listFriendRequests`, `listChannels`.
 
 Example:
 
@@ -203,39 +210,39 @@ mockSockets.scenario('operative-turn');
 
 Replaces the current room with a fresh room in that scenario. The room keeps its code,
 the socket reconnects and the page receives the new `room.state`. `player_one` sits on
-RED or watches.
+RED, or joins a paused match to take its free seat.
 
-| Scenario          | State                                                                                                  |
-| ----------------- | ------------------------------------------------------------------------------------------------------ |
-| `empty`           | Only you, host, in `WAITING`                                                                           |
-| `room-waiting`    | `red_agent` (RED Operative, ready), `blue_master` (BLUE Spymaster, ready), `blue_agent` spectating     |
-| `room-full`       | Capacity 4, all seats taken                                                                            |
-| `countdown`       | Both teams staffed and ready; the 3-second countdown runs, then the game starts. You are RED Operative |
-| `spymaster-turn`  | Game running, RED to give a clue. You are RED Spymaster                                                |
-| `operative-turn`  | RED Spymaster gave `ocean 2`. You are RED Operative and can guess                                      |
-| `opponent-turn`   | BLUE started and gave `forest 2`. You are RED Operative and wait                                       |
-| `game-over`       | RED revealed all nine cards; result screen with RED winning                                            |
-| `assassin-loss`   | You are RED Operative; the assassin was revealed; RED loses                                            |
-| `paused`          | RED's Spymaster left mid-match; game paused, staffing countdown runs                                   |
-| `spectating`      | Four bots play; you watch as a spectator after clue `ocean 2`                                          |
-| `spectator-claim` | Bots play; RED's last Operative disconnected; you can take the seat                                    |
+| Scenario         | State                                                                                                  |
+| ---------------- | ------------------------------------------------------------------------------------------------------ |
+| `empty`          | Only you, host, in `WAITING`                                                                           |
+| `room-waiting`   | `red_agent` (RED Operative, ready), `blue_master` (BLUE Spymaster, ready), `blue_agent` still unseated |
+| `room-full`      | Capacity 4, all seats taken                                                                            |
+| `countdown`      | Both teams staffed and ready; the 3-second countdown runs, then the game starts. You are RED Operative |
+| `spymaster-turn` | Game running, RED to give a clue. You are RED Spymaster                                                |
+| `operative-turn` | RED Spymaster gave `sea 2`. You are RED Operative and can guess                                        |
+| `opponent-turn`  | BLUE started and gave `trees 2`. You are RED Operative and wait                                        |
+| `game-over`      | RED revealed all nine cards; result screen with RED winning                                            |
+| `assassin-loss`  | You are RED Operative; the assassin was revealed; RED loses                                            |
+| `paused`         | RED's Spymaster left mid-match; game paused, staffing countdown runs                                   |
+| `seat-claim`     | Bots play; RED's last Operative disconnected; you joined the paused match and can take the seat        |
 
 ### Room Methods
 
 | Command                                                                 | Effect                                                                                                                                                                                        |
 | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `mockSockets.room().playerJoin({ user_id: 47, username: 'night_owl' })` | A player joins as spectator                                                                                                                                                                   |
+| `mockSockets.room().playerJoin({ user_id: 47, username: 'night_owl' })` | A player joins unseated. In a lobby a countdown stops; a running match refuses the join unless it is paused                                                                                   |
 | `mockSockets.room().playerLeave(43)`                                    | A member leaves (`EXITED`). Optional second argument: `SESSION_ENDED`, `DISCONNECTED`, `POST_GAME_TIMEOUT`, `KICKED_BY_HOST`, `ACCOUNT_DELETED`. Mid-match it may pause the game for staffing |
 | `mockSockets.room().selectTeam(43, 'BLUE')`                             | A member picks a team                                                                                                                                                                         |
-| `mockSockets.room().selectRole(47, 'OPERATIVE', 'BLUE')`                | A member claims a team and role together, or returns to `'SPECTATOR'`                                                                                                                         |
+| `mockSockets.room().selectRole(47, 'OPERATIVE', 'BLUE')`                | A member claims a team and role together; mid-match only an unseated joiner of a paused game may                                                                                              |
 | `mockSockets.room().setReady(43, true)`                                 | A member toggles ready                                                                                                                                                                        |
 | `mockSockets.room().updateSettings(6)`                                  | Host changes capacity                                                                                                                                                                         |
 | `mockSockets.room().setTurnTimer(60)`                                   | Host sets the turn timer: `null`, `60`, `90` or `120`                                                                                                                                         |
+| `mockSockets.room().submitClue('ocean', 2)` with a board word           | Refused with `INVALID_CLUE` (`WORD_ON_BOARD`); nothing changes                                                                                                                                |
 | `mockSockets.room().expireTurn()`                                       | The active turn runs out of time now; the turn passes to the other team                                                                                                                       |
 | `mockSockets.room().kick(43)`                                           | Host removes a member. `kick(42)` kicks you when a bot is host                                                                                                                                |
 | `mockSockets.room().configureStartable('SPYMASTER')`                    | Fill both teams, ready everyone, start the countdown. Argument is your RED role                                                                                                               |
 | `mockSockets.room().startGame('BLUE')`                                  | Skip the countdown; start with that team                                                                                                                                                      |
-| `mockSockets.room().submitClue('ocean', 2)`                             | Active team's Spymaster gives a clue                                                                                                                                                          |
+| `mockSockets.room().submitClue('sea', 2)`                               | Active team's Spymaster gives a clue                                                                                                                                                          |
 | `mockSockets.room().guessCard(5)`                                       | Active team's Operative guesses card id `5`                                                                                                                                                   |
 | `mockSockets.guess('NEUTRAL')`                                          | Guess the first unrevealed card of `RED`, `BLUE`, `NEUTRAL` or `ASSASSIN`                                                                                                                     |
 | `mockSockets.room().passTurn()`                                         | Active team ends its guessing                                                                                                                                                                 |
@@ -264,9 +271,23 @@ mockSockets.room().graceMs.room = 10000; // seat hold after a drop in the lobby 
 
 ### Chat Methods
 
+| Command                                     | Effect                                                       |
+| ------------------------------------------- | ------------------------------------------------------------ |
+| `mockSockets.chat.directMessage(43, 'hi!')` | A friend sends you a direct message. Non-friends are refused |
+
+While you play a running match every channel is read only: sends are refused with
+`CHANNEL_READ_ONLY` until the match pauses for players or ends.
+
+### Social Methods (`mockApi.server`)
+
 | Command                                                                                   | Effect                                                          |
 | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| `mockSockets.chat.directMessage(43, 'hi!')`                                               | A friend sends you a direct message. Non-friends are refused    |
+| `mockApi.server.friendRequestFrom(46)`                                                    | `extra_red` sends you a friend request                          |
+| `mockApi.server.acceptFriendRequestBy(46)`                                                | `extra_red` accepts the request you sent; you become friends    |
+| `mockApi.server.declineFriendRequestBy(46)`                                               | `extra_red` declines the request you sent                       |
+| `mockApi.server.cancelFriendRequestBy(46)`                                                | `extra_red` withdraws the request they sent you                 |
+| `mockApi.server.blockedBy(44)`                                                            | `blue_master` blocks you; `blockedBy(44, false)` lifts it       |
+| `mockApi.server.profileUpdateBy(43, { username: 'agent_red' })`                           | `red_agent` renames; `avatar_url` changes the avatar            |
 | `mockSockets.chat.roomMessage(48, 'ready?')`                                              | A member of your room writes in the room chat                   |
 | `mockSockets.chat.inviteReceived({ user_id: 43, username: 'red_agent' }, 1001, 'QWER12')` | You receive a room invite                                       |
 | `mockSockets.chat.failNext()`                                                             | Your next send fails with `SERVICE_UNAVAILABLE` (safe to retry) |
@@ -282,10 +303,12 @@ Room socket: `room.state`, `room.player.joined`, `room.player.left`,
 `room.player.returned_to_lobby`, `room.post_game.completed`, `room.closed`,
 `game.started`, `game.clue.submitted`, `game.card.revealed`, `game.score.updated`,
 `game.turn.changed`, `game.staffing.required`, `game.staffing.restored`,
-`game.ended`, `game.cancelled`.
+`game.ended`, `game.cancelled`, `game.history.appended`.
 
 Chat socket: `chat.ready`, `chat.message.created`, `chat.channel.available`,
-`chat.channel.access_changed`, `room.invite.received`.
+`chat.channel.access_changed` (including `READ_ONLY` while your match runs),
+`room.invite.received`, `friend.request.received`, `friend.request.resolved`,
+`friend.removed`, `friend.restored`.
 
 ## Resetting Mock State
 

@@ -26,7 +26,7 @@ export interface Card {
   word: string;
   revealed: boolean;
   /**
-   * `null` only for a card an Operative or a spectator is not allowed to see yet.
+   * `null` only for a card an Operative or an unseated member is not allowed to see yet.
    * Spymasters always receive the true color. The projection is made server-side.
    */
   color: CardColor | null;
@@ -67,6 +67,53 @@ export interface Staffing {
   blue: TeamStaffing;
 }
 
+/** Fields every Game History entry carries. */
+interface HistoryEntryBase {
+  /** Per-game order, from `1`. */
+  seq: number;
+  at: string;
+}
+
+/** A player as an entry names them; the name is kept even after they leave. */
+interface HistoryActor {
+  user_id: number;
+  username: string;
+}
+
+/**
+ * One entry of the match's public action log (`workspace.yml` · Game History). The server
+ * appends it with the change it records; every member receives the same entries, and none
+ * holds an unrevealed card's color.
+ */
+export type HistoryEntry =
+  | (HistoryEntryBase & { type: 'GAME_STARTED'; team: Team })
+  | (HistoryEntryBase & HistoryActor & { type: 'CLUE_GIVEN'; team: Team; clue: Clue })
+  | (HistoryEntryBase &
+      HistoryActor & {
+        type: 'CARD_REVEALED';
+        team: Team;
+        card_id: number;
+        word: string;
+        color: CardColor;
+      })
+  | (HistoryEntryBase & HistoryActor & { type: 'TURN_PASSED'; team: Team })
+  | (HistoryEntryBase & {
+      type: 'TURN_CHANGED';
+      team: Team;
+      previous_team: Team;
+      reason:
+        | 'PASSED'
+        | 'NEUTRAL_CARD_REVEALED'
+        | 'OPPONENT_CARD_REVEALED'
+        | 'GUESSES_EXHAUSTED'
+        | 'TURN_TIMER_EXPIRED';
+    })
+  | (HistoryEntryBase & HistoryActor & { type: 'GAME_PAUSED'; team: Team })
+  | (HistoryEntryBase & { type: 'GAME_RESUMED'; team: Team })
+  | (HistoryEntryBase & { type: 'GAME_ENDED'; team: Team | null; reason: GameEndReason });
+
+export type HistoryEntryType = HistoryEntry['type'];
+
 export interface Game {
   game_id: number;
   status: GameStatus;
@@ -81,6 +128,8 @@ export interface Game {
   end_reason: GameEndReason | null;
   /** Present while the game is `PAUSED_FOR_PLAYERS`. */
   staffing?: Staffing;
+  /** The match's action log, oldest first. */
+  history: HistoryEntry[];
   started_at: string;
   finished_at: string | null;
 }

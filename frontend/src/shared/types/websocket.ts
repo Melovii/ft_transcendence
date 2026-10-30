@@ -13,10 +13,15 @@ import type {
   ChatReadyPayload,
   ChatSendAck,
   ChatSendPayload,
+  FriendRemovedPayload,
+  FriendRequestReceivedPayload,
+  FriendRequestResolvedPayload,
+  FriendRestoredPayload,
+  UserProfileUpdatedPayload,
   RoomInvitePayload,
 } from './chat';
 import type { Score, Team } from './common';
-import type { CardColor, Clue, CurrentTurn, GameEndReason, Staffing } from './game';
+import type { CardColor, Clue, CurrentTurn, GameEndReason, HistoryEntry, Staffing } from './game';
 import type { MemberState, PlayingRole, Room, RoomMember, RoomStatus } from './room';
 
 /* -------------------------------------------------------------------------- */
@@ -59,12 +64,12 @@ export type UpdateRoomSettingsCommand = ClientEnvelope<
   Partial<RoomSettings>
 >;
 export type KickMemberCommand = ClientEnvelope<'room.member.kick', { user_id: number }>;
-/** Changes an existing participant's team; a spectator claims a seat with `room.role.select`. */
+/** Changes a seated member's team; an unseated member claims a seat with `room.role.select`. */
 export type SelectTeamCommand = ClientEnvelope<'room.team.select', { team: Team }>;
-/** A playing role always comes with its team; `SPECTATOR` gives the seat up. */
+/** A role always comes with its team. */
 export type SelectRoleCommand = ClientEnvelope<
   'room.role.select',
-  { role: PlayingRole; team: Team } | { role: 'SPECTATOR' }
+  { role: PlayingRole; team: Team }
 >;
 export type SetReadyCommand = ClientEnvelope<'room.ready.set', { ready: boolean }>;
 export type ReturnToLobbyCommand = ClientEnvelope<'room.lobby.return', Record<string, never>>;
@@ -145,6 +150,7 @@ export type WsErrorCode =
   /* Chat v2 */
   | 'NOT_CHANNEL_MEMBER'
   | 'CHANNEL_ACCESS_REVOKED'
+  | 'CHANNEL_READ_ONLY'
   | 'CHANNEL_NOT_FOUND'
   | 'SERVICE_UNAVAILABLE';
 
@@ -162,10 +168,15 @@ export interface WsErrorMessage {
 
 /* ----------------------------- room events -------------------------------- */
 
-export type RoomMemberChangedField = 'team' | 'role' | 'ready';
+export type RoomMemberChangedField = 'team' | 'role' | 'ready' | 'username' | 'avatar_url';
 
 export type CountdownCancelReason =
-  'PLAYER_UNREADY' | 'PLAYER_LEFT' | 'PLAYER_KICKED' | 'TEAM_CHANGED' | 'ROLE_CHANGED';
+  | 'PLAYER_UNREADY'
+  | 'PLAYER_JOINED'
+  | 'PLAYER_LEFT'
+  | 'PLAYER_KICKED'
+  | 'TEAM_CHANGED'
+  | 'ROLE_CHANGED';
 
 /** Why a membership ended. Logout (`SESSION_ENDED`) is distinct from a lost connection. */
 export type MemberLeftReason =
@@ -174,7 +185,9 @@ export type MemberLeftReason =
   | 'DISCONNECTED'
   | 'POST_GAME_TIMEOUT'
   | 'KICKED_BY_HOST'
-  | 'ACCOUNT_DELETED';
+  | 'ACCOUNT_DELETED'
+  /** An unseated member when the paused match they joined resumed without them. */
+  | 'SEAT_UNAVAILABLE';
 
 export type RoomStateEvent = ServerEventEnvelope<'room.state', { room: Room }>;
 
@@ -333,7 +346,7 @@ export interface StaffingDeparture {
   username: string;
   team: Team;
   role: PlayingRole;
-  reason: Exclude<MemberLeftReason, 'POST_GAME_TIMEOUT'>;
+  reason: Exclude<MemberLeftReason, 'POST_GAME_TIMEOUT' | 'SEAT_UNAVAILABLE'>;
 }
 
 /** A team lost its only Spymaster or its last Operative: the shutdown countdown starts. */
@@ -370,6 +383,12 @@ export type GameCancelledEvent = ServerEventEnvelope<
   }
 >;
 
+/** One new entry of the match's action log, right after the events of the action it records. */
+export type GameHistoryAppendedEvent = ServerEventEnvelope<
+  'game.history.appended',
+  { game_id: number; entry: HistoryEntry }
+>;
+
 export type RoomServerEvent =
   | RoomStateEvent
   | RoomPlayerJoinedEvent
@@ -391,7 +410,8 @@ export type RoomServerEvent =
   | GameEndedEvent
   | GameStaffingRequiredEvent
   | GameStaffingRestoredEvent
-  | GameCancelledEvent;
+  | GameCancelledEvent
+  | GameHistoryAppendedEvent;
 
 /** Anything the room socket can deliver. */
 export type RoomServerMessage = RoomServerEvent | AckMessage | WsErrorMessage;
@@ -426,12 +446,36 @@ export type ChannelAccessChangedEvent = ChatEventEnvelope<
 /** Live invitation from a friend, delivered on the chat socket and never stored. */
 export type RoomInviteReceivedEvent = ChatEventEnvelope<'room.invite.received', RoomInvitePayload>;
 
+export type FriendRequestReceivedEvent = ChatEventEnvelope<
+  'friend.request.received',
+  FriendRequestReceivedPayload
+>;
+export type FriendRequestResolvedEvent = ChatEventEnvelope<
+  'friend.request.resolved',
+  FriendRequestResolvedPayload
+>;
+export type FriendRemovedEvent = ChatEventEnvelope<'friend.removed', FriendRemovedPayload>;
+export type FriendRestoredEvent = ChatEventEnvelope<'friend.restored', FriendRestoredPayload>;
+export type UserProfileUpdatedEvent = ChatEventEnvelope<
+  'user.profile.updated',
+  UserProfileUpdatedPayload
+>;
+
+/** Friend request, friendship and profile changes, delivered live on the chat socket. */
+export type SocialEvent =
+  | FriendRequestReceivedEvent
+  | FriendRequestResolvedEvent
+  | FriendRemovedEvent
+  | FriendRestoredEvent
+  | UserProfileUpdatedEvent;
+
 export type ChatServerEvent =
   | ChatReadyEvent
   | ChatMessageCreatedEvent
   | ChannelAvailableEvent
   | ChannelAccessChangedEvent
-  | RoomInviteReceivedEvent;
+  | RoomInviteReceivedEvent
+  | SocialEvent;
 
 export type ChatServerMessage = ChatServerEvent | AckMessage<ChatSendAck> | WsErrorMessage;
 

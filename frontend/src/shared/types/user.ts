@@ -23,6 +23,12 @@ export interface OwnProfile {
   created_at: string;
 }
 
+/**
+ * The signed-in user's relationship to another user, decided by the server. A block placed
+ * by the other user is never revealed and reads as `NONE`.
+ */
+export type Relationship = 'NONE' | 'REQUEST_SENT' | 'REQUEST_RECEIVED' | 'FRIENDS' | 'BLOCKED';
+
 /** `GET /api/users/{user_id}`. */
 export interface PublicProfile {
   user_id: number;
@@ -33,6 +39,9 @@ export interface PublicProfile {
   losses: number;
   matches_played: number;
   is_online: boolean;
+  relationship: Relationship;
+  /** The pending request between the two users while one is `REQUEST_SENT` or `REQUEST_RECEIVED`. */
+  friend_request_id: number | null;
 }
 
 /**
@@ -100,7 +109,7 @@ export interface ReportUserResponse {
   created_at: string;
 }
 
-/** `GET /api/friends` entry, and the `POST /api/friends` response body. */
+/** `GET /api/friends` entry, and the `Accept friend request` response body. */
 export interface Friend {
   user_id: number;
   username: string;
@@ -131,8 +140,37 @@ export type FriendListQuery = {
   offset?: number;
 };
 
-export interface AddFriendRequest {
+/** `POST /api/friends/requests` body. */
+export interface SendFriendRequestBody {
   user_id: number;
+}
+
+/** A user as a friend request names them. */
+export interface FriendRequestUser {
+  user_id: number;
+  username: string;
+  avatar_url: string;
+}
+
+/** A pending friend request: `POST /api/friends/requests` and `GET /api/friends/requests`. */
+export interface FriendRequest {
+  request_id: number;
+  from_user: FriendRequestUser;
+  to_user: FriendRequestUser;
+  status: 'PENDING';
+  created_at: string;
+}
+
+/** `GET /api/friends/requests`, newest first in each list. */
+export interface FriendRequestListResponse {
+  incoming: FriendRequest[];
+  outgoing: FriendRequest[];
+}
+
+/** `PUT /api/users/{user_id}/block` response. */
+export interface BlockResponse {
+  user_id: number;
+  blocked_at: string;
 }
 
 /** `GET /api/users/search?q=` result entry. */
@@ -140,7 +178,8 @@ export interface UserSearchResult {
   user_id: number;
   username: string;
   avatar_url: string;
-  is_friend: boolean;
+  relationship: Relationship;
+  friend_request_id: number | null;
 }
 
 /**

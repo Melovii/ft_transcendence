@@ -1,9 +1,9 @@
 /**
- * The Ready Room's own commands — team, role, spectating, ready, room size and turn timer —
+ * The Ready Room's own commands — team, role, ready, room size, turn timer and language —
  * with the feedback the controls show while one is in flight and after the server turns one
  * down.
  *
- * A spectator picks a team first and a role second, but the server takes both in one
+ * An unseated member picks a team first and a role second, but the server takes both in one
  * command, so the picked team is held here as a draft (`draftTeam`) until the role is chosen.
  *
  * Nothing changes on screen when a command is sent. The member's new team, role or ready
@@ -22,11 +22,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRoomConnection } from '@app/connection/roomConnectionContext';
 import { useConnectionStore } from '@shared/stores';
 import { RoomCommandError } from '@shared/websocket';
-import type { PlayingRole, Team, TurnTimerSeconds } from '@shared/types';
+import type { PlayingRole, RoomLanguage, Team, TurnTimerSeconds } from '@shared/types';
 
 import { useRoomCommands } from './useRoomCommands';
 
-export type SetupAction = 'team' | 'role' | 'ready' | 'capacity' | 'timer';
+export type SetupAction = 'team' | 'role' | 'ready' | 'capacity' | 'timer' | 'language';
 
 export interface SetupFeedback {
   action: SetupAction;
@@ -48,9 +48,15 @@ function messageFor(action: SetupAction, error: unknown): string {
     case 'POST_GAME_PENDING':
       return 'room.ready.errors.postGamePending';
     case 'NOT_HOST':
-      return 'room.ready.errors.notHost';
+      return action === 'language'
+        ? 'room.ready.errors.languageHostOnly'
+        : 'room.ready.errors.notHost';
     case 'INVALID_PAYLOAD':
-      return action === 'timer' ? 'room.ready.errors.timer' : 'room.ready.errors.capacity';
+      return action === 'timer'
+        ? 'room.ready.errors.timer'
+        : action === 'language'
+          ? 'room.ready.errors.language'
+          : 'room.ready.errors.capacity';
     case 'NOT_SENT':
     case 'CONNECTION_LOST':
       return 'room.ready.errors.offline';
@@ -115,7 +121,6 @@ export function useRoomSetup() {
       (team: Team, role: PlayingRole) => run('role', () => commands.selectRole(team, role)),
       [commands, run],
     ),
-    spectate: useCallback(() => run('role', () => commands.spectate()), [commands, run]),
     setReady: useCallback(
       (ready: boolean) => run('ready', () => commands.setReady(ready)),
       [commands, run],
@@ -128,6 +133,11 @@ export function useRoomSetup() {
     updateTurnTimer: useCallback(
       (seconds: TurnTimerSeconds) =>
         run('timer', () => commands.updateSettings({ turn_timer_seconds: seconds })),
+      [commands, run],
+    ),
+    /** The board's word-pack language for the next game; the host's alone to change. */
+    updateLanguage: useCallback(
+      (language: RoomLanguage) => run('language', () => commands.updateSettings({ language })),
       [commands, run],
     ),
   };

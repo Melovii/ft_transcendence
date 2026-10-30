@@ -5,7 +5,8 @@
  * (join, claim a seat, ready, clue, guess, leave), so every state it reaches is one the
  * contract allows and every event it emits is a real contract event.
  *
- * The local player sits on RED, or watches as a spectator; the others are the `MOCK_BOTS`.
+ * The local player sits on RED, or joins a paused match unseated; the others are the
+ * `MOCK_BOTS`.
  */
 
 import type { CardColor } from '@shared/types';
@@ -24,8 +25,7 @@ export const ROOM_SCENARIOS = [
   'game-over',
   'assassin-loss',
   'paused',
-  'spectating',
-  'spectator-claim',
+  'seat-claim',
 ] as const;
 
 export type RoomScenario = (typeof ROOM_SCENARIOS)[number];
@@ -48,9 +48,10 @@ export function guessByColor(server: MockRoomServer, color: CardColor, byUserId?
 export function applyRoomScenario(server: MockRoomServer, scenario: RoomScenario): void {
   const { redAgent, blueMaster, blueAgent, extraRed } = MOCK_BOTS;
 
-  /** Four bots hold every seat and the local player watches. */
+  /** Four bots hold every seat; the local player is not in the room yet. */
   const botsOnly = () => {
     for (const bot of [redAgent, extraRed, blueMaster, blueAgent]) server.playerJoin(bot);
+    server.playerLeave(server.self.user_id, 'EXITED');
     server.selectRole(redAgent.user_id, 'SPYMASTER', 'RED');
     server.selectRole(extraRed.user_id, 'OPERATIVE', 'RED');
     server.selectRole(blueMaster.user_id, 'SPYMASTER', 'BLUE');
@@ -65,7 +66,7 @@ export function applyRoomScenario(server: MockRoomServer, scenario: RoomScenario
       return;
 
     case 'room-waiting':
-      // Mixed lobby: one ready Operative, one ready Spymaster, one still spectating.
+      // Mixed lobby: one ready Operative, one ready Spymaster, one still unseated.
       server.playerJoin(redAgent);
       server.playerJoin(blueMaster);
       server.playerJoin(blueAgent);
@@ -95,27 +96,27 @@ export function applyRoomScenario(server: MockRoomServer, scenario: RoomScenario
     case 'operative-turn':
       server.configureStartable('OPERATIVE');
       server.startGame('RED');
-      server.submitClue('ocean', 2);
+      server.submitClue('sea', 2);
       return;
 
     case 'opponent-turn':
       server.configureStartable('OPERATIVE');
       server.startGame('BLUE');
-      server.submitClue('forest', 2);
+      server.submitClue('trees', 2);
       return;
 
     case 'game-over':
       // RED reveals all nine of its cards under one clue; everyone is on the result.
       server.configureStartable('OPERATIVE');
       server.startGame('RED');
-      server.submitClue('ocean', 9);
+      server.submitClue('sea', 9);
       for (let i = 0; i < 9; i += 1) guessByColor(server, 'RED');
       return;
 
     case 'assassin-loss':
       server.configureStartable('OPERATIVE');
       server.startGame('RED');
-      server.submitClue('ocean', 2);
+      server.submitClue('sea', 2);
       guessByColor(server, 'ASSASSIN');
       return;
 
@@ -123,20 +124,15 @@ export function applyRoomScenario(server: MockRoomServer, scenario: RoomScenario
       // RED's Spymaster leaves mid-match: the shutdown countdown starts for RED.
       server.configureStartable('OPERATIVE');
       server.startGame('RED');
-      server.submitClue('ocean', 2);
+      server.submitClue('sea', 2);
       server.playerLeave(redAgent.user_id, 'EXITED');
       return;
 
-    case 'spectating':
-      // The local player watches a running match.
-      botsOnly();
-      server.submitClue('ocean', 2);
-      return;
-
-    case 'spectator-claim':
-      // RED's last Operative leaves; the watching local player can take the seat.
+    case 'seat-claim':
+      // RED's last Operative leaves; the local player joins the paused match to take the seat.
       botsOnly();
       server.playerLeave(extraRed.user_id, 'DISCONNECTED');
+      server.playerJoin(server.self);
       return;
   }
 }

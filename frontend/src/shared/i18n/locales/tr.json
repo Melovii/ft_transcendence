@@ -380,7 +380,8 @@
 				"waiting": "BEKLİYOR",
 				"full": "DOLU",
 				"inGame": "OYUNDA",
-				"closed": "KAPALI"
+				"closed": "KAPALI",
+				"seatOpen": "BOŞ YER"
 			},
 			"submit": "Odaya Katıl",
 			"joining": "Katılınıyor",
@@ -394,8 +395,9 @@
 				"full": "Bu oda dolu.",
 				"notJoinable": "Bu oda şu anda yeni oyuncu almıyor."
 			},
-			"spectate": "İzlemek İçin Katıl",
-			"notJoinable": "Kapalı"
+			"notJoinable": "Kapalı",
+			"takeSeat": "Boş Yere Katıl",
+			"inGame": "Maç Sürüyor"
 		},
 		"feedback": {
 			"createFailedTitle": "Oda oluşturulamadı",
@@ -440,8 +442,7 @@
 			"room": {
 				"title": "Odadan çıkılsın mı?",
 				"body": "Bu odadan çıkacak, takımını ve rolünü kaybedeceksin. Yerin başka bir oyuncuya açılır.",
-				"confirm": "Odadan Çık",
-				"bodySpectator": "Bu odadan çıkıp lobiye döneceksin."
+				"confirm": "Odadan Çık"
 			},
 			"game": {
 				"title": "Oyundan çıkılsın mı?",
@@ -461,7 +462,8 @@
 				"PLAYER_LEFT": "Geri sayım durdu: {{username}} odadan çıktı.",
 				"TEAM_CHANGED": "Geri sayım durdu: {{username}} takım değiştirdi.",
 				"ROLE_CHANGED": "Geri sayım durdu: {{username}} rol değiştirdi.",
-				"PLAYER_KICKED": "Geri sayım durdu: {{username}} odadan çıkarıldı."
+				"PLAYER_KICKED": "Geri sayım durdu: {{username}} odadan çıkarıldı.",
+				"PLAYER_JOINED": "Geri sayım durdu: {{username}} katıldı ve bir yer seçmesi gerekiyor."
 			}
 		},
 		"ready": {
@@ -512,7 +514,7 @@
 			"role": {
 				"SPYMASTER": "Ajan Şefi",
 				"OPERATIVE": "Ajan",
-				"SPECTATOR": "İzleyici"
+				"NONE": "Henüz rol yok"
 			},
 			"status": {
 				"ready": "Hazır!",
@@ -542,7 +544,7 @@
 			"change": "Değiştir",
 			"choose": "Seç",
 			"hints": {
-				"teamFirst": "Önce bir takım, sonra bir rol seç. O zamana kadar izliyorsun.",
+				"teamFirst": "Önce takım, sonra rol seç. Maç herkes bir yer seçince başlar.",
 				"spymasterTaken": "Bu takımın Ajan Şefi {{username}}.",
 				"locked": "Maç başlıyor, kurulumun kilitlendi.",
 				"hostOnly": "Oda boyutunu yalnızca oda sahibi değiştirebilir.",
@@ -553,7 +555,8 @@
 					"POST_GAME_PENDING": "Bazı oyuncular hâlâ son sonuca bakıyor."
 				},
 				"claim": "{{team}} takımına katılmak için bir rol seç.",
-				"timerHostOnly": "Tur süresini yalnızca oda sahibi değiştirebilir."
+				"timerHostOnly": "Tur süresini yalnızca oda sahibi değiştirebilir.",
+				"languageHostOnly": "Oda dilini yalnızca oda sahibi değiştirebilir."
 			},
 			"errors": {
 				"roleConflict": "Başka bir oyuncu az önce bu takımın Ajan Şefi yerini aldı.",
@@ -565,10 +568,11 @@
 				"offline": "Çevrimdışısın. Yeniden bağlanınca tekrar dene.",
 				"generic": "Olmadı. Tekrar dene.",
 				"postGamePending": "Herkes son sonuçtan dönene kadar bekle.",
-				"timer": "Bu tur süresi kullanılamıyor. Listeden birini seç."
+				"timer": "Bu tur süresi kullanılamıyor. Listeden birini seç.",
+				"languageHostOnly": "Oda dilini yalnızca oda sahibi değiştirebilir.",
+				"language": "Bu dil kullanılamıyor. Listeden birini seç."
 			},
-			"spectators": "İzleyiciler",
-			"spectate": "Bunun yerine izle"
+			"unseated": "Yer seçiyor"
 		},
 		"recovery": {
 			"notMember": "Artık o odada değilsin.",
@@ -578,7 +582,8 @@
 			"legacy": "Oyunun eski bir sürümüne ait bir odadasın ve bu oda burada açılamıyor. Oda bitince kendiliğinden kapanır.",
 			"kicked": "Oda sahibi seni odadan çıkardı.",
 			"postGameTimeout": "Zamanında seçim yapmadığın için maçtan sonra odadan ayrıldın.",
-			"insufficientPlayers": "Oda kapandı: bir takım gereken oyuncusu olmadan kaldı. Maç sayılmadı."
+			"insufficientPlayers": "Oda kapandı: bir takım gereken oyuncusu olmadan kaldı. Maç sayılmadı.",
+			"seatUnavailable": "Sen yer almadan maç devam etti, bu yüzden odadan çıktın."
 		},
 		"invites": {
 			"title": "{{username}} seni oyuna davet etti",
@@ -590,11 +595,11 @@
 		},
 		"settings": {
 			"timer": "Tur süresi",
-			"language": "Kelimeler",
+			"language": "Dil",
 			"noLimit": "Sınırsız",
 			"seconds_one": "{{count}} saniye",
 			"seconds_other": "{{count}} saniye",
-			"ownerYou": "Oda sahibi sensin. Oyuncuları çıkarabilir, oda boyutunu ve tur süresini değiştirebilirsin.",
+			"ownerYou": "Oda sahibi sensin. Oyuncu çıkarabilir, oda boyutunu, tur süresini ve oda dilini değiştirebilirsin.",
 			"ownerOnly": "Oda ayarlarını yalnızca oda sahibi değiştirebilir."
 		},
 		"kick": {
@@ -661,9 +666,10 @@
 			"opponentClue": "{{team}} Casus Şef Düşünüyor",
 			"opponentBody": "Sıranı bekle. Şu anda kart seçilemez.",
 			"spymasterOpponentBody": "İpucu vermek için sıranı bekle.",
-			"spectatingBody": "Bu maçı izliyorsun. Boş bir yer açılınca onu alabilirsin.",
 			"pausedTitle": "Oyuncu Bekleniyor…",
-			"pausedBody": "Bir takımın oyuncusu eksik. Yer alındığında oyun devam eder."
+			"pausedBody": "Bir takımın oyuncusu eksik. Yer alındığında oyun devam eder.",
+			"unseatedTitle": "Boş Yeri Al",
+			"unseatedBody": "Bu maçta oynamak için boş yeri seç."
 		},
 		"pass": {
 			"action": "Pas",
@@ -686,7 +692,8 @@
 				"BLUE": "Mavi ajan",
 				"NEUTRAL": "Masum",
 				"ASSASSIN": "Suikastçı"
-			}
+			},
+			"selected": "{{word}}, seçildi"
 		},
 		"leave": "Oyundan Çık",
 		"results": {
@@ -708,13 +715,14 @@
 			"invalidClue": "İpucu en fazla 30 harflik tek bir kelime olmalı.",
 			"invalidNumber": "1 ile 9 arasında bir sayı seç.",
 			"invalidCard": "Bu kart bu tahtada yok.",
-			"alreadyRevealed": "O kart zaten açıldı.",
 			"noGuesses": "Takımının tahmin hakkı kalmadı.",
 			"notYourTurn": "Artık senin sıran değil.",
 			"roleForbidden": "Rolün bunu yapamaz.",
 			"finished": "Maç zaten bitti.",
 			"offline": "Çevrimdışısın. Bağlantı gelince tekrar dene.",
-			"generic": "Bir şeyler ters gitti. Tekrar dene."
+			"generic": "Bir şeyler ters gitti. Tekrar dene.",
+			"guessInvalid": "Bu tahmin artık geçerli değil.",
+			"clueOnBoard": "Bu ipucu tahtadaki kelimelerden biri olduğu için kullanılamaz."
 		},
 		"staffing": {
 			"title": "Oyun Duraklatıldı",
@@ -740,6 +748,33 @@
 			"claimTitle": "Boş bir yer al",
 			"claim": "{{team}} {{role}}",
 			"claimClosed": "Bu yer şu anda alınamıyor."
+		},
+		"guess": {
+			"confirm": "Tahmini Onayla",
+			"confirming": "Onaylanıyor…",
+			"confirmLabel": "Tahmini onayla: {{word}}",
+			"selected": "Seçildi: {{word}}. Tahmin etmek için onayla."
+		},
+		"log": {
+			"title": "Maç Geçmişi",
+			"empty": "Henüz bir şey olmadı.",
+			"started": "Maça {{team}} Takım başlıyor",
+			"clue": "{{team}} Casus Şefi {{username}} \"{{word}}\" ipucunu verdi — {{number}}",
+			"revealed": "{{username}} \"{{word}}\" kartını seçti — {{affiliation}}",
+			"passed": "{{username}} {{team}} Takımın turunu bitirdi",
+			"turn": "Sıra {{team}} Takıma geçti",
+			"timeUp": "{{previous}} Takımın süresi doldu — sıra {{team}} Takımda",
+			"paused": "Duraklatıldı: {{username}} {{team}} Takımdan ayrıldı",
+			"resumed": "Oyun devam ediyor — sıra {{team}} Takımda",
+			"won": "{{team}} Takım kazandı",
+			"wonAssassin": "{{team}} Takım kazandı — suikastçı açıldı",
+			"cancelled": "Maç iptal edildi: bir takım oyuncusuz kaldı",
+			"color": {
+				"RED": "Kırmızı",
+				"BLUE": "Mavi",
+				"NEUTRAL": "Tarafsız",
+				"ASSASSIN": "Suikastçı"
+			}
 		}
 	},
 	"profile": {
@@ -759,14 +794,18 @@
 		},
 		"friend": {
 			"add": "Arkadaş Ekle",
-			"adding": "Ekleniyor…",
 			"remove": "Arkadaşlıktan Çıkar",
 			"removing": "Çıkarılıyor…",
 			"loadFailed": "Arkadaş listen yüklenemedi.",
-			"failed": {
-				"ADDING": "Arkadaş eklenemedi. Tekrar dene.",
-				"REMOVING": "Arkadaşlıktan çıkarılamadı. Tekrar dene."
-			}
+			"sending": "Gönderiliyor…",
+			"requestSent": "İstek Gönderildi",
+			"accept": "Kabul Et",
+			"accepting": "Kabul ediliyor…",
+			"decline": "Reddet",
+			"declining": "Reddediliyor…",
+			"received": "{{username}} sana arkadaşlık isteği gönderdi.",
+			"cancel": "İsteği İptal Et",
+			"cancelling": "İptal ediliyor…"
 		},
 		"message": "Mesaj",
 		"invite": {
@@ -851,6 +890,13 @@
 				"INVALID": "Bildirim kabul edilmedi. Nedeni ve ayrıntıları kontrol et.",
 				"FAILED": "Bildirim gönderilemedi. Tekrar dene."
 			}
+		},
+		"block": {
+			"block": "Kullanıcıyı Engelle",
+			"blocking": "Engelleniyor…",
+			"unblock": "Engeli Kaldır",
+			"unblocking": "Engel kaldırılıyor…",
+			"hint": "{{username}} adlı oyuncuyu engelledin. Engeli kaldırana kadar mesajlaşamaz, davet edemez ve arkadaş olamazsınız."
 		}
 	},
 	"chat": {
@@ -947,7 +993,8 @@
 				"TIMEOUT": "Henüz gönderilmedi: sunucu yanıt vermedi.",
 				"UNAVAILABLE": "Gönderilmedi: sohbet şu anda kullanılamıyor.",
 				"REVOKED": "Gönderilmedi: bu sohbete artık yazamazsın.",
-				"INVALID": "Gönderilmedi: mesaj reddedildi."
+				"INVALID": "Gönderilmedi: mesaj reddedildi.",
+				"READ_ONLY": "Gönderilmedi: oyun sürerken sohbet kullanılamaz."
 			}
 		},
 		"access": {
@@ -960,10 +1007,14 @@
 				"KICKED_BY_HOST": "Bu odadan çıkarıldın, sohbeti kapandı.",
 				"POST_GAME_TIMEOUT": "Oyundan sonra oda sohbeti kapandı.",
 				"ROOM_CLOSED": "Bu oda kapandı."
-			}
+			},
+			"gameRunning": "Oyun sürerken sohbet kullanılamaz. Oyun duraklatıldığında ya da bittiğinde yeniden açılır."
 		},
 		"unknownPlayer": "Oyuncu",
-		"retry": "Tekrar dene"
+		"retry": "Tekrar dene",
+		"invite": {
+			"label": "{{username}} adlı oyuncuyu odana davet et"
+		}
 	},
 	"settings": {
 		"title": "Ayarlar",
@@ -1063,7 +1114,7 @@
 	},
 	"friends": {
 		"title": "Arkadaşlar",
-		"subtitle": "Arkadaşların ve ekleyebileceğin oyuncular.",
+		"subtitle": "Arkadaşların, istekler ve eklenecek oyuncular.",
 		"count_one": "{{count}} arkadaş",
 		"count_other": "{{count}} arkadaş",
 		"openLabel_one": "Arkadaşlar, {{count}} arkadaş",
@@ -1079,7 +1130,7 @@
 		"search": {
 			"label": "Oyuncuları kullanıcı adına göre ara",
 			"placeholder": "Kullanıcı adı ara",
-			"hint": "En fazla {{max}} karakter. Arkadaşlık anında kurulur, onay gerekmez.",
+			"hint": "En fazla {{max}} karakter. Arkadaşlık isteğini diğer oyuncunun kabul etmesi gerekir.",
 			"resultsTitle": "Arama sonuçları",
 			"resultCount_one": "{{count}} oyuncu bulundu",
 			"resultCount_other": "{{count}} oyuncu bulundu",
@@ -1089,13 +1140,43 @@
 			"emptyTitle": "Oyuncu bulunamadı",
 			"emptyBody": "Hiçbir kullanıcı adı “{{term}}” içermiyor.",
 			"alreadyFriend": "Arkadaş",
-			"add": "Ekle",
-			"adding": "Ekleniyor…",
-			"addLabel": "{{username}} adlı oyuncuyu arkadaş olarak ekle",
-			"addNotFound": "Bu oyuncu artık mevcut değil.",
-			"addFailed": "Bu oyuncu eklenemedi. Tekrar dene.",
+			"add": "Arkadaş Ekle",
+			"adding": "Gönderiliyor…",
+			"addLabel": "{{username}} adlı oyuncuya arkadaşlık isteği gönder",
 			"more": "Daha fazla göster",
-			"loadingMore": "Yükleniyor…"
+			"loadingMore": "Yükleniyor…",
+			"blocked": "Engellendi"
+		},
+		"requests": {
+			"incomingTitle_one": "{{count}} arkadaşlık isteği",
+			"incomingTitle_other": "{{count}} arkadaşlık isteği",
+			"outgoingTitle_one": "{{count}} istek gönderildi",
+			"outgoingTitle_other": "{{count}} istek gönderildi",
+			"sent": "İstek Gönderildi",
+			"accept": "Kabul Et",
+			"accepting": "Kabul ediliyor…",
+			"acceptLabel": "{{username}} adlı oyuncunun isteğini kabul et",
+			"decline": "Reddet",
+			"declining": "Reddediliyor…",
+			"declineLabel": "{{username}} adlı oyuncunun isteğini reddet",
+			"waiting_one": "{{count}} arkadaşlık isteği bekliyor",
+			"waiting_other": "{{count}} arkadaşlık isteği bekliyor",
+			"cancel": "İptal Et",
+			"cancelling": "İptal ediliyor…",
+			"cancelLabel": "{{username}} adlı oyuncuya gönderdiğin isteği iptal et"
+		},
+		"errors": {
+			"blocked": "Bu kullanıcıya arkadaşlık isteği gönderemezsin.",
+			"cannotAccept": "Bu isteği kabul edemezsin.",
+			"notFound": "Bu oyuncu artık yok.",
+			"requestGone": "Bu istek artık beklemede değil.",
+			"REQUEST": "Arkadaşlık isteği gönderilemedi. Tekrar dene.",
+			"ACCEPT": "İstek kabul edilemedi. Tekrar dene.",
+			"DECLINE": "İstek reddedilemedi. Tekrar dene.",
+			"REMOVE": "Bu arkadaş çıkarılamadı. Tekrar dene.",
+			"BLOCK": "Bu kullanıcı engellenemedi. Tekrar dene.",
+			"UNBLOCK": "Bu kullanıcının engeli kaldırılamadı. Tekrar dene.",
+			"CANCEL": "İstek iptal edilemedi. Tekrar dene."
 		}
 	}
 }

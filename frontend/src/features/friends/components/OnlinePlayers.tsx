@@ -7,10 +7,11 @@ import { AvatarImage, Icon, LoadingDots } from '@shared/ui';
 import type { IconName } from '@shared/ui';
 import { cn } from '@shared/utils';
 
+import { useFriendRequests } from '../hooks/useFriendRequests';
 import { useOnlineFriends } from '../hooks/useOnlineFriends';
 import { useFriendsStore } from '../store/friendsStore';
 import { FriendsDialog } from './FriendsDialog';
-import { openButton, openCount } from './FriendsDialog.styles';
+import { openButton, openCount, requestCount } from './FriendsDialog.styles';
 import * as styles from './OnlinePlayers.styles';
 
 /** Cards the desktop row shows before Show More. */
@@ -42,6 +43,8 @@ export function OnlinePlayers({ onInvite, className }: OnlinePlayersProps) {
   const [expanded, setExpanded] = useState(false);
   const [friendsOpen, setFriendsOpen] = useState(false);
   const friendCount = useFriendsStore((state) => state.friendCount);
+  // Requests waiting for an answer are announced on the Friends button.
+  const { incoming } = useFriendRequests();
   const loading = status === 'LOADING';
 
   return (
@@ -56,7 +59,12 @@ export function OnlinePlayers({ onInvite, className }: OnlinePlayersProps) {
           onClick={() => setFriendsOpen(true)}
           aria-haspopup="dialog"
           aria-label={
-            status === 'READY' ? t('friends.openLabel', { count: friendCount }) : t('friends.title')
+            status === 'READY'
+              ? t('friends.openLabel', { count: friendCount }) +
+                (incoming.length > 0
+                  ? ` ${t('friends.requests.waiting', { count: incoming.length })}`
+                  : '')
+              : t('friends.title')
           }
           className={cn(openButton, styles.friendsButton)}
         >
@@ -65,6 +73,11 @@ export function OnlinePlayers({ onInvite, className }: OnlinePlayersProps) {
           {status === 'READY' && (
             <span aria-hidden="true" className={openCount}>
               {friendCount}
+            </span>
+          )}
+          {incoming.length > 0 && (
+            <span aria-hidden="true" className={requestCount}>
+              +{incoming.length}
             </span>
           )}
         </button>

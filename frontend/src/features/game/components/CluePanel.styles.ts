@@ -141,7 +141,29 @@ export const statusBody: string =
 export const statusAction: string =
   'shrink-0 desktop:absolute desktop:top-[30px] desktop:right-[21px]';
 
+/**
+ * The panel with its actions beside the text rather than in the corner, for actions wider
+ * than Pass alone: phones stack the actions under the text; from `md:` they sit on the
+ * right and the text centres in the room left of them.
+ */
+export const statusInline: string =
+  `${panel} flex min-h-[88px] flex-col items-stretch gap-[12px] p-[12px] md:flex-row ` +
+  'md:items-center desktop:min-h-[102px] desktop:gap-[24px] desktop:px-[32px] desktop:py-[14px]';
+
+export const statusTextInline: string =
+  'flex min-w-0 flex-1 flex-col gap-[6px] break-words desktop:items-center desktop:gap-[12px]';
+
+export const statusActionInline: string = 'shrink-0';
+
 export const passWrap: string = 'flex flex-col items-end gap-[4px]';
+
+/** Confirm Guess: the shared primary button at the Pass button's height. */
+/** Below `md:` Confirm Guess takes the row's free width beside Pass. */
+export const confirmPlacement: string = 'max-md:flex-1';
+
+export const confirm: string =
+  'h-[40px] rounded-pill px-[16px] text-lg leading-none font-black uppercase md:h-[42px] ' +
+  'desktop:px-[20px] desktop:text-[18px]';
 
 export const pass: string =
   `${buttonInteraction} inline-flex h-[40px] w-[84px] items-center justify-center rounded-pill ` +

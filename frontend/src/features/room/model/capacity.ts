@@ -30,21 +30,22 @@ export function roomSettingsAccess(room: Room, userId: number): RoomSettingsAcce
 }
 
 /**
- * Join-dialog verdict from a code lookup, before the Join request is sent. A room that is
- * counting down or playing still takes players, who join it as spectators
- * (`IN_PROGRESS`); one whose members are still on a result takes nobody.
+ * Join-dialog verdict from a code lookup, before the Join request is sent. A lobby takes
+ * players, even while it counts down. A running match takes nobody (`IN_PROGRESS`); one
+ * paused for a missing player takes a joiner to fill the free seat (`SEAT_OPEN`). A room
+ * whose members are still on a result takes nobody.
  */
-export type JoinAvailability = 'JOINABLE' | 'IN_PROGRESS' | 'FULL' | 'NOT_JOINABLE';
+export type JoinAvailability = 'JOINABLE' | 'SEAT_OPEN' | 'IN_PROGRESS' | 'FULL' | 'NOT_JOINABLE';
 
 export function joinAvailability(lookup: RoomLookupResponse): JoinAvailability {
   if (isRoomFull(lookup)) return 'FULL';
-  if (lookup.status === 'COUNTDOWN' || lookup.status === 'IN_GAME') return 'IN_PROGRESS';
+  if (lookup.status === 'IN_GAME') return lookup.joinable ? 'SEAT_OPEN' : 'IN_PROGRESS';
   return lookup.joinable ? 'JOINABLE' : 'NOT_JOINABLE';
 }
 
 /** Whether Join may be sent for this verdict; the server decides again. */
 export const canJoin = (availability: JoinAvailability): boolean =>
-  availability === 'JOINABLE' || availability === 'IN_PROGRESS';
+  availability === 'JOINABLE' || availability === 'SEAT_OPEN';
 
 function range(from: number, to: number): number[] {
   return Array.from({ length: Math.max(0, to - from + 1) }, (_, i) => from + i);

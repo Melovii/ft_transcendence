@@ -18,12 +18,12 @@
  *   mockSockets.scenario('operative-turn')       // fresh room in that scenario
  *   mockSockets.room().playerJoin({ user_id: 47, username: 'night_owl' })
  *   mockSockets.room().configureStartable('SPYMASTER')
- *   mockSockets.room().selectRole(47, 'OPERATIVE', 'BLUE')  // a spectator claims a seat
+ *   mockSockets.room().selectRole(47, 'OPERATIVE', 'BLUE')  // an unseated member claims a seat
  *   mockSockets.room().kick(43)                  // the host removes a member
  *   mockSockets.room().playerLeave(43)           // mid-match: may pause for staffing
  *   mockSockets.room().staffingMs = 15000        // shorter shutdown deadline next time
  *   mockSockets.room().returnToLobby(43)         // a player leaves the result
- *   mockSockets.room().submitClue('ocean', 2)
+ *   mockSockets.room().submitClue('sea', 2)
  *   mockSockets.guess('NEUTRAL')                 // RED | BLUE | NEUTRAL | ASSASSIN
  *   mockSockets.room().passTurn()
  *   mockSockets.room().dropConnection(3000)      // RECONNECTING, then a fresh room.state

@@ -6,9 +6,11 @@
  * message history returns, as in production.
  *
  * It applies the contract's rules from the signed-in user's side: DIRECT channels are
- * friend-only; the ROOM channel of a room is open to its member while the room is
- * `WAITING`, `COUNTDOWN` or `IN_GAME`, and each stretch of access is a visibility window,
- * so history never shows what was said before the user joined or while they were away.
+ * limited to active friends; the ROOM channel of a room is open to its member while the
+ * room is `WAITING`, `COUNTDOWN` or `IN_GAME`, and each stretch of access is a visibility
+ * window, so history never shows what was said before the user joined or while they were
+ * away. While the user plays a running match every channel is read only, and it opens
+ * again when the match pauses for players or ends.
  * Sends are validated, persisted, acked and fanned out; a `request_id` reused with the
  * same content returns the original result, with different content `INVALID_EVENT`.
  *
@@ -26,6 +28,7 @@
 import { CHAT_MESSAGE_MAX_LENGTH } from '@shared/types';
 import type {
   AckMessage,
+  ChannelAccess,
   ChannelAccessReason,
   ChannelListResponse,
   ChannelPeer,
@@ -37,6 +40,7 @@ import type {
   MessageHistoryResponse,
   OpenDirectChannelResponse,
   RoomInviteReceivedEvent,
+  SocialEvent,
   WsErrorCode,
   WsErrorMessage,
 } from '@shared/types';
@@ -99,6 +103,9 @@ type LedgerEntry = { hash: string; reply: AckMessage<ChatSendAck> | WsErrorMessa
 
 const now = (): string => new Date().toISOString();
 
+/** A match whose turns are being played, not paused for players and not over. */
+const isRunning = (phase: string): boolean => phase === 'WAITING_FOR_CLUE' || phase === 'GUESSING';
+
 const toMessage = (stored: StoredMessage): ChatMessage => ({
   message_id: stored.message_id,
   channel_id: stored.channel_id,
@@ -150,6 +157,8 @@ export class MockChatServer implements MockServerBinding {
   private loseNextAck = false;
   private repeatNextEvent = false;
   private muteNextSend = false;
+  /** Whether the user's channels were last announced as read only for a running match. */
+  private readOnly = false;
 
   constructor() {
     this.seed();
@@ -224,6 +233,11 @@ export class MockChatServer implements MockServerBinding {
     const room = channel?.roomId ? mockRooms.get(channel.roomId) : undefined;
     if (!channel || !room?.hasMember(fromUserId)) {
       console.warn('[mock chat] no active room channel with that player in it.');
+      return null;
+    }
+    const game = room.state().game;
+    if (room.state().status === 'IN_GAME' && game && isRunning(game.current_turn.phase)) {
+      console.warn('[mock chat] players cannot chat while their match is running.');
       return null;
     }
     return this.persist(channel, fromUserId, text);
@@ -330,8 +344,15 @@ export class MockChatServer implements MockServerBinding {
     };
   }
 
-  /** A friendship was added or removed over REST: DIRECT access follows it. */
-  friendshipChanged(peerUserId: number, friends: boolean): void {
+  /**
+   * A friendship became active or inactive over REST (accepted, removed, blocked,
+   * restored): DIRECT access follows it.
+   */
+  friendshipChanged(
+    peerUserId: number,
+    friends: boolean,
+    reason: ChannelAccessReason = friends ? 'FRIENDSHIP_ADDED' : 'FRIENDSHIP_REMOVED',
+  ): void {
     const channel = this.directChannel(peerUserId, false);
     if (!channel) return;
     this.broadcast(
@@ -339,10 +360,15 @@ export class MockChatServer implements MockServerBinding {
         channel_id: channel.channel_id,
         channel_type: 'DIRECT',
         room_id: null,
-        access: friends ? 'ACTIVE' : 'INACTIVE',
-        reason: friends ? 'FRIENDSHIP_ADDED' : 'FRIENDSHIP_REMOVED',
+        access: friends ? this.liveAccess() : 'INACTIVE',
+        reason,
       }),
     );
+  }
+
+  /** A social change from User/Auth, delivered to the user's chat sockets. */
+  notify<T extends SocialEvent>(type: T['type'], payload: T['payload']): void {
+    this.broadcast(this.event(type, payload));
   }
 
   /**
@@ -396,6 +422,56 @@ export class MockChatServer implements MockServerBinding {
         access.lastReason = reason;
         this.accessEvent('chat.channel.access_changed', channel, false, reason);
       }
+    }
+    this.syncReadOnly();
+  }
+
+  /** Whether the user plays a match that is running now: nothing may be sent. */
+  private inRunningMatch(): boolean {
+    const self = this.selfId();
+    for (const server of mockRooms.values()) {
+      const room = server.state();
+      const me = room.players.find((p) => p.user_id === self);
+      if (me?.state === 'IN_GAME' && room.status === 'IN_GAME' && room.game) {
+        if (isRunning(room.game.current_turn.phase)) return true;
+      }
+    }
+    return false;
+  }
+
+  /** `ACTIVE`, or `READ_ONLY` while the user's match runs. */
+  private liveAccess(): ChannelAccess {
+    return this.inRunningMatch() ? 'READ_ONLY' : 'ACTIVE';
+  }
+
+  /**
+   * Tell the user's sockets when a match starts, pauses, resumes or ends: every channel they
+   * can read turns read only, or back to usable.
+   */
+  private syncReadOnly(): void {
+    const running = this.inRunningMatch();
+    if (running === this.readOnly) return;
+    this.readOnly = running;
+    const self = this.selfId();
+    const stillPlaying = [...mockRooms.values()].some((server) =>
+      server.state().players.some((p) => p.user_id === self && p.state === 'IN_GAME'),
+    );
+    const reason: ChannelAccessReason = running
+      ? 'GAME_RUNNING'
+      : stillPlaying
+        ? 'GAME_PAUSED'
+        : 'GAME_FINISHED';
+    for (const channel of this.channels.values()) {
+      if (!this.canAccess(channel)) continue;
+      this.broadcast(
+        this.event('chat.channel.access_changed', {
+          channel_id: channel.channel_id,
+          channel_type: channel.type,
+          room_id: channel.roomId,
+          access: running ? 'READ_ONLY' : 'ACTIVE',
+          reason,
+        }),
+      );
     }
   }
 
@@ -484,6 +560,18 @@ export class MockChatServer implements MockServerBinding {
 
     const muted = this.muteNextSend;
     this.muteNextSend = false;
+    if (this.inRunningMatch()) {
+      // Not memoized: the same message may be sent again once the match pauses.
+      return this.error(
+        requestId,
+        'CHANNEL_READ_ONLY',
+        'Chat is unavailable while the game is active.',
+        {
+          channel_id: channelId,
+          reason: 'GAME_RUNNING',
+        },
+      );
+    }
     const message = this.persist(channel, this.selfId(), text, muted);
     const ack: AckMessage<ChatSendAck> = {
       type: 'ack',
@@ -598,6 +686,8 @@ export class MockChatServer implements MockServerBinding {
       peer: channel.type === 'DIRECT' ? this.peer(channel.peerId ?? 0) : null,
       room:
         channel.type === 'ROOM' ? { room_id: channel.roomId ?? 0, room_code: code ?? '' } : null,
+      access: this.liveAccess() === 'READ_ONLY' ? 'READ_ONLY' : 'ACTIVE',
+      access_reason: this.liveAccess() === 'READ_ONLY' ? 'GAME_RUNNING' : null,
       last_message: last && {
         message_id: last.message_id,
         sender_user_id: last.sender_user_id,
@@ -640,7 +730,7 @@ export class MockChatServer implements MockServerBinding {
         channel_id: channel.channel_id,
         channel_type: 'DIRECT',
         room_id: null,
-        access: 'ACTIVE',
+        access: this.liveAccess(),
         reason: 'DIRECT_CREATED',
         peer: this.peer(peerId),
       }),
@@ -676,7 +766,7 @@ export class MockChatServer implements MockServerBinding {
         channel_id: channel.channel_id,
         channel_type: 'ROOM',
         room_id: channel.roomId,
-        access: active ? 'ACTIVE' : 'INACTIVE',
+        access: active ? this.liveAccess() : 'INACTIVE',
         reason,
       }),
     );

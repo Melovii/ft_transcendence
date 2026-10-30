@@ -8,10 +8,15 @@
  * is a permission the client may assume.
  */
 
+import type { Friend, FriendRequest } from './user';
+
 export type ChannelType = 'DIRECT' | 'ROOM';
 
-/** Whether the signed-in user can use a channel right now. */
-export type ChannelAccess = 'ACTIVE' | 'INACTIVE';
+/**
+ * Whether the signed-in user can use a channel right now: read and send, read only (while
+ * they play a running match), or neither.
+ */
+export type ChannelAccess = 'ACTIVE' | 'READ_ONLY' | 'INACTIVE';
 
 /** Why a channel became available or changed access. */
 export type ChannelAccessReason =
@@ -25,7 +30,10 @@ export type ChannelAccessReason =
   | 'ROOM_CLOSED'
   | 'DIRECT_CREATED'
   | 'FRIENDSHIP_ADDED'
-  | 'FRIENDSHIP_REMOVED';
+  | 'FRIENDSHIP_REMOVED'
+  | 'USER_BLOCKED'
+  | 'GAME_RUNNING'
+  | 'GAME_PAUSED';
 
 /** The other participant of a `DIRECT` channel. */
 export interface ChannelPeer {
@@ -65,6 +73,10 @@ export interface ChannelSummary {
   peer: ChannelPeer | null;
   /** `ROOM` only. */
   room: ChannelRoom | null;
+  /** A listed channel is readable; `READ_ONLY` while the user plays a running match. */
+  access: Exclude<ChannelAccess, 'INACTIVE'>;
+  /** `GAME_RUNNING` with `READ_ONLY`, otherwise `null`. */
+  access_reason: 'GAME_RUNNING' | null;
   last_message: ChannelLastMessage | null;
 }
 
@@ -167,4 +179,38 @@ export interface RoomInvitePayload {
   room_id: number;
   room_code: string;
   from_user: { user_id: number; username: string };
+}
+
+/* ------------------------------ social events ------------------------------- */
+
+/** `friend.request.received`: a request sent to or by the signed-in user. */
+export interface FriendRequestReceivedPayload {
+  request: FriendRequest;
+}
+
+/** `friend.request.resolved`: a pending request was accepted, declined or cancelled. */
+export interface FriendRequestResolvedPayload {
+  request_id: number;
+  from_user_id: number;
+  to_user_id: number;
+  status: 'ACCEPTED' | 'DECLINED' | 'CANCELLED';
+  /** `ACCEPTED` only: the other user, as a friend list entry. */
+  friend?: Friend;
+}
+
+/** `friend.removed`: the friendship with `user_id` ended or was suspended. */
+export interface FriendRemovedPayload {
+  user_id: number;
+}
+
+/** `friend.restored`: a suspended friendship is active again. */
+export interface FriendRestoredPayload {
+  friend: Friend;
+}
+
+/** `user.profile.updated`: the user's current username and avatar after a change. */
+export interface UserProfileUpdatedPayload {
+  user_id: number;
+  username: string;
+  avatar_url: string;
 }

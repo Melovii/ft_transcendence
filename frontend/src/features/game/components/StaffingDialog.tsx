@@ -18,7 +18,7 @@ const TEAM_BUTTON: Record<Team, ButtonVariant> = { RED: 'secondary', BLUE: 'prim
 const clock = (seconds: number): string =>
   `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
 
-/** A free seat a spectator may claim, with what happens while the claim is on its way. */
+/** A free seat a member without one may claim, with what happens while the claim is on its way. */
 export interface SeatClaim {
   onClaim: (team: Team, role: PlayingRole) => void;
   pending: boolean;
@@ -62,10 +62,11 @@ function TeamDeadline({
  *
  * A team lost its only Spymaster or its last Operative, so the server paused the match and
  * gave that team a deadline. The dialog says who left and why, which seat each short team
- * needs, and how long remains, counted from the server's absolute deadline. A spectator can
- * take a free seat here, which restores the team. The dialog closes when the server says
+ * needs, and how long remains, counted from the server's absolute deadline. A player who
+ * joined the paused match takes a free seat here, which restores the team. The dialog closes when the server says
  * play resumes; if a deadline passes, the server closes the room and everyone is taken back
- * to the Lobby. Nothing here ends the game on its own.
+ * to the Lobby. Nothing here ends the game on its own. The chat stays open above the dialog,
+ * so players can talk while they wait.
  */
 export function StaffingDialog({
   staffing,
@@ -77,7 +78,7 @@ export function StaffingDialog({
   staffing: Staffing;
   departure: StaffingDeparture | null;
   clockOffsetMs: number;
-  /** Present for a spectator, who may take a free seat. */
+  /** Present for a member without a seat, who joined to take a free one. */
   claim: SeatClaim | null;
   onLeave: () => void;
 }) {
@@ -97,6 +98,7 @@ export function StaffingDialog({
       onClose={() => {}}
       closable={false}
       showCloseButton={false}
+      underChat
       className={styles.card}
     >
       <span aria-hidden="true" className={styles.badge}>

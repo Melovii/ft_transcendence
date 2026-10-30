@@ -76,6 +76,8 @@ export const badgeOffline: string = `${badge} bg-surface-muted text-text-slate`;
 
 export const badgeFriend: string = `${badge} bg-primary-sky/15 text-primary-ink`;
 
+export const badgePending: string = `${badge} bg-accent-yellow/25 text-accent-brown`;
+
 export const badgeDot: string = 'size-[7px] rounded-pill bg-current';
 
 /** The design system's compact primary button. */
@@ -83,6 +85,13 @@ export const addButton: string =
   'h-[36px] gap-[6px] rounded-[14px] px-[12px] text-md leading-none font-bold';
 
 export const addPlacement: string = 'shrink-0 aria-disabled:opacity-70';
+
+/** Accept and Decline side by side at the end of a request row. */
+export const rowActions: string = 'ml-auto flex shrink-0 gap-[8px]';
+
+/** Requests sit above the friend list and scroll on their own when there are many. */
+export const requestList: string =
+  '-mx-[6px] flex max-h-[200px] flex-col gap-[8px] overflow-y-auto px-[6px] py-[4px]';
 
 export const rowError: string = 'basis-full text-sm leading-[18px] font-bold text-accent-red';
 
@@ -115,6 +124,11 @@ export const openButton: string =
   `${buttonInteraction} inline-flex h-[36px] items-center gap-[8px] rounded-pill bg-surface ` +
   'px-[14px] text-md leading-none font-bold text-text-ink shadow-panel ' +
   'not-disabled:hover:shadow-[0_8px_12px_var(--color-shadow-warm-soft)] desktop:h-[34px]';
+
+/** Friend requests waiting for the user's answer, in the warm accent. */
+export const requestCount: string =
+  'inline-flex min-w-[22px] items-center justify-center rounded-pill bg-secondary px-[6px] ' +
+  'py-[2px] text-sm leading-none font-bold text-surface';
 
 export const openCount: string =
   'inline-flex min-w-[22px] items-center justify-center rounded-pill bg-primary-sky px-[6px] ' +

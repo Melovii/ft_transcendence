@@ -49,10 +49,12 @@ export interface ChannelHistory {
 }
 
 /**
- * Why a message is not sent. `OFFLINE`, `TIMEOUT` and `UNAVAILABLE` may be retried with the
- * same `request_id`; `REVOKED` and `INVALID` are final answers from the server.
+ * Why a message is not sent. `OFFLINE`, `TIMEOUT`, `UNAVAILABLE` and `READ_ONLY` (refused
+ * while the user's match runs) may be retried with the same `request_id`; `REVOKED` and
+ * `INVALID` are final answers from the server.
  */
-export type SendFailure = 'OFFLINE' | 'TIMEOUT' | 'UNAVAILABLE' | 'REVOKED' | 'INVALID';
+export type SendFailure =
+  'OFFLINE' | 'TIMEOUT' | 'UNAVAILABLE' | 'READ_ONLY' | 'REVOKED' | 'INVALID';
 
 /** A message this tab sent that has no ack yet. */
 export interface PendingMessage {
@@ -102,6 +104,8 @@ interface ChatState {
   replaceChannels: (channels: ChatChannel[]) => void;
   upsertChannel: (channel: ChatChannel) => void;
   setAccess: (channelId: number, access: ChannelAccess, reason: ChannelAccessReason | null) => void;
+  /** Show a user's new username and avatar on their direct channels. */
+  updatePeer: (userId: number, username: string, avatarUrl: string) => void;
 
   setHistory: (channelId: number, patch: Partial<ChannelHistory>) => void;
   addMessages: (channelId: number, messages: ChatMessage[]) => void;
@@ -219,12 +223,27 @@ export const useChatStore = create<ChatState>((set) => ({
       };
     }),
 
+  updatePeer: (userId, username, avatarUrl) =>
+    set((state) => {
+      const touched = Object.values(state.channels).filter((c) => c.peer?.user_id === userId);
+      if (touched.length === 0) return state;
+      const channels = { ...state.channels };
+      for (const channel of touched) {
+        channels[channel.channel_id] = {
+          ...channel,
+          peer: { ...channel.peer!, username, avatar_url: avatarUrl },
+        };
+      }
+      return { channels };
+    }),
+
   setAccess: (channelId, access, reason) =>
     set((state) => {
       const known = state.channels[channelId];
       if (!known) return state;
       const channels = { ...state.channels, [channelId]: { ...known, access, reason } };
-      if (access === 'ACTIVE') return { channels };
+      // A read-only channel stays on screen: its messages are still readable.
+      if (access !== 'INACTIVE') return { channels };
       return {
         channels,
         histories: omit(state.histories, channelId),
@@ -327,9 +346,9 @@ export const useChatStore = create<ChatState>((set) => ({
     })),
 }));
 
-/** Unread messages across every channel the user can still use. */
+/** Unread messages across every channel the user can still read. */
 export const selectTotalUnread = (state: ChatState): number =>
-  Object.entries(state.unread).reduce(
-    (sum, [id, count]) => (state.channels[Number(id)]?.access === 'ACTIVE' ? sum + count : sum),
-    0,
-  );
+  Object.entries(state.unread).reduce((sum, [id, count]) => {
+    const access = state.channels[Number(id)]?.access;
+    return access === 'ACTIVE' || access === 'READ_ONLY' ? sum + count : sum;
+  }, 0);

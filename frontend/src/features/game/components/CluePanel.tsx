@@ -7,7 +7,7 @@ import { Button, Icon, LoadingDots } from '@shared/ui';
 import { cn } from '@shared/utils';
 
 import type { GameActions } from '../hooks/useGameActions';
-import { CLUE_NUMBER, isOneWordClue } from '../model/clue';
+import { CLUE_NUMBER, isBoardWord, isOneWordClue } from '../model/clue';
 import * as styles from './CluePanel.styles';
 
 /** The server's answer to a command it turned down, shown next to the control that sent it. */
@@ -76,18 +76,29 @@ function ClueNumber({
 
 /**
  * GIVE A CLUE: the active Spymaster's one word and number. Give Clue stays disabled until
- * the clue is one word; the server checks the clue again and normalizes it. While the clue
- * is on its way the form keeps its values and cannot be sent twice, and the board moves on
- * only when the server announces the clue.
+ * the clue is one word that is not on the board; the server checks the clue again, without
+ * changing it into another word. While the clue is on its way the form keeps its values and
+ * cannot be sent twice, and the board moves on only when the server announces the clue.
  */
-export function ClueForm({ actions, className }: { actions: GameActions; className?: string }) {
+export function ClueForm({
+  actions,
+  boardWords,
+  className,
+}: {
+  actions: GameActions;
+  /** Every word on the board, revealed or not; none of them may be the clue. */
+  boardWords: readonly string[];
+  className?: string;
+}) {
   const { t } = useTranslation();
   const ids = { word: useId(), number: useId(), hint: useId(), error: useId() };
   const [word, setWord] = useState('');
   const [number, setNumber] = useState<number>(CLUE_NUMBER.min);
   const sending = actions.pending === 'clue';
   const trimmed = word.trim();
-  const valid = isOneWordClue(trimmed);
+  const oneWord = isOneWordClue(trimmed);
+  const onBoard = oneWord && isBoardWord(trimmed, boardWords);
+  const valid = oneWord && !onBoard;
   const showRule = trimmed.length > 0 && !valid;
 
   const submit = (event: FormEvent) => {
@@ -147,7 +158,7 @@ export function ClueForm({ actions, className }: { actions: GameActions; classNa
       </div>
       {showRule && (
         <p id={ids.error} className={styles.rule}>
-          {t('game.clue.rule')}
+          {t(onBoard ? 'game.errors.clueOnBoard' : 'game.clue.rule')}
         </p>
       )}
       <ActionFeedback actions={actions} action="clue" className={styles.formFeedback} />
@@ -221,6 +232,7 @@ export function StatusPanel({
   tone = 'muted',
   action,
   actionClassName,
+  actionInline = false,
   className,
 }: {
   title: ReactNode;
@@ -231,20 +243,65 @@ export function StatusPanel({
   action?: ReactNode;
   /** Positions an action that is not the designed Pass button. */
   actionClassName?: string;
+  /** `true` puts the action beside the text instead of in the corner, for wider actions. */
+  actionInline?: boolean;
   className?: string;
 }) {
   const { t } = useTranslation();
   return (
-    <section aria-live="polite" className={cn(styles.status, className)}>
+    <section
+      aria-live="polite"
+      className={cn(actionInline ? styles.statusInline : styles.status, className)}
+    >
       {waiting && (
         <LoadingDots label={t('game.status.waitingLabel')} className={styles.statusDots} />
       )}
-      <div className={styles.statusText}>
+      <div className={actionInline ? styles.statusTextInline : styles.statusText}>
         <p className={cn(styles.statusTitle, styles.statusTones[tone])}>{title}</p>
         <p className={styles.statusBody}>{body}</p>
       </div>
-      {action && <div className={cn(styles.statusAction, actionClassName)}>{action}</div>}
+      {action && (
+        <div
+          className={cn(
+            actionInline ? styles.statusActionInline : styles.statusAction,
+            actionClassName,
+          )}
+        >
+          {action}
+        </div>
+      )}
     </section>
+  );
+}
+
+/**
+ * CONFIRM GUESS: sends the card the Operative selected as the team's guess. It is live only
+ * while a card that can still be guessed is selected; the card turns over when the server
+ * reveals it, for every player at once.
+ */
+export function ConfirmGuessButton({
+  actions,
+  selectedWord,
+}: {
+  actions: GameActions;
+  /** The selected card's word, or `null` when nothing guessable is selected. */
+  selectedWord: string | null;
+}) {
+  const { t } = useTranslation();
+  const confirming = actions.pending === 'guess';
+  const enabled = selectedWord !== null && actions.pending === null;
+  return (
+    <Button
+      sizeClassName={styles.confirm}
+      className={styles.confirmPlacement}
+      onClick={actions.confirmGuess}
+      disabled={!enabled && !confirming}
+      aria-disabled={confirming || undefined}
+      aria-busy={confirming || undefined}
+      aria-label={selectedWord ? t('game.guess.confirmLabel', { word: selectedWord }) : undefined}
+    >
+      {t(confirming ? 'game.guess.confirming' : 'game.guess.confirm')}
+    </Button>
   );
 }
 

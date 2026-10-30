@@ -9,7 +9,7 @@
 import type { AvatarPreset, MatchHistoryEntry, OwnProfile, PublicProfile } from '@shared/types';
 
 /** A mock account: the public profile plus the private fields only the server knows. */
-export interface MockAccount extends PublicProfile {
+export interface MockAccount extends Omit<PublicProfile, 'relationship' | 'friend_request_id'> {
   email: string;
   password: string;
   created_at: string;
@@ -197,6 +197,9 @@ export const SEED_ROOM_MEMBERS = {
 /** Initial friends of `player_one`: two online, one offline. */
 export const SEED_FRIEND_IDS: number[] = [43, 44, 45];
 
+/** Users with a pending friend request to `player_one`, waiting for Accept or Decline. */
+export const SEED_INCOMING_REQUEST_IDS: number[] = [50];
+
 export function toOwnProfile(account: MockAccount, activeRoomId: number | null): OwnProfile {
   return {
     user_id: account.user_id,
@@ -214,8 +217,12 @@ export function toOwnProfile(account: MockAccount, activeRoomId: number | null):
   };
 }
 
-export function toPublicProfile(account: MockAccount): PublicProfile {
+export function toPublicProfile(
+  account: MockAccount,
+  relationship: Pick<PublicProfile, 'relationship' | 'friend_request_id'>,
+): PublicProfile {
   return {
+    ...relationship,
     user_id: account.user_id,
     username: account.username,
     avatar_url: account.avatar_url,

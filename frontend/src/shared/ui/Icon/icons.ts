@@ -96,7 +96,6 @@ export const ICONS = {
   team: faPeopleGroup,
   star: faStar,
   smile: faFaceSmile,
-  spectate: faEye,
   timer: faClock,
   trash: faTrashCan,
   trophy: faTrophy,

@@ -5,8 +5,8 @@
  * Two rules this store exists to enforce:
  *   - the frontend never computes a winner; only `game.ended` or a snapshot of the
  *     completed game is terminal, and a cancelled game has no winner at all;
- *   - an Operative's or a spectator's projection has `color: null` on unrevealed cards,
- *     and no code may treat that absence as something to fill in.
+ *   - an Operative's projection has `color: null` on unrevealed cards, and no code may
+ *     treat that absence as something to fill in.
  *
  * It is fed from the same room connection as the room store — Game opens no socket.
  */
@@ -132,6 +132,14 @@ export const useGameStore = create<GameState>((set, get) => ({
         const next: Game = { ...game, current_turn: event.payload.current_turn };
         delete next.staffing;
         set({ game: next, departure: null });
+        return;
+      }
+      case 'game.history.appended': {
+        if (!game || event.payload.game_id !== game.game_id) return;
+        const { entry } = event.payload;
+        // The snapshot may already hold it; entries are applied once, in `seq` order.
+        if (game.history.some((e) => e.seq >= entry.seq)) return;
+        set({ game: { ...game, history: [...game.history, entry] } });
         return;
       }
       case 'game.cancelled':

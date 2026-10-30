@@ -1,10 +1,9 @@
 /**
  * Role-selection state for the lobby's SPYMASTER / OPERATIVE selector.
  *
- * Every member joins as a spectator. A spectator becomes a participant by claiming a team
- * and a playing role together (`room.role.select` with both), so the team a spectator
- * picks first is only a draft until a role is chosen with it. A participant changes team
- * or role one at a time. One Spymaster per team, and changes only while the room waits.
+ * Every member joins without a seat. An unseated member takes a seat by claiming a team and
+ * a role together (`room.role.select` with both), so the team picked first is only a draft
+ * until a role is chosen with it. A seated member changes team or role one at a time. One Spymaster per team, and changes only while the room waits.
  * The helpers mirror those rules so the UI can say why an option is unavailable; the
  * server still validates every command.
  */
@@ -28,9 +27,9 @@ export interface RoleOption {
 }
 
 export interface RoleSelection {
-  /** The team the role options are for: the member's own, or a spectator's draft. */
+  /** The team the role options are for: the member's own, or an unseated member's draft. */
   team: Team | null;
-  spectating: boolean;
+  unseated: boolean;
   /** Ready means the selection is confirmed; changing role clears it. */
   confirmed: boolean;
   changeable: boolean;
@@ -53,8 +52,8 @@ export function roleSelection(
   const me = room.players.find((p) => p.user_id === userId);
   if (!me) return null;
   const locked = room.status !== 'WAITING';
-  const spectating = me.role === 'SPECTATOR';
-  const team = spectating ? draftTeam : me.team;
+  const unseated = me.role === null;
+  const team = unseated ? draftTeam : me.team;
 
   const option = (role: PlayingRole): RoleOption => {
     const holder = role === 'SPYMASTER' && team ? spymasterOf(room, team, userId) : null;
@@ -73,7 +72,7 @@ export function roleSelection(
 
   return {
     team,
-    spectating,
+    unseated,
     confirmed: me.ready,
     changeable: !locked,
     options: [option('SPYMASTER'), option('OPERATIVE')],

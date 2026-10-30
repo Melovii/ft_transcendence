@@ -19,12 +19,9 @@ export function useRoomCommands() {
       /** A participant moves to the other team, keeping their role where the seat allows. */
       selectTeam: (team: Team): Promise<AckMessage> =>
         connection.request('room.team.select', { team }),
-      /** Claims a playing role on `team` in one step, from spectating or another role. */
+      /** Claims a role on `team` in one step, from no seat or another role. */
       selectRole: (team: Team, role: PlayingRole): Promise<AckMessage> =>
         connection.request('room.role.select', { team, role }),
-      /** Gives the seat up and watches instead. */
-      spectate: (): Promise<AckMessage> =>
-        connection.request('room.role.select', { role: 'SPECTATOR' }),
       setReady: (ready: boolean): Promise<AckMessage> =>
         connection.request('room.ready.set', { ready }),
       updateSettings: (settings: Partial<RoomSettings>): Promise<AckMessage> =>

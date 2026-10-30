@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { ChatConnectionProvider } from '@app/connection/ChatConnectionProvider';
+import { ChatInviteButton } from './ChatInviteButton';
 import { ChatWidget } from '@features/chat/components/ChatWidget';
 import type { ChatPerson, ChatRoomContext } from '@features/chat/components/ChatWidget';
 import { useChatPanel } from '@features/chat/hooks/useChat';
@@ -18,7 +19,8 @@ import { openProfileModal, useSessionStore } from '@shared/stores';
  * Mounting it here rather than inside a feature keeps it alive across those screens
  * (including while a profile modal is open) and stops features from importing each other
  * to render it: this is where the chat gets the friend list, the room the user is in and
- * the players' avatars, and where its avatars and names open the shared Profile pop-up.
+ * the players' avatars, where its avatars and names open the shared Profile pop-up, and
+ * where a friend's row gets the room Invite while the user is in a room.
  */
 function isChatRoute(pathname: string): boolean {
   return pathname === ROUTES.lobby || pathname.startsWith('/room/');
@@ -77,7 +79,8 @@ function ConnectedChat({ selfUserId, onLobby }: { selfUserId: number; onLobby: b
         members: room.players.map((p) => ({
           user_id: p.user_id,
           username: p.username,
-          avatar_url: avatarFor(p.user_id) ?? friendById.get(p.user_id)?.avatar_url ?? null,
+          avatar_url:
+            p.avatar_url || avatarFor(p.user_id) || friendById.get(p.user_id)?.avatar_url || null,
           // Room members carry no presence; a friend's comes from the friend list.
           is_online: friendById.get(p.user_id)?.is_online,
         })),
@@ -91,6 +94,15 @@ function ConnectedChat({ selfUserId, onLobby }: { selfUserId: number; onLobby: b
     roomContext?.members.forEach((m) => known.current.set(m.user_id, m));
     friends.forEach((f) => known.current.set(f.user_id, f));
   }, [roomContext, friends]);
+
+  // Invite needs a room to invite into; a friend already in it has nothing to join.
+  const inviteFor = useCallback(
+    (friend: ChatPerson) =>
+      room?.status === 'WAITING' && !room.players.some((p) => p.user_id === friend.user_id) ? (
+        <ChatInviteButton friend={friend} room={room} />
+      ) : null,
+    [room],
+  );
 
   const personById = useCallback(
     (userId: number): ChatPerson | null =>
@@ -117,6 +129,7 @@ function ConnectedChat({ selfUserId, onLobby }: { selfUserId: number; onLobby: b
       personById={personById}
       onRetryFriends={friendList.retry}
       onOpenProfile={openProfileModal}
+      inviteFor={inviteFor}
     />
   );
 }

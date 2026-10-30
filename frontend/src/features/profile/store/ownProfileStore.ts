@@ -30,6 +30,8 @@ interface OwnProfileState {
   apply: (profile: OwnProfile) => void;
   /** The server's new avatar URL. */
   setAvatar: (avatarUrl: string) => void;
+  /** The server's new username. */
+  setUsername: (username: string) => void;
   clear: () => void;
 }
 
@@ -69,6 +71,9 @@ export const useOwnProfileStore = create<OwnProfileState>((set, get) => ({
     set((state) =>
       state.profile ? { profile: { ...state.profile, avatar_url: avatarUrl } } : state,
     ),
+
+  setUsername: (username) =>
+    set((state) => (state.profile ? { profile: { ...state.profile, username } } : state)),
 
   clear: () => {
     inflight = null;

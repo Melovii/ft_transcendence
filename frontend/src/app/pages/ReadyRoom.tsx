@@ -13,12 +13,11 @@ import {
   SetupPanel,
   SetupSummary,
 } from '@features/room/components/SetupPanel';
-import { Spectators, TeamPanel } from '@features/room/components/TeamPanel';
+import { TeamPanel, UnseatedMembers } from '@features/room/components/TeamPanel';
 import { useKickMember } from '@features/room/hooks/useKickMember';
 import { useRoomSetup } from '@features/room/hooks/useRoomSetup';
 import {
   findMember,
-  participantCount,
   postGamePending,
   readyCount,
   rosters,
@@ -89,8 +88,8 @@ function CountdownCancelledNotice() {
 /**
  * The Ready Room: the staging screen between Room Discovery and the board.
  *
- * Everyone arrives as a spectator. Players claim a team and a role, then press Ready; whoever
- * stays out watches. The Room Owner (the host) can remove any other member and owns the
+ * Everyone arrives without a seat. Players claim a team and a role, then press Ready; the
+ * room starts only once every member is seated and ready. The Room Owner (the host) can remove any other member and owns the
  * room's settings; everyone else sees the same values read-only. Every value on screen comes from the
  * room snapshot the server keeps current over the room socket, so a player who joins,
  * leaves or changes their setup appears for everyone without a reload, and a refresh or a
@@ -126,7 +125,7 @@ export function ReadyRoom({ room, onLeave }: { room: Room; onLeave: () => void }
   const counter =
     isFull(room) && room.status === 'WAITING'
       ? t('room.ready.counterFull', { count: room.player_count, max: room.max_players })
-      : t('room.ready.counter', { ready: readyCount(room), count: participantCount(room) });
+      : t('room.ready.counter', { ready: readyCount(room), count: room.player_count });
 
   return (
     <main className={styles.page}>
@@ -167,8 +166,8 @@ export function ReadyRoom({ room, onLeave }: { room: Room; onLeave: () => void }
             <TeamPanel roster={teams.red} className={styles.team} {...member} />
             <TeamPanel roster={teams.blue} className={styles.team} {...member} />
           </div>
-          <Spectators
-            members={teams.spectators}
+          <UnseatedMembers
+            members={teams.unseated}
             avatarFor={avatarFor}
             selfId={userId}
             onKick={onKick}

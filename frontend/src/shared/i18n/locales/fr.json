@@ -380,7 +380,8 @@
 				"waiting": "EN ATTENTE",
 				"full": "PLEINE",
 				"inGame": "EN JEU",
-				"closed": "FERMÉ"
+				"closed": "FERMÉ",
+				"seatOpen": "PLACE LIBRE"
 			},
 			"submit": "Rejoindre",
 			"joining": "Connexion",
@@ -394,8 +395,9 @@
 				"full": "Cette salle est pleine.",
 				"notJoinable": "Ce salon n'accepte pas de nouveaux joueurs pour le moment."
 			},
-			"spectate": "Rejoindre pour regarder",
-			"notJoinable": "Fermé"
+			"notJoinable": "Fermé",
+			"takeSeat": "Rejoindre la place libre",
+			"inGame": "Partie en cours"
 		},
 		"feedback": {
 			"createFailedTitle": "Impossible de créer la salle",
@@ -440,8 +442,7 @@
 			"room": {
 				"title": "Quitter le salon ?",
 				"body": "Vous quitterez ce salon et perdrez votre équipe et votre rôle. Votre place sera libérée pour un autre joueur.",
-				"confirm": "Quitter le salon",
-				"bodySpectator": "Vous quitterez ce salon et reviendrez au lobby."
+				"confirm": "Quitter le salon"
 			},
 			"game": {
 				"title": "Quitter la partie ?",
@@ -461,7 +462,8 @@
 				"PLAYER_LEFT": "Compte à rebours arrêté : {{username}} a quitté le salon.",
 				"TEAM_CHANGED": "Compte à rebours arrêté : {{username}} a changé d'équipe.",
 				"ROLE_CHANGED": "Compte à rebours arrêté : {{username}} a changé de rôle.",
-				"PLAYER_KICKED": "Compte à rebours arrêté : {{username}} a été retiré du salon."
+				"PLAYER_KICKED": "Compte à rebours arrêté : {{username}} a été retiré du salon.",
+				"PLAYER_JOINED": "Compte à rebours arrêté : {{username}} a rejoint et doit choisir une place."
 			}
 		},
 		"ready": {
@@ -512,7 +514,7 @@
 			"role": {
 				"SPYMASTER": "Maître-espion",
 				"OPERATIVE": "Agent",
-				"SPECTATOR": "Spectateur"
+				"NONE": "Pas encore de rôle"
 			},
 			"status": {
 				"ready": "Prêt !",
@@ -542,7 +544,7 @@
 			"change": "Modifier",
 			"choose": "Choisir",
 			"hints": {
-				"teamFirst": "Choisissez une équipe, puis un rôle. En attendant, vous regardez.",
+				"teamFirst": "Choisissez une équipe, puis un rôle. La partie commence quand tout le monde a une place.",
 				"spymasterTaken": "{{username}} est le maître-espion de cette équipe.",
 				"locked": "La partie commence, votre configuration est verrouillée.",
 				"hostOnly": "Seul le propriétaire du salon peut changer sa taille.",
@@ -553,7 +555,8 @@
 					"POST_GAME_PENDING": "Des joueurs regardent encore le dernier résultat."
 				},
 				"claim": "Choisissez un rôle pour rejoindre l'équipe {{team}}.",
-				"timerHostOnly": "Seul le propriétaire du salon peut changer le minuteur."
+				"timerHostOnly": "Seul le propriétaire du salon peut changer le minuteur.",
+				"languageHostOnly": "Seul le propriétaire du salon peut changer la langue du salon."
 			},
 			"errors": {
 				"roleConflict": "Un autre joueur vient de prendre la place de maître-espion de cette équipe.",
@@ -565,10 +568,11 @@
 				"offline": "Vous êtes hors ligne. Réessayez une fois reconnecté.",
 				"generic": "Ça n'a pas marché. Réessayez.",
 				"postGamePending": "Attendez que tout le monde soit revenu du dernier résultat.",
-				"timer": "Ce minuteur n'est pas disponible. Choisissez-en un dans la liste."
+				"timer": "Ce minuteur n'est pas disponible. Choisissez-en un dans la liste.",
+				"languageHostOnly": "Seul l'hôte du salon peut changer la langue du salon.",
+				"language": "Cette langue n'est pas disponible. Choisissez-en une dans la liste."
 			},
-			"spectators": "Spectateurs",
-			"spectate": "Regarder plutôt"
+			"unseated": "Choisissent une place"
 		},
 		"recovery": {
 			"notMember": "Tu ne fais plus partie de ce salon.",
@@ -578,7 +582,8 @@
 			"legacy": "Vous êtes encore dans un salon d'une ancienne version du jeu, qui ne peut pas être ouvert ici. Il se fermera de lui-même à la fin.",
 			"kicked": "Le propriétaire du salon vous a retiré du salon.",
 			"postGameTimeout": "Vous n'avez pas choisi à temps : vous avez quitté le salon après la partie.",
-			"insufficientPlayers": "Le salon a fermé : une équipe est restée sans un joueur nécessaire. La partie ne compte pas."
+			"insufficientPlayers": "Le salon a fermé : une équipe est restée sans un joueur nécessaire. La partie ne compte pas.",
+			"seatUnavailable": "La partie a repris avant que vous preniez une place, vous avez donc quitté le salon."
 		},
 		"invites": {
 			"title": "{{username}} t'invite à jouer",
@@ -590,11 +595,11 @@
 		},
 		"settings": {
 			"timer": "Minuteur",
-			"language": "Mots",
+			"language": "Langue",
 			"noLimit": "Sans limite",
 			"seconds_one": "{{count}} seconde",
 			"seconds_other": "{{count}} secondes",
-			"ownerYou": "Vous êtes le propriétaire du salon. Vous pouvez retirer des joueurs, changer la taille du salon et régler le minuteur.",
+			"ownerYou": "Vous êtes le propriétaire du salon. Vous pouvez retirer des joueurs, changer la taille du salon, régler le minuteur et choisir la langue du salon.",
 			"ownerOnly": "Seul le propriétaire du salon peut changer ses réglages."
 		},
 		"kick": {
@@ -661,9 +666,10 @@
 			"opponentClue": "L'Espion en chef {{team}} réfléchit",
 			"opponentBody": "Attendez votre tour. Les cartes ne peuvent pas être choisies maintenant.",
 			"spymasterOpponentBody": "Attendez votre tour pour donner un indice.",
-			"spectatingBody": "Vous regardez cette partie. Prenez une place libre quand il y en a une.",
 			"pausedTitle": "En attente de joueurs…",
-			"pausedBody": "Il manque un joueur à une équipe. La partie reprend quand la place est prise."
+			"pausedBody": "Il manque un joueur à une équipe. La partie reprend quand la place est prise.",
+			"unseatedTitle": "Prenez la place libre",
+			"unseatedBody": "Choisissez la place libre pour jouer cette partie."
 		},
 		"pass": {
 			"action": "Passer",
@@ -678,7 +684,7 @@
 			"openProfile": "Ouvrir le profil de {{username}}"
 		},
 		"card": {
-			"pick": "Choisir {{word}}",
+			"pick": "Sélectionner {{word}}",
 			"key": "{{word}}, {{affiliation}}",
 			"revealed": "{{word}}, révélée : {{affiliation}}",
 			"affiliation": {
@@ -686,7 +692,8 @@
 				"BLUE": "Agent bleu",
 				"NEUTRAL": "Passant",
 				"ASSASSIN": "Assassin"
-			}
+			},
+			"selected": "{{word}}, sélectionné"
 		},
 		"leave": "Quitter la partie",
 		"results": {
@@ -708,13 +715,14 @@
 			"invalidClue": "L'indice doit être un seul mot de 30 lettres au plus.",
 			"invalidNumber": "Choisissez un nombre de 1 à 9.",
 			"invalidCard": "Cette carte n'est pas sur ce plateau.",
-			"alreadyRevealed": "Cette carte a déjà été révélée.",
 			"noGuesses": "Votre équipe n'a plus d'essais.",
 			"notYourTurn": "Ce n'est plus votre tour.",
 			"roleForbidden": "Votre rôle ne permet pas cette action.",
 			"finished": "La partie est déjà terminée.",
 			"offline": "Vous êtes hors ligne. Réessayez une fois la connexion rétablie.",
-			"generic": "Un problème est survenu. Réessayez."
+			"generic": "Un problème est survenu. Réessayez.",
+			"guessInvalid": "Cette proposition n'est plus valable.",
+			"clueOnBoard": "Cet indice ne peut pas être utilisé, car c'est l'un des mots du plateau."
 		},
 		"staffing": {
 			"title": "Partie en pause",
@@ -740,6 +748,33 @@
 			"claimTitle": "Prendre une place libre",
 			"claim": "{{role}} {{team}}",
 			"claimClosed": "Cette place ne peut pas être prise pour le moment."
+		},
+		"guess": {
+			"confirm": "Confirmer",
+			"confirming": "Confirmation…",
+			"confirmLabel": "Confirmer la proposition : {{word}}",
+			"selected": "Sélectionné : {{word}}. Confirmez pour le proposer."
+		},
+		"log": {
+			"title": "Historique de la partie",
+			"empty": "Rien ne s'est encore passé.",
+			"started": "L'équipe {{team}} commence la partie",
+			"clue": "Le maître-espion {{team}} {{username}} a donné l'indice « {{word}} » — {{number}}",
+			"revealed": "{{username}} a choisi « {{word}} » — {{affiliation}}",
+			"passed": "{{username}} a terminé le tour de l'équipe {{team}}",
+			"turn": "Au tour de l'équipe {{team}}",
+			"timeUp": "L'équipe {{previous}} a manqué de temps — au tour de l'équipe {{team}}",
+			"paused": "En pause : {{username}} a quitté l'équipe {{team}}",
+			"resumed": "La partie reprend — au tour de l'équipe {{team}}",
+			"won": "L'équipe {{team}} gagne",
+			"wonAssassin": "L'équipe {{team}} gagne — l'assassin a été révélé",
+			"cancelled": "Partie annulée : une équipe est restée incomplète",
+			"color": {
+				"RED": "Rouge",
+				"BLUE": "Bleu",
+				"NEUTRAL": "Neutre",
+				"ASSASSIN": "Assassin"
+			}
 		}
 	},
 	"profile": {
@@ -759,14 +794,18 @@
 		},
 		"friend": {
 			"add": "Ajouter",
-			"adding": "Ajout…",
 			"remove": "Retirer l'ami",
 			"removing": "Retrait…",
 			"loadFailed": "Votre liste d'amis n'a pas pu être chargée.",
-			"failed": {
-				"ADDING": "Impossible d'ajouter cet ami. Réessayez.",
-				"REMOVING": "Impossible de retirer cet ami. Réessayez."
-			}
+			"sending": "Envoi…",
+			"requestSent": "Demande envoyée",
+			"accept": "Accepter",
+			"accepting": "Acceptation…",
+			"decline": "Refuser",
+			"declining": "Refus…",
+			"received": "{{username}} vous a envoyé une demande d'ami.",
+			"cancel": "Annuler la demande",
+			"cancelling": "Annulation…"
 		},
 		"message": "Message",
 		"invite": {
@@ -851,6 +890,13 @@
 				"INVALID": "Le signalement n'a pas été accepté. Vérifiez le motif et les détails.",
 				"FAILED": "Le signalement n'a pas pu être envoyé. Réessayez."
 			}
+		},
+		"block": {
+			"block": "Bloquer l'utilisateur",
+			"blocking": "Blocage…",
+			"unblock": "Débloquer l'utilisateur",
+			"unblocking": "Déblocage…",
+			"hint": "Vous avez bloqué {{username}}. Vous ne pouvez ni vous écrire, ni vous inviter, ni devenir amis tant que vous ne le débloquez pas."
 		}
 	},
 	"chat": {
@@ -947,7 +993,8 @@
 				"TIMEOUT": "Pas encore envoyé : le serveur n’a pas répondu.",
 				"UNAVAILABLE": "Non envoyé : le chat est indisponible pour le moment.",
 				"REVOKED": "Non envoyé : vous ne pouvez plus écrire dans ce chat.",
-				"INVALID": "Non envoyé : le message a été refusé."
+				"INVALID": "Non envoyé : le message a été refusé.",
+				"READ_ONLY": "Non envoyé : le chat est indisponible pendant la partie."
 			}
 		},
 		"access": {
@@ -960,10 +1007,14 @@
 				"KICKED_BY_HOST": "Vous avez été retiré de ce salon, son chat est donc fermé.",
 				"POST_GAME_TIMEOUT": "Le chat du salon s’est fermé après la partie.",
 				"ROOM_CLOSED": "Ce salon est fermé."
-			}
+			},
+			"gameRunning": "Le chat est indisponible pendant la partie. Il rouvre quand la partie est en pause ou terminée."
 		},
 		"unknownPlayer": "Joueur",
-		"retry": "Réessayer"
+		"retry": "Réessayer",
+		"invite": {
+			"label": "Inviter {{username}} dans votre salon"
+		}
 	},
 	"settings": {
 		"title": "Paramètres",
@@ -1063,7 +1114,7 @@
 	},
 	"friends": {
 		"title": "Amis",
-		"subtitle": "Tes amis et des joueurs à ajouter.",
+		"subtitle": "Vos amis, les demandes et des joueurs à ajouter.",
 		"count_one": "{{count}} ami",
 		"count_other": "{{count}} amis",
 		"openLabel_one": "Amis, {{count}} ami",
@@ -1079,7 +1130,7 @@
 		"search": {
 			"label": "Rechercher des joueurs par nom d'utilisateur",
 			"placeholder": "Rechercher un nom d'utilisateur",
-			"hint": "{{max}} caractères maximum. L'amitié est immédiate : rien à accepter.",
+			"hint": "Jusqu'à {{max}} caractères. Une demande d'ami doit être acceptée par l'autre joueur.",
 			"resultsTitle": "Résultats de la recherche",
 			"resultCount_one": "{{count}} joueur trouvé",
 			"resultCount_other": "{{count}} joueurs trouvés",
@@ -1090,12 +1141,42 @@
 			"emptyBody": "Aucun nom d'utilisateur ne contient « {{term}} ».",
 			"alreadyFriend": "Ami",
 			"add": "Ajouter",
-			"adding": "Ajout…",
-			"addLabel": "Ajouter {{username}} en ami",
-			"addNotFound": "Ce joueur n'existe plus.",
-			"addFailed": "Impossible d'ajouter ce joueur. Réessaie.",
+			"adding": "Envoi…",
+			"addLabel": "Envoyer une demande d'ami à {{username}}",
 			"more": "Afficher plus",
-			"loadingMore": "Chargement…"
+			"loadingMore": "Chargement…",
+			"blocked": "Bloqué"
+		},
+		"requests": {
+			"incomingTitle_one": "{{count}} demande d'ami",
+			"incomingTitle_other": "{{count}} demandes d'ami",
+			"outgoingTitle_one": "{{count}} demande envoyée",
+			"outgoingTitle_other": "{{count}} demandes envoyées",
+			"sent": "Demande envoyée",
+			"accept": "Accepter",
+			"accepting": "Acceptation…",
+			"acceptLabel": "Accepter la demande d'ami de {{username}}",
+			"decline": "Refuser",
+			"declining": "Refus…",
+			"declineLabel": "Refuser la demande d'ami de {{username}}",
+			"waiting_one": "{{count}} demande d'ami en attente",
+			"waiting_other": "{{count}} demandes d'ami en attente",
+			"cancel": "Annuler",
+			"cancelling": "Annulation…",
+			"cancelLabel": "Annuler votre demande d'ami à {{username}}"
+		},
+		"errors": {
+			"blocked": "Vous ne pouvez pas envoyer de demande d'ami à cet utilisateur.",
+			"cannotAccept": "Vous ne pouvez pas accepter cette demande.",
+			"notFound": "Ce joueur n'existe plus.",
+			"requestGone": "Cette demande n'est plus en attente.",
+			"REQUEST": "La demande d'ami n'a pas pu être envoyée. Réessayez.",
+			"ACCEPT": "La demande n'a pas pu être acceptée. Réessayez.",
+			"DECLINE": "La demande n'a pas pu être refusée. Réessayez.",
+			"REMOVE": "Cet ami n'a pas pu être retiré. Réessayez.",
+			"BLOCK": "Cet utilisateur n'a pas pu être bloqué. Réessayez.",
+			"UNBLOCK": "Cet utilisateur n'a pas pu être débloqué. Réessayez.",
+			"CANCEL": "La demande n'a pas pu être annulée. Réessayez."
 		}
 	}
 }

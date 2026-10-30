@@ -19,13 +19,14 @@ import * as styles from './ReadyRoom.styles';
 const EXIT_NOTICE: Partial<Record<RoomExit, string>> = {
   KICKED: 'room.recovery.kicked',
   POST_GAME_TIMEOUT: 'room.recovery.postGameTimeout',
+  SEAT_UNAVAILABLE: 'room.recovery.seatUnavailable',
   INSUFFICIENT_PLAYERS: 'room.recovery.insufficientPlayers',
 };
 
 /**
  * The room route. It shows the screen that matches the player's own state in the server's
  * snapshot — the Ready Room while they are in the room's lobby, the Game Board while they
- * play or watch a match, and its result until they decide — so a refresh lands on the
+ * play a match (or join a paused one to take its free seat), and its result until they decide — so a refresh lands on the
  * right screen from the fresh snapshot, never from navigation history. After a match the
  * room may already be waiting for the next one while this player is still on the result.
  *

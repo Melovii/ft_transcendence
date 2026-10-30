@@ -2,7 +2,7 @@ import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { ReactNode, RefObject } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { Room } from '@shared/types';
+import type { Relationship, Room } from '@shared/types';
 import { AvatarImage, Button, Dialog, Icon, Skeleton } from '@shared/ui';
 import { cn } from '@shared/utils';
 
@@ -14,17 +14,28 @@ import { useReportUser } from '../hooks/useReportUser';
 import * as styles from './ProfileModal.styles';
 import { ReportView } from './ReportView';
 
+/** A social action on the profile's player, while it is on its way. */
+export type FriendshipChange =
+  'REQUEST' | 'CANCEL' | 'ACCEPT' | 'DECLINE' | 'REMOVE' | 'BLOCK' | 'UNBLOCK';
+
 /**
- * The friendship between the signed-in user and the profile's player, as the app layer
+ * The relationship between the signed-in user and the profile's player, as the app layer
  * reads it from the friends feature. The profile feature only presents it.
  */
 export interface FriendshipControl {
   status: 'LOADING' | 'READY' | 'ERROR';
-  isFriend: boolean;
-  change: 'ADDING' | 'REMOVING' | null;
-  failed: 'ADDING' | 'REMOVING' | null;
-  add: () => void;
+  /** Meaningful once `status` is `READY`. */
+  relationship: Relationship | null;
+  change: FriendshipChange | null;
+  /** Translation key of the last refusal. */
+  failure: string | null;
+  sendRequest: () => void;
+  accept: () => void;
+  decline: () => void;
+  cancel: () => void;
   remove: () => void;
+  block: () => void;
+  unblock: () => void;
   retry: () => void;
 }
 
@@ -52,12 +63,15 @@ export interface ProfileModalProps {
  * it; features open it with `openProfileModal(userId)`.
  *
  * One pop-up serves every profile and adapts to whose it is. The own profile shows the
- * stats and GAME HISTORY. Another player's shows the stats and the friend action, and for
- * a friend INVITE, which invites them into the user's current room when that room can take
- * them. What the actions offer is derived from the live friend list and room snapshot, and
+ * stats and GAME HISTORY. Another player's shows the stats and the friend action for the
+ * relationship — Add Friend, Request Sent with Cancel, Accept and Decline, or Remove Friend — and for a
+ * friend INVITE, which invites them into the user's current room when that room can take
+ * them, and Message. What the actions offer is derived from the live friend list and room snapshot, and
  * the server decides every action again when it is sent.
  *
- * Another player's profile also offers REPORT at its foot. The report form takes the
+ * Another player's profile also offers BLOCK USER (or UNBLOCK USER) and REPORT at its foot.
+ * A block ends private contact both ways: the friendship, requests, Message and Invite go
+ * away until it is lifted. The report form takes the
  * profile's place inside the same pop-up, and Close steps back from it to the profile. It
  * is never offered on the user's own profile. For the Room Owner, a member of their room's
  * profile also offers REMOVE FROM ROOM there, which asks the room to confirm the kick.
@@ -149,6 +163,7 @@ export function ProfileModal({
               {t('room.kick.fromProfile')}
             </Button>
           )}
+          {!isSelf && friendship && <BlockButton friendship={friendship} />}
           {!isSelf && (
             <ReportButton
               buttonRef={reportRef}
@@ -201,6 +216,45 @@ function ProfileHeader({ profile, titleId }: { profile: ProfileView; titleId: st
         </p>
       </div>
     </div>
+  );
+}
+
+/**
+ * BLOCK USER, or UNBLOCK USER for a player the user blocks, at the foot of the profile
+ * beside Report. Shown once the relationship is known, and held while a change is on its
+ * way.
+ */
+function BlockButton({ friendship }: { friendship: FriendshipControl }) {
+  const { t } = useTranslation();
+  if (friendship.status !== 'READY' || !friendship.relationship) return null;
+  const blocked = friendship.relationship === 'BLOCKED';
+  const busy = friendship.change !== null;
+  const working = friendship.change === 'BLOCK' || friendship.change === 'UNBLOCK';
+  return (
+    <Button
+      theme="link"
+      variant="muted"
+      icon="block"
+      sizeClassName={styles.report}
+      onClick={() => {
+        if (busy) return;
+        if (blocked) friendship.unblock();
+        else friendship.block();
+      }}
+      aria-disabled={busy || undefined}
+      aria-busy={working || undefined}
+      className={styles.reportPlacement}
+    >
+      {t(
+        working
+          ? blocked
+            ? 'profile.block.unblocking'
+            : 'profile.block.blocking'
+          : blocked
+            ? 'profile.block.unblock'
+            : 'profile.block.block',
+      )}
+    </Button>
   );
 }
 
@@ -273,18 +327,26 @@ function ProfileActions({
   const { t } = useTranslation();
   const hintId = useId();
   const { state: invite, invite: sendInvite } = useInviteToRoom(profile, room, onInviteRefused);
-  const isFriend = friendship.status === 'READY' && friendship.isFriend;
+  const relationship = friendship.status === 'READY' ? friendship.relationship : null;
+  const isFriend = relationship === 'FRIENDS';
   const inviteActionable = invite.status === 'READY' || invite.status === 'FAILED';
 
   // A friendship problem outranks the invite's own line: it is the newer news.
   const hint: Hint | null =
     friendship.status === 'ERROR'
       ? { tone: 'error', text: t('profile.friend.loadFailed'), onRetry: friendship.retry }
-      : friendship.failed
-        ? { tone: 'error', text: t(`profile.friend.failed.${friendship.failed}`) }
-        : isFriend
-          ? inviteHint(invite, profile.username, t)
-          : null;
+      : friendship.failure
+        ? { tone: 'error', text: t(friendship.failure) }
+        : relationship === 'BLOCKED'
+          ? { tone: 'neutral', text: t('profile.block.hint', { username: profile.username }) }
+          : relationship === 'REQUEST_RECEIVED'
+            ? {
+                tone: 'neutral',
+                text: t('profile.friend.received', { username: profile.username }),
+              }
+            : isFriend
+              ? inviteHint(invite, profile.username, t)
+              : null;
 
   return (
     <div className={styles.actions}>
@@ -292,7 +354,7 @@ function ProfileActions({
         {friendship.status === 'LOADING' ? (
           <span aria-hidden="true" className={styles.friendSkeleton} />
         ) : (
-          <FriendButton friendship={friendship} isFriend={isFriend} hintId={hintId} />
+          <FriendButtons friendship={friendship} relationship={relationship} hintId={hintId} />
         )}
         {/* Invites go to friends only; for anyone else there is nothing to offer. */}
         {isFriend && (
@@ -325,38 +387,105 @@ function ProfileActions({
   );
 }
 
-function FriendButton({
+/**
+ * The friend action for the relationship: Add Friend; Request Sent, held, with Cancel
+ * Request while a request waits for the other player; Accept and Decline for a request they sent; Remove Friend for
+ * a friend. A blocked player gets none — Unblock sits at the foot.
+ */
+function FriendButtons({
   friendship,
-  isFriend,
+  relationship,
   hintId,
 }: {
   friendship: FriendshipControl;
-  isFriend: boolean;
+  relationship: Relationship | null;
   hintId: string;
 }) {
   const { t } = useTranslation();
   const busy = friendship.change !== null;
-  const label = busy
-    ? t(`profile.friend.${friendship.change === 'ADDING' ? 'adding' : 'removing'}`)
-    : t(isFriend ? 'profile.friend.remove' : 'profile.friend.add');
+  const press = (action: () => void) => () => {
+    if (!busy) action();
+  };
+  const common = {
+    sizeClassName: styles.action,
+    'aria-disabled': busy || undefined,
+    'aria-describedby': hintId,
+    className: styles.friend,
+  };
 
-  return (
-    <Button
-      variant={isFriend ? 'neutral' : 'primary'}
-      sizeClassName={styles.action}
-      onClick={() => {
-        if (busy) return;
-        if (isFriend) friendship.remove();
-        else friendship.add();
-      }}
-      aria-disabled={busy}
-      aria-busy={busy}
-      aria-describedby={hintId}
-      className={styles.friend}
-    >
-      {label}
-    </Button>
-  );
+  switch (relationship) {
+    case 'NONE':
+      return (
+        <Button
+          variant="primary"
+          {...common}
+          onClick={press(friendship.sendRequest)}
+          aria-busy={friendship.change === 'REQUEST' || undefined}
+        >
+          {t(friendship.change === 'REQUEST' ? 'profile.friend.sending' : 'profile.friend.add')}
+        </Button>
+      );
+    case 'REQUEST_SENT':
+      return (
+        <>
+          <Button variant="neutral" {...common} disabled icon="timer">
+            {t('profile.friend.requestSent')}
+          </Button>
+          <Button
+            variant="neutral"
+            {...common}
+            onClick={press(friendship.cancel)}
+            aria-busy={friendship.change === 'CANCEL' || undefined}
+          >
+            {t(
+              friendship.change === 'CANCEL'
+                ? 'profile.friend.cancelling'
+                : 'profile.friend.cancel',
+            )}
+          </Button>
+        </>
+      );
+    case 'REQUEST_RECEIVED':
+      return (
+        <>
+          <Button
+            variant="primary"
+            {...common}
+            onClick={press(friendship.accept)}
+            aria-busy={friendship.change === 'ACCEPT' || undefined}
+          >
+            {t(
+              friendship.change === 'ACCEPT' ? 'profile.friend.accepting' : 'profile.friend.accept',
+            )}
+          </Button>
+          <Button
+            variant="neutral"
+            {...common}
+            onClick={press(friendship.decline)}
+            aria-busy={friendship.change === 'DECLINE' || undefined}
+          >
+            {t(
+              friendship.change === 'DECLINE'
+                ? 'profile.friend.declining'
+                : 'profile.friend.decline',
+            )}
+          </Button>
+        </>
+      );
+    case 'FRIENDS':
+      return (
+        <Button
+          variant="neutral"
+          {...common}
+          onClick={press(friendship.remove)}
+          aria-busy={friendship.change === 'REMOVE' || undefined}
+        >
+          {t(friendship.change === 'REMOVE' ? 'profile.friend.removing' : 'profile.friend.remove')}
+        </Button>
+      );
+    default:
+      return null;
+  }
 }
 
 type Hint = { tone: 'neutral' | 'success' | 'error'; text: string; onRetry?: () => void };

@@ -1,8 +1,8 @@
 import { useEffect, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { TURN_TIMER_OPTIONS } from '@shared/types';
-import type { Room } from '@shared/types';
+import { ROOM_LANGUAGES, TURN_TIMER_OPTIONS } from '@shared/types';
+import type { Room, RoomLanguage } from '@shared/types';
 import { Icon } from '@shared/ui';
 import { cn } from '@shared/utils';
 
@@ -55,10 +55,12 @@ export function RoomCode({ code, className }: { code: string; className?: string
 }
 
 /**
- * The turn timer and the word language. The Room Owner picks the turn timer from
- * `TURN_TIMER_OPTIONS` while the room waits, under the same rules as the room size; everyone
- * else sees the value read-only. Only one word-pack language exists, so the language is
- * shown, never offered. Everyone is told who may change the room's settings.
+ * The turn timer and the room language. The Room Owner picks the turn timer from
+ * `TURN_TIMER_OPTIONS` and the language of the board's words from `ROOM_LANGUAGES` while the
+ * room waits, under the same rules as the room size; everyone else sees the values
+ * read-only, and every member sees a change as soon as the server announces it. The room
+ * language is a game setting: it never changes the interface language. Everyone is told who
+ * may change the room's settings.
  */
 export function RoomSettingsInfo({
   room,
@@ -71,14 +73,23 @@ export function RoomSettingsInfo({
   setup: RoomSetup;
   className?: string;
 }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const timerId = useId();
+  const languageId = useId();
   const hintId = useId();
-  const language = languageName(room.language, i18n.language);
+  const languageHintId = useId();
+  const language = roomLanguageName(room.language);
   const isHost = room.host_user_id === userId;
   const access = roomSettingsAccess(room, userId);
   const timerLabel = (seconds: number | null) =>
     seconds === null ? t('room.settings.noLimit') : t('room.settings.seconds', { count: seconds });
+
+  const changeLanguage = (value: string) => {
+    const next = ROOM_LANGUAGES.find((option) => option === value);
+    if (setup.pending === null && next !== undefined && next !== room.language) {
+      void setup.updateLanguage(next);
+    }
+  };
 
   const changeTimer = (value: string) => {
     const seconds = TURN_TIMER_OPTIONS.find((option) => String(option) === value);
@@ -126,11 +137,42 @@ export function RoomSettingsInfo({
             </span>
           </span>
         )}
-        <span className={styles.settingChip}>
-          <Icon name="rules" />
-          <span className={styles.settingLabel}>{t('room.settings.language')}</span>
-          {language}
-        </span>
+        {access.editable ? (
+          <span className={cn(styles.settingChip, styles.settingChipEditable)}>
+            <Icon name="rules" />
+            <label htmlFor={languageId} className={styles.settingLabel}>
+              {t('room.settings.language')}
+            </label>
+            <select
+              id={languageId}
+              value={room.language}
+              onChange={(event) => changeLanguage(event.target.value)}
+              disabled={setup.pending !== null}
+              aria-busy={setup.pending === 'language'}
+              className={styles.settingSelect}
+            >
+              {ROOM_LANGUAGES.map((option) => (
+                <option key={option} value={option} lang={option}>
+                  {roomLanguageName(option)}
+                </option>
+              ))}
+            </select>
+            <Icon name="chevronDown" className={styles.settingSelectIcon} />
+          </span>
+        ) : (
+          <span className={styles.settingChip} aria-describedby={languageHintId}>
+            <Icon name="rules" />
+            <span className={styles.settingLabel}>{t('room.settings.language')}</span>
+            <span lang={room.language}>{language}</span>
+            <span id={languageHintId} className="sr-only">
+              {t(
+                access.reason === 'NOT_HOST'
+                  ? 'room.ready.hints.languageHostOnly'
+                  : 'room.ready.hints.locked',
+              )}
+            </span>
+          </span>
+        )}
       </div>
       <p className={styles.ownerNote}>
         <Icon name={isHost ? 'host' : 'lock'} />
@@ -140,13 +182,19 @@ export function RoomSettingsInfo({
   );
 }
 
-/** The language's own name in the interface language, or the server's code if unknown. */
-function languageName(code: string, locale: string): string {
-  try {
-    return new Intl.DisplayNames([locale], { type: 'language' }).of(code) ?? code;
-  } catch {
-    return code;
-  }
+/**
+ * Each room language under its own name, the same in every interface language, so a
+ * player always recognizes the language the board's words come in.
+ */
+const ROOM_LANGUAGE_NAMES: Record<RoomLanguage, string> = {
+  en: 'English',
+  tr: 'Türkçe',
+  fr: 'Français',
+};
+
+/** A room language's own name, or the server's code for one this client does not know. */
+function roomLanguageName(code: string): string {
+  return ROOM_LANGUAGE_NAMES[code as RoomLanguage] ?? code;
 }
 
 /**

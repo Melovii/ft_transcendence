@@ -64,13 +64,15 @@ export const columnOperative: string = 'desktop:gap-[30px]';
 
 export const guessFeedback: string = 'text-center empty:hidden';
 
+/** Confirm Guess beside Pass in the Operative's panel. */
+export const guessActions: string = 'flex items-start gap-[10px]';
+
 // ---- Lineups (phones and tablets) ----
 
 export const summaries: string = 'mt-auto flex gap-[10px] pt-[20px] desktop:hidden';
 
-/** Spectators under the board, at every size. */
-export const spectators: string =
-  'mt-[16px] desktop:mx-auto desktop:mt-[20px] desktop:max-w-[960px]';
+/** Members choosing the free seat of a paused match, under the board, at every size. */
+export const unseated: string = 'mt-[16px] desktop:mx-auto desktop:mt-[20px] desktop:max-w-[960px]';
 
 // ---- Game over panel ----
 

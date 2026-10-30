@@ -22,6 +22,7 @@ const JOINED = {
 
 const BADGE: Record<JoinAvailability, string> = {
   JOINABLE: 'room.join.status.waiting',
+  SEAT_OPEN: 'room.join.status.seatOpen',
   IN_PROGRESS: 'room.join.status.inGame',
   FULL: 'room.join.status.full',
   NOT_JOINABLE: 'room.join.status.closed',
@@ -32,8 +33,9 @@ const BADGE: Record<JoinAvailability, string> = {
  *
  * Rooms are found by their six-character code only. Once the code is complete the room is
  * looked up and previewed with its occupancy and status, and Join is offered while the room
- * has a free seat and takes players: a waiting room, or one counting down or playing, which
- * the player joins as a spectator. The server has the last word: if the room filled up or
+ * has a free seat and takes players: a waiting or counting-down lobby, or a match paused for
+ * a missing player, which the player joins to take the free seat. Nobody joins a running
+ * match to watch it. The server has the last word: if the room filled up or
  * closed to new players since the preview, the answer is shown here and the preview
  * refreshed, and the dialog stays open. The room opens only after the server has confirmed the join.
  */
@@ -67,8 +69,10 @@ export function JoinRoomDialog({ onClose }: { onClose: () => void }) {
           : availability === 'NOT_JOINABLE'
             ? t('room.join.notJoinable')
             : availability === 'IN_PROGRESS'
-              ? t('room.join.spectate')
-              : t('room.join.submit');
+              ? t('room.join.inGame')
+              : availability === 'SEAT_OPEN'
+                ? t('room.join.takeSeat')
+                : t('room.join.submit');
 
   const inputStatus = fieldError ? 'error' : status === 'JOINED' ? 'success' : 'default';
 

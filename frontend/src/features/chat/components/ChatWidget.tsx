@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef } from 'react';
-import type { KeyboardEvent } from 'react';
+import type { KeyboardEvent, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Icon } from '@shared/ui';
@@ -39,6 +39,11 @@ export interface ChatWidgetProps {
   personById: (userId: number) => ChatPerson | null;
   onRetryFriends: () => void;
   onOpenProfile: (userId: number) => void;
+  /**
+   * Invite beside a friend's row, from the app layer, which owns room invitations; absent
+   * when there is nothing to invite them to.
+   */
+  inviteFor?: ((friend: ChatPerson) => ReactNode) | undefined;
 }
 
 const PANEL_ID = 'chat-panel';
@@ -68,6 +73,7 @@ export function ChatWidget(props: ChatWidgetProps) {
           aria-controls={PANEL_ID}
           aria-label={label}
           data-chat-launcher
+          data-chat-layer
           className={styles.pill}
         >
           <Icon name="chat" className={styles.pillIcon} />
@@ -116,6 +122,7 @@ function RoundLauncher({ className }: { className: string }) {
         unread > 0 ? t('chat.launcher.labelUnread', { count: unread }) : t('chat.launcher.label')
       }
       data-chat-launcher
+      data-chat-layer
       className={cn(styles.round, className)}
     >
       <Icon name="chat" />
@@ -140,6 +147,7 @@ function ChatPanel({
   personById,
   onRetryFriends,
   onOpenProfile,
+  inviteFor,
 }: ChatWidgetProps) {
   const panel = useChatPanel();
   const { channels } = useChatChannels();
@@ -179,6 +187,7 @@ function ChatPanel({
     <section
       ref={panelRef}
       id={PANEL_ID}
+      data-chat-layer
       role="dialog"
       aria-modal="false"
       aria-labelledby={titleId}
@@ -212,6 +221,7 @@ function ChatPanel({
           personById={personById}
           onRetryFriends={onRetryFriends}
           onOpenProfile={onOpenProfile}
+          inviteFor={inviteFor}
           onClose={panel.close}
         />
       )}

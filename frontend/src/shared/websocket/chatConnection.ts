@@ -2,7 +2,8 @@
  * The per-user Chat Gateway socket (`/ws/v2/channels`), independent of any room.
  *
  * Same cookie-only authentication as the room socket. The socket carries live messages,
- * channel access changes and room invitations; it replays nothing on connect, so history
+ * channel access changes, room invitations and social events (friend requests,
+ * friendship changes and profile changes); it replays nothing on connect, so history
  * and the channel list are read over Chat REST v2 after each `chat.ready`.
  */
 
@@ -18,6 +19,7 @@ import type {
   ChatSendPayload,
   ChatServerMessage,
   RoomInviteReceivedEvent,
+  SocialEvent,
   WsErrorMessage,
 } from '@shared/types';
 
@@ -34,6 +36,8 @@ export interface ChatConnectionHandlers {
   onAccessChanged?: (event: ChannelAccessChangedEvent) => void;
   /** Live room invitation from a friend. Accepting it is an ordinary REST join. */
   onInvite?: (event: RoomInviteReceivedEvent) => void;
+  /** A friend request or friendship changed. */
+  onSocial?: (event: SocialEvent) => void;
   /** Sent only after Channel Service authorized and persisted the message. */
   onAck?: (ack: AckMessage<ChatSendAck>) => void;
   onError?: (error: WsErrorMessage) => void;
@@ -97,6 +101,13 @@ export class ChatConnection {
         return;
       case 'room.invite.received':
         this.handlers.onInvite?.(message);
+        return;
+      case 'friend.request.received':
+      case 'friend.request.resolved':
+      case 'friend.removed':
+      case 'friend.restored':
+      case 'user.profile.updated':
+        this.handlers.onSocial?.(message);
     }
   }
 }

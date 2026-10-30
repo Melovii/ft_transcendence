@@ -1,15 +1,20 @@
 /**
- * Friends REST bindings — Bruno `rest-api/05 - Friends/`.
+ * Friends and blocking REST bindings — Bruno `rest-api/05 - Friends/` and `06 - Blocking/`.
  *
- * Friendship is immediate and mutual; there is no request/accept workflow.
+ * Friendship needs a request and its acceptance; the server owns every relationship state
+ * and decides each action again when it is sent.
  */
 
 import { apiRequest } from '@shared/api';
 import type {
-  AddFriendRequest,
+  BlockResponse,
   Friend,
   FriendListQuery,
   FriendListResponse,
+  FriendRequest,
+  FriendRequestListResponse,
+  PublicProfile,
+  SendFriendRequestBody,
   UserSearchQuery,
   UserSearchResponse,
 } from '@shared/types';
@@ -34,11 +39,39 @@ export async function listAllFriends(): Promise<{ friends: Friend[]; friendCount
   return { friends, friendCount: page.friend_count };
 }
 
-export const addFriend = (body: AddFriendRequest): Promise<Friend> =>
-  apiRequest('/friends', { method: 'POST', body });
-
 export const removeFriend = (userId: number): Promise<void> =>
   apiRequest(`/friends/${userId}`, { method: 'DELETE' });
+
+export const sendFriendRequest = (body: SendFriendRequestBody): Promise<FriendRequest> =>
+  apiRequest('/friends/requests', { method: 'POST', body });
+
+export const listFriendRequests = (): Promise<FriendRequestListResponse> =>
+  apiRequest('/friends/requests');
+
+/** The recipient accepts; the answer is the new friend. */
+export const acceptFriendRequest = (requestId: number): Promise<Friend> =>
+  apiRequest(`/friends/requests/${requestId}/accept`, { method: 'POST' });
+
+export const declineFriendRequest = (requestId: number): Promise<void> =>
+  apiRequest(`/friends/requests/${requestId}/decline`, { method: 'POST' });
+
+/** The sender withdraws their own request before it is answered. */
+export const cancelFriendRequest = (requestId: number): Promise<void> =>
+  apiRequest(`/friends/requests/${requestId}`, { method: 'DELETE' });
+
+export const blockUser = (userId: number): Promise<BlockResponse> =>
+  apiRequest(`/users/${userId}/block`, { method: 'PUT' });
+
+export const unblockUser = (userId: number): Promise<void> =>
+  apiRequest(`/users/${userId}/block`, { method: 'DELETE' });
+
+/** The signed-in user's relationship to `userId`, as the public profile reports it. */
+export const getRelationship = async (
+  userId: number,
+): Promise<Pick<PublicProfile, 'relationship' | 'friend_request_id'>> => {
+  const profile = await apiRequest<PublicProfile>(`/users/${userId}`);
+  return { relationship: profile.relationship, friend_request_id: profile.friend_request_id };
+};
 
 /** Username substring search for friend discovery: one page, `q` trimmed to 1..20 characters. */
 export const searchUsers = (

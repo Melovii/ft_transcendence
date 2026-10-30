@@ -105,16 +105,16 @@ The project has no automated test runner. Testing is manual, with the mocks. See
 
 ## Mock Development at a Glance
 
-| Item                                          | Value                                                     |
-| --------------------------------------------- | --------------------------------------------------------- |
-| Default user                                  | `player_one` (id `42`), email `player.one@example.com`    |
-| Password of every seeded account              | `codenames42`                                             |
-| Waiting room with free seats                  | `QWER12`                                                  |
-| Full room (4 of 4)                            | `FULL44`                                                  |
-| Room with a match running (join as spectator) | `BUSY77`                                                  |
-| REST console object                           | `mockApi`                                                 |
-| Socket console object                         | `mockSockets`                                             |
-| Jump to a game state                          | `mockSockets.scenario('operative-turn')` (in a room page) |
+| Item                                     | Value                                                     |
+| ---------------------------------------- | --------------------------------------------------------- |
+| Default user                             | `player_one` (id `42`), email `player.one@example.com`    |
+| Password of every seeded account         | `codenames42`                                             |
+| Waiting room with free seats             | `QWER12`                                                  |
+| Full room (4 of 4)                       | `FULL44`                                                  |
+| Room with a match running (not joinable) | `BUSY77`                                                  |
+| REST console object                      | `mockApi`                                                 |
+| Socket console object                    | `mockSockets`                                             |
+| Jump to a game state                     | `mockSockets.scenario('operative-turn')` (in a room page) |
 
 Both console objects log a line when they install. Full reference:
 [Mock System](docs/MOCKS.md).

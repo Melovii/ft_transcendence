@@ -76,8 +76,8 @@ function toChannel(summary: ChannelSummary): ChatChannel {
     peer: summary.peer,
     room: summary.room,
     last_message: summary.last_message,
-    access: 'ACTIVE',
-    reason: null,
+    access: summary.access,
+    reason: summary.access_reason,
   };
 }
 
@@ -299,7 +299,8 @@ function transmit(requestId: string): void {
  */
 export function sendMessage(channelId: number, draft: string): boolean {
   const text = sendableText(draft);
-  if (text === null) return false;
+  // Only a usable channel takes a message; the server refuses the rest anyway.
+  if (text === null || store().channels[channelId]?.access !== 'ACTIVE') return false;
   const requestId = createRequestId();
   store().addPending({
     request_id: requestId,
@@ -314,7 +315,7 @@ export function sendMessage(channelId: number, draft: string): boolean {
   return true;
 }
 
-const RETRYABLE: readonly SendFailure[] = ['OFFLINE', 'TIMEOUT', 'UNAVAILABLE'];
+const RETRYABLE: readonly SendFailure[] = ['OFFLINE', 'TIMEOUT', 'UNAVAILABLE', 'READ_ONLY'];
 
 /** Send a failed message again under its original `request_id`, so it is stored once. */
 export function retryMessage(requestId: string): void {
@@ -431,7 +432,15 @@ function onAccessChanged(event: ChannelAccessChangedEvent): void {
     return;
   }
   store().setAccess(channelId, access, reason);
-  if (access === 'INACTIVE') {
+  if (access === 'READ_ONLY') {
+    // Anything still on its way is refused while the match runs; it can be retried later.
+    for (const pending of Object.values(store().pending)) {
+      if (pending.channel_id === channelId && pending.status === 'SENDING') {
+        clearTimeout(ackTimers.get(pending.request_id));
+        store().updatePending(pending.request_id, { status: 'FAILED', failure: 'READ_ONLY' });
+      }
+    }
+  } else if (access === 'INACTIVE') {
     // Nothing more can be sent here; say so on anything still waiting.
     for (const pending of Object.values(store().pending)) {
       if (pending.channel_id === channelId && !pending.settled_message_id) {
@@ -461,6 +470,11 @@ function onError(error: WsErrorMessage): void {
   switch (error.error.code) {
     case 'SERVICE_UNAVAILABLE':
       store().updatePending(requestId, { status: 'FAILED', failure: 'UNAVAILABLE' });
+      return;
+    case 'CHANNEL_READ_ONLY':
+      // The match started before the message got there: it can go once chat reopens.
+      store().updatePending(requestId, { status: 'FAILED', failure: 'READ_ONLY' });
+      store().setAccess(pending.channel_id, 'READ_ONLY', 'GAME_RUNNING');
       return;
     case 'CHANNEL_ACCESS_REVOKED':
     case 'NOT_CHANNEL_MEMBER':

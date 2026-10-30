@@ -25,11 +25,11 @@ interface SetupProps {
 }
 
 /**
- * Your Setup: choose a team, then a role. Everyone starts out watching; picking a team marks
- * it as the draft, and picking a role then claims both in one request. A participant changes
- * team or role directly, or goes back to watching. Each team has one Spymaster, and changes
- * stop once the countdown starts; the server enforces all of it and the panel only explains
- * it. A seat shows as taken when the server reports it, never before.
+ * Your Setup: choose a team, then a role. Everyone starts without a seat; picking a team
+ * marks it as the draft, and picking a role then claims both in one request. A seated player
+ * changes team or role directly. Each team has one Spymaster, and changes stop once the
+ * countdown starts; the server enforces all of it and the panel only explains it. A seat
+ * shows as taken when the server reports it, never before.
  */
 export function SetupPanel({ room, me, setup, className }: SetupProps & { className?: string }) {
   const { t } = useTranslation();
@@ -38,12 +38,12 @@ export function SetupPanel({ room, me, setup, className }: SetupProps & { classN
   const locked = setupLocked(room);
   const roles = roleSelection(room, me.user_id, setup.draftTeam);
   const busy = setup.pending !== null;
-  const spectating = me.role === 'SPECTATOR';
+  const unseated = me.role === null;
   const team = roles?.team ?? null;
 
   const chooseTeam = (next: Team) => {
     if (busy || next === team) return;
-    if (spectating) setup.setDraftTeam(next);
+    if (unseated) setup.setDraftTeam(next);
     else void setup.selectTeam(next);
   };
 
@@ -129,19 +129,6 @@ export function SetupPanel({ room, me, setup, className }: SetupProps & { classN
         })}
       </div>
       <RoleHint room={room} me={me} draftTeam={setup.draftTeam} id={`${roleLabelId}-hint`} />
-      {!spectating && (
-        <Button
-          theme="link"
-          icon="spectate"
-          sizeClassName={styles.spectate}
-          aria-busy={setup.pending === 'role'}
-          disabled={locked}
-          onClick={() => !busy && void setup.spectate()}
-          className={styles.spectatePlacement}
-        >
-          {t('room.ready.spectate')}
-        </Button>
-      )}
     </div>
   );
 }
@@ -165,7 +152,7 @@ function RoleHint({
   if (setupLocked(room)) text = t('room.ready.hints.locked');
   else if (!selection?.team) text = t('room.ready.hints.teamFirst');
   else if (holder) text = t('room.ready.hints.spymasterTaken', { username: holder.username });
-  else if (selection.spectating) {
+  else if (selection.unseated) {
     text = t('room.ready.hints.claim', { team: t(`room.ready.teamShort.${selection.team}`) });
   }
   if (!text) return null;
@@ -251,7 +238,7 @@ export function SetupSummary({
   const { t } = useTranslation();
   const parts = [
     me.team ? t(`room.ready.teamShort.${me.team}`) : null,
-    t(`room.ready.role.${me.role}`),
+    t(`room.ready.role.${me.role ?? 'NONE'}`),
     me.is_host ? t('room.ready.host') : null,
   ].filter(Boolean);
 
@@ -266,7 +253,7 @@ export function SetupSummary({
         aria-haspopup="dialog"
         className="shrink-0"
       >
-        {t(me.role === 'SPECTATOR' ? 'room.ready.choose' : 'room.ready.change')}
+        {t(me.role === null ? 'room.ready.choose' : 'room.ready.change')}
       </Button>
     </div>
   );

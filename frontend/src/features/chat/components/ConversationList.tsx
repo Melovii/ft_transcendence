@@ -20,6 +20,7 @@ interface ConversationListProps {
   personById: (userId: number) => ChatPerson | null;
   onRetryFriends: () => void;
   onOpenProfile: (userId: number) => void;
+  inviteFor?: ((friend: ChatPerson) => ReactNode) | undefined;
   onClose: () => void;
 }
 
@@ -28,7 +29,8 @@ interface ConversationListProps {
  * under Friends, filtered by the search field.
  *
  * Direct chats are friend-only, so a room player who is not a friend is shown locked, with
- * their profile — where Add Friend is — one press away. Every row comes from live state:
+ * their profile — where Add Friend is — one press away. A friend's row carries Invite while
+ * the user is in a room they could be invited to. Every row comes from live state:
  * friends from the shared friend list, players from the room snapshot, previews and
  * unread counts from the chat store.
  */
@@ -41,6 +43,7 @@ export function ConversationList({
   personById,
   onRetryFriends,
   onOpenProfile,
+  inviteFor,
   onClose,
 }: ConversationListProps) {
   const { t } = useTranslation();
@@ -56,7 +59,7 @@ export function ConversationList({
   const directByPeer = useMemo(() => {
     const map = new Map<number, ChatChannel>();
     for (const channel of Object.values(chats.channels)) {
-      if (channel.type === 'DIRECT' && channel.peer && channel.access === 'ACTIVE') {
+      if (channel.type === 'DIRECT' && channel.peer && channel.access !== 'INACTIVE') {
         map.set(channel.peer.user_id, channel);
       }
     }
@@ -84,7 +87,8 @@ export function ConversationList({
       return <LockedRow key={person.user_id} person={person} onOpenProfile={onOpenProfile} />;
     }
     const channel = directByPeer.get(person.user_id);
-    return (
+    const invite = inviteFor?.(person);
+    const row = (
       <ConversationRow
         key={person.user_id}
         avatar={
@@ -112,6 +116,14 @@ export function ConversationList({
           channel ? chats.openChannel(channel.channel_id) : chats.openDirect(person.user_id)
         }
       />
+    );
+    return invite ? (
+      <div key={person.user_id} className={styles.rowWithAction}>
+        {row}
+        {invite}
+      </div>
+    ) : (
+      row
     );
   };
 
@@ -356,7 +368,7 @@ function RoomChannelRow({
     </span>
   );
 
-  if (channel?.access === 'ACTIVE') {
+  if (channel && channel.access !== 'INACTIVE') {
     return (
       <ConversationRow
         avatar={avatar}

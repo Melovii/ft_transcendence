@@ -162,10 +162,10 @@ export function TeamPanel({
 }
 
 /**
- * Spectators: everyone who joined and has not claimed a seat, or chose to watch, so nobody
- * in the room is hidden.
+ * Members choosing a seat: everyone who joined and has not claimed a team and a role yet,
+ * so nobody in the room is hidden. The room cannot start while anyone is listed here.
  */
-export function Spectators({
+export function UnseatedMembers({
   members,
   avatarFor,
   selfId,
@@ -185,7 +185,7 @@ export function Spectators({
   return (
     <section aria-labelledby={titleId} className={cn(styles.choosing, className)}>
       <h2 id={titleId} className={styles.choosingTitle}>
-        {t('room.ready.spectators')}
+        {t('room.ready.unseated')}
       </h2>
       <ul className={styles.choosingList}>
         {members.map((m) => (

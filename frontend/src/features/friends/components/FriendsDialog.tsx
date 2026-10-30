@@ -4,14 +4,16 @@ import { useTranslation } from 'react-i18next';
 
 import { openProfileModal, useModalStore } from '@shared/stores';
 import { USER_SEARCH_QUERY } from '@shared/types';
-import type { Friend, UserSearchResult } from '@shared/types';
+import type { Friend, FriendRequest, UserSearchResult } from '@shared/types';
 import { AvatarImage, Button, Dialog, Icon, LoadingDots } from '@shared/ui';
 import type { IconName } from '@shared/ui';
 
-import { useAddFriend } from '../hooks/useAddFriend';
 import { useFriendList } from '../hooks/useFriendList';
+import { useFriendRequests } from '../hooks/useFriendRequests';
+import { useSocialActions } from '../hooks/useSocialActions';
+import type { SocialAction, SocialActions } from '../hooks/useSocialActions';
 import { useUserSearch } from '../hooks/useUserSearch';
-import { useFriendsStore } from '../store/friendsStore';
+import { pendingRequestWith, relationshipOf, useFriendsStore } from '../store/friendsStore';
 import * as styles from './FriendsDialog.styles';
 
 export interface FriendsDialogProps {
@@ -19,13 +21,16 @@ export interface FriendsDialogProps {
 }
 
 /**
- * Friends, over Room Discovery: the user's whole friend list with live presence, and a
- * username search to find someone new.
+ * Friends, over Room Discovery: friend requests waiting for an answer, the user's whole
+ * friend list with live presence, and a username search to find someone new.
  *
- * Friendship is immediate and mutual, so there are no requests to accept and nothing is
- * pending: Add Friend makes the friendship at once, and the count and the list follow the
- * server's answer. A name in either list opens that player's profile over this dialog,
- * where the friendship can also be ended; this dialog waits underneath until it closes.
+ * Friendship takes a request and its acceptance. Add Friend sends a request and the row
+ * then reads Request Sent; the other player becomes a friend only once they accept. A
+ * request sent to the user is answered here with Accept or Decline. Every row follows the
+ * server's answers and the social events of the chat socket, so a request accepted on the
+ * other side appears here without a reload. A name in any list opens that player's profile
+ * over this dialog, where the friendship can also be ended and the player blocked; this
+ * dialog waits underneath until it closes.
  *
  * Presence (`is_online`) is what the server reports on the latest read of the list; the
  * list is read again when the dialog opens and after a reconnect.
@@ -37,8 +42,9 @@ export function FriendsDialog({ onClose }: FriendsDialogProps) {
   // A profile opened from here stands over this dialog; Escape then belongs to it.
   const profileOpen = useModalStore((state) => state.active !== null);
   const list = useFriendList();
+  const requests = useFriendRequests();
   const search = useUserSearch();
-  const additions = useAddFriend();
+  const actions = useSocialActions();
 
   return (
     <Dialog
@@ -82,9 +88,23 @@ export function FriendsDialog({ onClose }: FriendsDialogProps) {
       </div>
 
       {search.term === null ? (
-        <FriendList list={list} titleId={`${id}-friends`} />
+        <>
+          <RequestList
+            requests={requests.incoming}
+            actions={actions}
+            titleId={`${id}-incoming`}
+            kind="incoming"
+          />
+          <RequestList
+            requests={requests.outgoing}
+            actions={actions}
+            titleId={`${id}-outgoing`}
+            kind="outgoing"
+          />
+          <FriendList list={list} titleId={`${id}-friends`} />
+        </>
       ) : (
-        <SearchResults search={search} additions={additions} titleId={`${id}-results`} />
+        <SearchResults search={search} actions={actions} titleId={`${id}-results`} />
       )}
     </Dialog>
   );
@@ -137,22 +157,112 @@ function FriendList({
   );
 }
 
+/**
+ * Friend requests waiting for an answer: sent to the user, with Accept and Decline, or
+ * sent by the user, marked Request Sent with Cancel. Nothing shows while there are none.
+ */
+function RequestList({
+  requests,
+  actions,
+  titleId,
+  kind,
+}: {
+  requests: FriendRequest[];
+  actions: SocialActions;
+  titleId: string;
+  kind: 'incoming' | 'outgoing';
+}) {
+  const { t } = useTranslation();
+  if (requests.length === 0) return null;
+  return (
+    <section aria-labelledby={titleId} className="flex flex-col gap-[6px]">
+      <h3 id={titleId} className={styles.sectionTitle}>
+        {t(`friends.requests.${kind}Title`, { count: requests.length })}
+      </h3>
+      <ul className={styles.requestList}>
+        {requests.map((request) => {
+          const other = kind === 'incoming' ? request.from_user : request.to_user;
+          const busy = actions.busy.get(other.user_id);
+          const failure = actions.failed.get(other.user_id);
+          return (
+            <li key={request.request_id} className={styles.row}>
+              <PlayerIdentity player={other}>
+                {kind === 'outgoing' && (
+                  <span className={styles.badgePending}>
+                    <Icon name="timer" />
+                    {t('friends.requests.sent')}
+                  </span>
+                )}
+              </PlayerIdentity>
+              {kind === 'incoming' && (
+                <span className={styles.rowActions}>
+                  <Button
+                    icon="check"
+                    sizeClassName={styles.addButton}
+                    onClick={() => !busy && void actions.accept(other.user_id, request.request_id)}
+                    aria-disabled={busy !== undefined || undefined}
+                    aria-busy={busy === 'ACCEPT' || undefined}
+                    aria-label={t('friends.requests.acceptLabel', { username: other.username })}
+                    className={styles.addPlacement}
+                  >
+                    {t(
+                      busy === 'ACCEPT' ? 'friends.requests.accepting' : 'friends.requests.accept',
+                    )}
+                  </Button>
+                  <Button
+                    variant="neutral"
+                    sizeClassName={styles.addButton}
+                    onClick={() => !busy && void actions.decline(other.user_id, request.request_id)}
+                    aria-disabled={busy !== undefined || undefined}
+                    aria-busy={busy === 'DECLINE' || undefined}
+                    aria-label={t('friends.requests.declineLabel', { username: other.username })}
+                    className={styles.addPlacement}
+                  >
+                    {t(
+                      busy === 'DECLINE'
+                        ? 'friends.requests.declining'
+                        : 'friends.requests.decline',
+                    )}
+                  </Button>
+                </span>
+              )}
+              {kind === 'outgoing' && (
+                <CancelRequestButton
+                  username={other.username}
+                  busy={busy}
+                  onCancel={() => void actions.cancel(other.user_id, request.request_id)}
+                />
+              )}
+              {failure && (
+                <p role="alert" className={styles.rowError}>
+                  {t(failure)}
+                </p>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}
+
 function SearchResults({
   search,
-  additions,
+  actions,
   titleId,
 }: {
   search: ReturnType<typeof useUserSearch>;
-  additions: ReturnType<typeof useAddFriend>;
+  actions: SocialActions;
   titleId: string;
 }) {
   const { t } = useTranslation();
-  const friendIds = useFriendsStore((state) => state.friends);
-  const listLoaded = useFriendsStore((state) => state.loaded);
-  // The friends store is current after an add or a remove; a result's own flag is as old
-  // as the search that returned it.
-  const isFriend = (result: UserSearchResult) =>
-    listLoaded ? friendIds.some((f) => f.user_id === result.user_id) : result.is_friend;
+  // The friends store is current after every request, answer and social event; a result's
+  // own relationship is as old as the search that returned it.
+  const store = useFriendsStore();
+  const relationship = (result: UserSearchResult) =>
+    relationshipOf(store, result.user_id, result.relationship) ?? result.relationship;
+  const requestIdFor = (result: UserSearchResult) =>
+    pendingRequestWith(store, result.user_id)?.request.request_id ?? result.friend_request_id;
   const settled = search.status === 'READY' && search.searched === search.term;
 
   return (
@@ -185,39 +295,70 @@ function SearchResults({
       {settled && search.results.length > 0 && (
         <ul className={styles.list}>
           {search.results.map((result) => {
-            const friend = isFriend(result);
-            const adding = additions.adding.has(result.user_id);
-            const failure = additions.failed.get(result.user_id);
+            const state = relationship(result);
+            const requestId = requestIdFor(result);
+            const busy = actions.busy.get(result.user_id);
+            const failure = actions.failed.get(result.user_id);
             return (
               <li key={result.user_id} className={styles.row}>
                 <PlayerIdentity player={result}>
-                  {friend && (
+                  {state === 'FRIENDS' && (
                     <span className={styles.badgeFriend}>
                       <Icon name="check" />
                       {t('friends.search.alreadyFriend')}
                     </span>
                   )}
+                  {state === 'REQUEST_SENT' && (
+                    <span className={styles.badgePending}>
+                      <Icon name="timer" />
+                      {t('friends.requests.sent')}
+                    </span>
+                  )}
+                  {state === 'BLOCKED' && (
+                    <span className={styles.badgeOffline}>
+                      <Icon name="block" />
+                      {t('friends.search.blocked')}
+                    </span>
+                  )}
                 </PlayerIdentity>
-                {!friend && (
+                {state === 'NONE' && (
                   <Button
                     icon="userAdd"
                     sizeClassName={styles.addButton}
-                    onClick={() => !adding && void additions.add(result.user_id)}
-                    aria-disabled={adding || undefined}
-                    aria-busy={adding || undefined}
+                    onClick={() => !busy && void actions.sendRequest(result.user_id)}
+                    aria-disabled={busy !== undefined || undefined}
+                    aria-busy={busy === 'REQUEST' || undefined}
                     aria-label={t('friends.search.addLabel', { username: result.username })}
                     className={styles.addPlacement}
                   >
-                    {t(adding ? 'friends.search.adding' : 'friends.search.add')}
+                    {t(busy === 'REQUEST' ? 'friends.search.adding' : 'friends.search.add')}
+                  </Button>
+                )}
+                {state === 'REQUEST_SENT' && requestId !== null && (
+                  <CancelRequestButton
+                    username={result.username}
+                    busy={busy}
+                    onCancel={() => void actions.cancel(result.user_id, requestId)}
+                  />
+                )}
+                {state === 'REQUEST_RECEIVED' && requestId !== null && (
+                  <Button
+                    icon="check"
+                    sizeClassName={styles.addButton}
+                    onClick={() => !busy && void actions.accept(result.user_id, requestId)}
+                    aria-disabled={busy !== undefined || undefined}
+                    aria-busy={busy === 'ACCEPT' || undefined}
+                    aria-label={t('friends.requests.acceptLabel', { username: result.username })}
+                    className={styles.addPlacement}
+                  >
+                    {t(
+                      busy === 'ACCEPT' ? 'friends.requests.accepting' : 'friends.requests.accept',
+                    )}
                   </Button>
                 )}
                 {failure && (
                   <p role="alert" className={styles.rowError}>
-                    {t(
-                      failure === 'NOT_FOUND'
-                        ? 'friends.search.addNotFound'
-                        : 'friends.search.addFailed',
-                    )}
+                    {t(failure)}
                   </p>
                 )}
               </li>
@@ -238,6 +379,32 @@ function SearchResults({
         </ul>
       )}
     </section>
+  );
+}
+
+/** Cancel on a request the user sent: withdraws it while it waits for an answer. */
+function CancelRequestButton({
+  username,
+  busy,
+  onCancel,
+}: {
+  username: string;
+  busy: SocialAction | undefined;
+  onCancel: () => void;
+}) {
+  const { t } = useTranslation();
+  return (
+    <Button
+      variant="neutral"
+      sizeClassName={styles.addButton}
+      onClick={() => !busy && onCancel()}
+      aria-disabled={busy !== undefined || undefined}
+      aria-busy={busy === 'CANCEL' || undefined}
+      aria-label={t('friends.requests.cancelLabel', { username })}
+      className={styles.addPlacement}
+    >
+      {t(busy === 'CANCEL' ? 'friends.requests.cancelling' : 'friends.requests.cancel')}
+    </Button>
   );
 }
 

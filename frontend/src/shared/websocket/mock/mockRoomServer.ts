@@ -6,11 +6,12 @@
  * (simulated) players act. Every outbound frame is typed with the real contract types from
  * `@shared/types`; there is no second event model.
  *
- * Rules it applies are the contract's own: every join is a spectator, a playing role is
- * claimed together with its team, one Spymaster per team, readiness reset on team/role
- * change, the start predicate, host-only settings and kicks, host transfer by `joined_at`,
- * the staffing pause and room shutdown during a match, and the post-game decision window
- * with independent Back to Lobby.
+ * Rules it applies are the contract's own: every join is unseated and claims a role together
+ * with its team, one Spymaster per team, readiness reset on team/role change, the start
+ * predicate (every member seated and ready), host-only settings and kicks, host transfer by
+ * `joined_at`, the staffing pause (the only time a running match takes a new member, who
+ * must fill the vacant seat) and room shutdown during a match, the post-game decision
+ * window with independent Back to Lobby, and the match's action log.
  */
 
 import { ROOM_CAPACITY, ROOM_LANGUAGES, TURN_TIMER_OPTIONS } from '@shared/types';
@@ -22,6 +23,7 @@ import type {
   CurrentTurn,
   Game,
   GameTurnChangeReason,
+  HistoryEntry,
   LastGame,
   MemberLeftReason,
   PlayingRole,
@@ -114,6 +116,9 @@ function seededRandom(seed: number): () => number {
   };
 }
 const now = (): string => new Date().toISOString();
+
+/** `Omit` that keeps a union's members apart. */
+type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
 const isoIn = (ms: number): string => new Date(Date.now() + ms).toISOString();
 
 export class MockRoomServer implements MockServerBinding {
@@ -261,16 +266,20 @@ export class MockRoomServer implements MockServerBinding {
     return this.find(userId) !== undefined;
   }
 
-  /** Whether a new member could join now, as REST `Join room` checks it. */
+  /**
+   * Whether a new member could join now, as REST `Join room` checks it: a waiting or
+   * counting-down lobby, or a match paused for a missing player, never a running one.
+   */
   joinable(): boolean {
     const { status } = this.room;
-    const open = status === 'WAITING' || status === 'COUNTDOWN' || status === 'IN_GAME';
+    const paused = this.game?.current_turn.phase === 'PAUSED_FOR_PLAYERS';
+    const open = status === 'WAITING' || status === 'COUNTDOWN' || (status === 'IN_GAME' && paused);
     return open && !this.room.players.some((p) => p.state === 'POST_GAME');
   }
 
   /* ---------------------------- other players act --------------------------- */
 
-  /** A REST join: always a spectator, in a waiting room or a running match. */
+  /** A REST join: always unseated, in the lobby or into a match paused for players. */
   playerJoin(player: MockPlayer): Room {
     if (!this.joinable()) {
       throw new MockActionError(
@@ -297,6 +306,9 @@ export class MockRoomServer implements MockServerBinding {
     if (this.room.host_user_id === null) this.room.host_user_id = member.user_id;
     this.room.players.push(member);
     this.recount();
+    // An unseated member breaks the start predicate, so a join stops a countdown.
+    this.cancelCountdown('PLAYER_JOINED', member.user_id);
+    this.room.startable = this.computeStartable();
     this.queue('room.player.joined', this.membershipPayload(member));
     this.queueState();
     this.flush();
@@ -319,8 +331,8 @@ export class MockRoomServer implements MockServerBinding {
     return this.state();
   }
 
-  /** Claim `role` on `team`, or go back to spectating with `'SPECTATOR'`. */
-  selectRole(userId: number, role: PlayingRole | 'SPECTATOR', team?: Team): Room {
+  /** Claim `role` on `team`. */
+  selectRole(userId: number, role: PlayingRole, team?: Team): Room {
     this.doSelectRole(userId, role, team);
     this.flush();
     return this.state();
@@ -391,10 +403,44 @@ export class MockRoomServer implements MockServerBinding {
     }
     for (const [id, team] of seats) {
       const member = this.require(id);
-      if (member.role === 'SPYMASTER' && member.team !== team) this.doSelectRole(id, 'SPECTATOR');
+      if (member.role === 'SPYMASTER' && member.team && member.team !== team) {
+        this.doSelectRole(id, 'OPERATIVE', member.team);
+      }
     }
     for (const [id, team, role] of seats) this.doSelectRole(id, role, team);
-    for (const p of this.room.players) if (p.role !== 'SPECTATOR') this.doSetReady(p.user_id, true);
+    // Nobody may stay unseated at the start: anyone else plays as an Operative.
+    for (const p of this.room.players) {
+      if (!p.role) this.doSelectRole(p.user_id, 'OPERATIVE', 'BLUE');
+    }
+    for (const p of this.room.players) this.doSetReady(p.user_id, true);
+    this.flush();
+    return this.state();
+  }
+
+  /**
+   * A member's username or avatar changed through the profile endpoints: every member sees
+   * the new values at once. Seats, readiness, startability and a countdown stay as they are.
+   */
+  updateMemberProfile(userId: number, profile: { username?: string; avatar_url?: string }): Room {
+    const member = this.find(userId);
+    if (!member || this.room.status === 'CLOSED') return this.state();
+    const changed: ('username' | 'avatar_url')[] = [];
+    if (profile.username !== undefined && profile.username !== member.username) {
+      member.username = profile.username;
+      changed.push('username');
+    }
+    if (profile.avatar_url !== undefined && profile.avatar_url !== member.avatar_url) {
+      member.avatar_url = profile.avatar_url;
+      changed.push('avatar_url');
+    }
+    if (changed.length === 0) return this.state();
+    this.queue('room.player.updated', {
+      player: { ...member },
+      changed_fields: changed,
+      room_status: this.room.status,
+      startable: this.room.startable,
+    });
+    this.queueState();
     this.flush();
     return this.state();
   }
@@ -636,7 +682,7 @@ export class MockRoomServer implements MockServerBinding {
   private doSelectTeam(userId: number, team: Team): RoomMember {
     const member = this.require(userId);
     this.requireLobby();
-    if (member.role === 'SPECTATOR') {
+    if (!member.role) {
       throw new MockActionError('ROLE_REQUIRED', 'Claim a team and a role together first.', {
         user_id: userId,
       });
@@ -647,12 +693,13 @@ export class MockRoomServer implements MockServerBinding {
     return this.memberChanged(member, ['team'], 'TEAM_CHANGED');
   }
 
-  private doSelectRole(userId: number, role: PlayingRole | 'SPECTATOR', team?: Team): RoomMember {
+  private doSelectRole(userId: number, role: PlayingRole, team?: Team): RoomMember {
     const member = this.require(userId);
     const inGame = this.room.status === 'IN_GAME';
     if (inGame) {
-      // Mid-match, only a spectator may claim a seat, and only a playing one.
-      if (member.role !== 'SPECTATOR' || role === 'SPECTATOR') {
+      // Mid-match, only an unseated member who joined the pause may take a seat.
+      const paused = this.game?.current_turn.phase === 'PAUSED_FOR_PLAYERS';
+      if (member.role || !paused) {
         throw new MockActionError(
           'INVALID_ROOM_STATE',
           'Roles cannot change while room status is IN_GAME.',
@@ -663,11 +710,6 @@ export class MockRoomServer implements MockServerBinding {
       this.requireLobby();
     }
 
-    if (role === 'SPECTATOR') {
-      member.role = 'SPECTATOR';
-      member.team = null;
-      return this.memberChanged(member, ['role', 'team'], 'ROLE_CHANGED');
-    }
     const target = team ?? member.team;
     if (!target) {
       throw new MockActionError('TEAM_REQUIRED', 'Select a team before selecting a role.', {
@@ -700,7 +742,7 @@ export class MockRoomServer implements MockServerBinding {
       throw new MockActionError('TEAM_REQUIRED', 'Select a team before becoming ready.', {
         user_id: userId,
       });
-    if (ready && member.role === 'SPECTATOR')
+    if (ready && !member.role)
       throw new MockActionError('ROLE_REQUIRED', 'Select a role before becoming ready.', {
         user_id: userId,
       });
@@ -766,8 +808,8 @@ export class MockRoomServer implements MockServerBinding {
   private removeMember(userId: number, reason: MemberLeftReason, kickedBy?: number): void {
     const member = this.require(userId);
     const wasPlaying =
-      this.room.status === 'IN_GAME' && member.role !== 'SPECTATOR' && member.team !== null;
-    if (this.room.status === 'COUNTDOWN' && member.role !== 'SPECTATOR') {
+      this.room.status === 'IN_GAME' && member.role !== null && member.team !== null;
+    if (this.room.status === 'COUNTDOWN') {
       this.cancelCountdown(reason === 'KICKED_BY_HOST' ? 'PLAYER_KICKED' : 'PLAYER_LEFT', userId);
     }
     this.room.players = this.room.players.filter((p) => p.user_id !== userId);
@@ -786,12 +828,14 @@ export class MockRoomServer implements MockServerBinding {
     });
     if (
       userId === this.self.user_id &&
-      (reason === 'KICKED_BY_HOST' || reason === 'POST_GAME_TIMEOUT')
+      (reason === 'KICKED_BY_HOST' ||
+        reason === 'POST_GAME_TIMEOUT' ||
+        reason === 'SEAT_UNAVAILABLE')
     ) {
       this.flush();
       [...this.endpoints].forEach((endpoint) => endpoint.simulateClose('NOT_ROOM_MEMBER'));
     }
-    if (wasPlaying && member.team && member.role !== 'SPECTATOR') {
+    if (wasPlaying && member.team && member.role) {
       this.recheckStaffing({
         user_id: member.user_id,
         username: member.username,
@@ -892,18 +936,36 @@ export class MockRoomServer implements MockServerBinding {
       board: WORDS.map((word, i) => ({ card_id: i + 1, word, revealed: false, color: null })),
       winner: null,
       end_reason: null,
+      history: [],
       started_at: now(),
       finished_at: null,
     };
     this.startTurnClock();
     this.queue('game.started', { room: this.projectRoom() });
+    this.record({ type: 'GAME_STARTED', team: startingTeam });
+  }
+
+  /**
+   * Append one entry to the match's action log and announce it, after the events of the
+   * action it records. Entries carry public information only.
+   */
+  private record(entry: DistributiveOmit<HistoryEntry, 'seq' | 'at'>): void {
+    const game = this.game;
+    if (!game) return;
+    const full = { ...entry, seq: game.history.length + 1, at: now() } as HistoryEntry;
+    game.history.push(full);
+    this.queue('game.history.appended', { game_id: game.game_id, entry: full });
+  }
+
+  private actor(userId: number): { user_id: number; username: string } {
+    return { user_id: userId, username: this.find(userId)?.username ?? `user_${userId}` };
   }
 
   private doSubmitClue(userId: number, word: string, number: number): void {
     const game = this.requireGame();
     const member = this.require(userId);
     this.requireUnpaused(game);
-    if (member.role === 'SPECTATOR' || member.role === 'OPERATIVE')
+    if (member.role !== 'SPYMASTER')
       throw new MockActionError(
         'ROLE_FORBIDDEN',
         'Only the active-team Spymaster may submit a clue.',
@@ -921,7 +983,14 @@ export class MockRoomServer implements MockServerBinding {
       throw new MockActionError(
         'INVALID_CLUE',
         'payload.word must contain exactly one non-whitespace word.',
-        { field: 'payload.word' },
+        { field: 'payload.word', reason: 'INVALID_FORMAT' },
+      );
+    // No board word, revealed or not, may be a clue.
+    if (game.board.some((card) => card.word.toLowerCase() === clue))
+      throw new MockActionError(
+        'INVALID_CLUE',
+        'This clue cannot be used because it is one of the words on the board.',
+        { field: 'payload.word', reason: 'WORD_ON_BOARD' },
       );
     if (!Number.isInteger(number) || number < 1 || number > 9)
       throw new MockActionError(
@@ -943,6 +1012,12 @@ export class MockRoomServer implements MockServerBinding {
       clue: { word: clue, number },
       guesses_remaining: number + 1,
       current_turn: { ...game.current_turn },
+    });
+    this.record({
+      type: 'CLUE_GIVEN',
+      team: game.current_turn.team,
+      ...this.actor(userId),
+      clue: { word: clue, number },
     });
   }
 
@@ -997,6 +1072,14 @@ export class MockRoomServer implements MockServerBinding {
         score: { ...game.score },
         changed_color: color,
       });
+    this.record({
+      type: 'CARD_REVEALED',
+      team,
+      ...this.actor(userId),
+      card_id: cardId,
+      word: card.word,
+      color,
+    });
 
     if (winner && reason) {
       this.finish(winner, reason, revealed);
@@ -1008,7 +1091,13 @@ export class MockRoomServer implements MockServerBinding {
   }
 
   private doPass(userId: number): void {
-    this.requireGuesser(this.require(userId));
+    const member = this.require(userId);
+    this.requireGuesser(member);
+    this.record({
+      type: 'TURN_PASSED',
+      team: this.requireGame().current_turn.team,
+      ...this.actor(userId),
+    });
     this.changeTurn('PASSED');
   }
 
@@ -1030,6 +1119,7 @@ export class MockRoomServer implements MockServerBinding {
       current_turn: { ...game.current_turn },
       score: { ...game.score },
     });
+    this.record({ type: 'TURN_CHANGED', team: other(previous), previous_team: previous, reason });
   }
 
   /**
@@ -1080,6 +1170,7 @@ export class MockRoomServer implements MockServerBinding {
       post_game_deadline_at: deadline,
       finished_at: finishedAt,
     });
+    this.record({ type: 'GAME_ENDED', team: winner, reason });
     this.queue('room.post_game.started', {
       game_id: game.game_id,
       deadline_at: deadline,
@@ -1183,10 +1274,20 @@ export class MockRoomServer implements MockServerBinding {
           staffing,
           departure,
         });
+        this.record({
+          type: 'GAME_PAUSED',
+          team: departure.team,
+          user_id: departure.user_id,
+          username: departure.username,
+        });
       }
       return;
     }
     if (previous) {
+      // Nobody watches a running match: a joiner still unseated now has no seat to take.
+      for (const p of this.room.players.filter((m) => !m.role)) {
+        this.removeMember(p.user_id, 'SEAT_UNAVAILABLE');
+      }
       delete game.staffing;
       game.current_turn = { ...game.current_turn, phase: this.pausedPhase ?? 'WAITING_FOR_CLUE' };
       this.pausedPhase = null;
@@ -1198,6 +1299,7 @@ export class MockRoomServer implements MockServerBinding {
         restored_teams: restored,
         current_turn: { ...game.current_turn },
       });
+      this.record({ type: 'GAME_RESUMED', team: game.current_turn.team });
     }
   }
 
@@ -1227,6 +1329,7 @@ export class MockRoomServer implements MockServerBinding {
       phase: 'GAME_OVER',
       finished_at: finishedAt,
     });
+    this.record({ type: 'GAME_ENDED', team: null, reason: 'INSUFFICIENT_PLAYERS' });
     this.queue('room.closed', {
       reason: 'INSUFFICIENT_PLAYERS',
       game_id: game.game_id,
@@ -1365,9 +1468,11 @@ export class MockRoomServer implements MockServerBinding {
   private computeStartable(): boolean {
     const players = this.room.players;
     if (players.some((m) => m.state === 'POST_GAME')) return false;
-    const participants = players.filter((m) => m.role !== 'SPECTATOR');
+    // Every member plays: one unseated member holds the start.
+    const participants = players;
     if (participants.length < ROOM_CAPACITY.min) return false;
-    if (participants.some((m) => !m.team || !m.ready || m.state !== 'IN_LOBBY')) return false;
+    if (participants.some((m) => !m.team || !m.role || !m.ready || m.state !== 'IN_LOBBY'))
+      return false;
     return TEAMS.every(
       (team) =>
         participants.filter((m) => m.team === team && m.role === 'SPYMASTER').length === 1 &&
@@ -1395,7 +1500,7 @@ export class MockRoomServer implements MockServerBinding {
       username: player.username,
       avatar_url: player.avatar_url ?? mockDirectory.user(player.user_id)?.avatar_url ?? '',
       team: null,
-      role: 'SPECTATOR',
+      role: null,
       ready: false,
       state,
       is_host: isHost,

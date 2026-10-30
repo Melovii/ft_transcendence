@@ -8,10 +8,12 @@ import {
   ClueForm,
   ClueSentPanel,
   ClueText,
+  ConfirmGuessButton,
   PassButton,
   StatusPanel,
 } from '@features/game/components/CluePanel';
 import { GameBoard } from '@features/game/components/GameBoard';
+import { MatchLog } from '@features/game/components/MatchLog';
 import {
   DecisionNote,
   ResultReason,
@@ -25,19 +27,19 @@ import type { SeatClaim } from '@features/game/components/StaffingDialog';
 import { TeamStatusCard, TeamSummary } from '@features/game/components/TeamStatus';
 import { TurnHeading, TurnTimer } from '@features/game/components/TurnHeading';
 import { useGameActions } from '@features/game/hooks/useGameActions';
-import { gameStage, isGameOver } from '@features/game/model/gameView';
+import { gameStage, guessableSelection, isGameOver } from '@features/game/model/gameView';
 import { lineupOf } from '@features/game/model/lineup';
 import type { GameStage } from '@features/game/model/gameView';
 import { useGameStore } from '@features/game/store/gameStore';
 import { KickDialog } from '@features/room/components/RoomOverlays';
-import { Spectators } from '@features/room/components/TeamPanel';
+import { UnseatedMembers } from '@features/room/components/TeamPanel';
 import { useKickMember } from '@features/room/hooks/useKickMember';
 import { useReturnToLobby } from '@features/room/hooks/useReturnToLobby';
 import { useRoomCommands } from '@features/room/hooks/useRoomCommands';
 import { useRoomStore } from '@features/room/store/roomStore';
 import { useSecondsUntil } from '@shared/hooks';
 import { useSessionStore } from '@shared/stores';
-import type { Game, PlayingRole, Room, RoomMember, RoomRole, Team } from '@shared/types';
+import type { Game, PlayingRole, Room, RoomMember, Team } from '@shared/types';
 import { Button, Icon } from '@shared/ui';
 import { RoomCommandError } from '@shared/websocket';
 import { cn } from '@shared/utils';
@@ -56,7 +58,7 @@ function StagePanel({
 }: {
   game: Game;
   stage: GameStage;
-  role: RoomRole | null;
+  role: PlayingRole | null;
   actions: ReturnType<typeof useGameActions>;
   result: MatchResult | null;
   decision: ResultDecision | null;
@@ -69,18 +71,30 @@ function StagePanel({
   switch (stage) {
     case 'CLUE':
       // The form lives for one clue phase, so a new turn always starts from an empty form.
-      return <ClueForm actions={actions} />;
+      return <ClueForm actions={actions} boardWords={game.board.map((card) => card.word)} />;
     case 'CLUE_SENT':
       return clue ? <ClueSentPanel clue={clue} guessesRemaining={guesses} /> : null;
-    case 'GUESSING':
+    case 'GUESSING': {
+      const selected = guessableSelection(game, stage, actions.selectedCard);
       return (
         <StatusPanel
           tone="strong"
+          actionInline
           title={clue ? <ClueText clue={clue} /> : null}
-          body={t('game.clue.guesses', { count: guesses ?? 0 })}
-          action={<PassButton actions={actions} enabled={(guesses ?? 0) > 0} />}
+          body={
+            selected
+              ? t('game.guess.selected', { word: selected.word })
+              : t('game.clue.guesses', { count: guesses ?? 0 })
+          }
+          action={
+            <div className={styles.guessActions}>
+              <ConfirmGuessButton actions={actions} selectedWord={selected?.word ?? null} />
+              <PassButton actions={actions} enabled={(guesses ?? 0) > 0} />
+            </div>
+          }
         />
       );
+    }
     case 'WAITING_FOR_CLUE':
       return (
         <StatusPanel
@@ -104,18 +118,12 @@ function StagePanel({
           action={role === 'OPERATIVE' ? <PassButton actions={actions} enabled={false} /> : null}
         />
       );
-    case 'SPECTATING':
+    case 'UNSEATED':
       return (
         <StatusPanel
-          tone="strong"
-          title={
-            phase === 'GUESSING' && clue ? (
-              <ClueText clue={clue} />
-            ) : (
-              t('game.status.opponentClue', { team: teamName })
-            )
-          }
-          body={t('game.status.spectatingBody')}
+          waiting
+          title={t('game.status.unseatedTitle')}
+          body={t('game.status.unseatedBody')}
         />
       );
     case 'PAUSED':
@@ -175,7 +183,7 @@ function claimFailure(error: unknown): string | null {
   }
 }
 
-/** A spectator's claim of a free seat during the pause, with its feedback. */
+/** A joiner's claim of the free seat during the pause, with its feedback. */
 function useSeatClaim(): SeatClaim {
   const commands = useRoomCommands();
   const [pending, setPending] = useState(false);
@@ -203,16 +211,16 @@ function useSeatClaim(): SeatClaim {
 }
 
 /**
- * The Game Board: one screen for every state of the match, for Spymasters, Operatives and
- * spectators alike. What it draws follows the server's game state and the player's own
+ * The Game Board: one screen for every state of the match, for Spymasters and Operatives
+ * alike. What it draws follows the server's game state and the player's own
  * seat — whose turn it is, the phase, the clue, the guesses left, the board as the server
  * projected it for this player, the score and the result. Every action goes to the server,
  * and the screen changes only when the server's events arrive, so all players converge on
  * the same match. A refresh or a reconnect rebuilds it from the fresh snapshot.
  *
  * When a team loses its only Spymaster or its last Operative, the server pauses the match
- * and the Game Paused dialog counts down to the room's shutdown; a spectator can take the
- * free seat from there. Once the match has a result, each player decides on their own:
+ * and the Game Paused dialog counts down to the room's shutdown; a player who joins the
+ * paused room takes the free seat from there. Once the match has a result, each player decides on their own:
  * Back to Lobby or Exit, before the server's deadline.
  *
  * Desktop draws the 1920×1080 design at 80%: the scoreboard hangs from the top edge, the
@@ -241,7 +249,7 @@ export function GameScreen({
   const kick = useKickMember();
   const claim = useSeatClaim();
   const back = useReturnToLobby();
-  const { dismissFeedback } = actions;
+  const { dismissFeedback, clearSelection } = actions;
 
   const me: RoomMember | null = room.players.find((p) => p.user_id === userId) ?? null;
   const seat = { team: me?.team ?? null, role: me?.role ?? null };
@@ -250,13 +258,10 @@ export function GameScreen({
   const profileAvatar = usePlayerAvatars(room.players.map((p) => p.user_id));
   const avatarFor = (id: number) =>
     room.players.find((p) => p.user_id === id)?.avatar_url || profileAvatar(id);
-  const participants = useMemo(
-    () => room.players.filter((p) => p.role !== 'SPECTATOR'),
-    [room.players],
-  );
+  const participants = useMemo(() => room.players.filter((p) => p.role !== null), [room.players]);
   const red = useMemo(() => lineupOf(participants, 'RED'), [participants]);
   const blue = useMemo(() => lineupOf(participants, 'BLUE'), [participants]);
-  const spectators = room.players.filter((p) => p.role === 'SPECTATOR');
+  const unseated = room.players.filter((p) => p.role === null);
 
   const isHost = userId !== undefined && room.host_user_id === userId;
   const onKick = isHost ? kick.request : undefined;
@@ -294,7 +299,8 @@ export function GameScreen({
   const turnKey = `${game.current_turn.team}:${game.current_turn.phase}`;
   useEffect(() => {
     dismissFeedback();
-  }, [turnKey, dismissFeedback]);
+    clearSelection();
+  }, [turnKey, dismissFeedback, clearSelection]);
 
   const roleBadge = seat.role ? t(`room.ready.role.${seat.role}`) : undefined;
   const leaveLabel = deciding ? 'game.results.exit' : 'game.leave';
@@ -356,6 +362,10 @@ export function GameScreen({
               )}
               <ActionFeedback actions={actions} action="guess" className={styles.guessFeedback} />
               <GameBoard game={game} stage={stage} role={seat.role} actions={actions} />
+              <MatchLog
+                history={game.history}
+                currentName={(id) => room.players.find((p) => p.user_id === id)?.username}
+              />
             </div>
             <TeamStatusCard
               lineup={blue}
@@ -370,12 +380,12 @@ export function GameScreen({
           <TeamSummary lineup={red} />
           <TeamSummary lineup={blue} />
         </div>
-        <Spectators
-          members={spectators}
+        <UnseatedMembers
+          members={unseated}
           avatarFor={avatarFor}
           selfId={userId}
           onKick={onKick}
-          className={styles.spectators}
+          className={styles.unseated}
         />
       </div>
 
@@ -391,7 +401,7 @@ export function GameScreen({
           staffing={game.staffing}
           departure={departure}
           clockOffsetMs={clockOffsetMs}
-          claim={seat.role === 'SPECTATOR' ? claim : null}
+          claim={seat.role === null ? claim : null}
           onLeave={onLeave}
         />
       )}
