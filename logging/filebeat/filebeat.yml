@@ -29,6 +29,15 @@ processors:
       when:
         equals:
           container.labels.com_docker_compose_service: "logstash"
+  # Filebeat's own stdout is excluded too: its internal ECS events nest
+  # service.name, which collides with the `service` text field the
+  # ftx-logs-* mapping took from the first app document, so every one
+  # 400s on index. They were never visible in Kibana — only WARN noise
+  # in Logstash's own log. Same fallback: `docker compose logs filebeat`.
+  - drop_event:
+      when:
+        equals:
+          container.labels.com_docker_compose_service: "filebeat"
 
 output.logstash:
   hosts: ["logstash:5044"]
