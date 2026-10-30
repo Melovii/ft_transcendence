@@ -1,0 +1,16 @@
+# Grafana datasource provisioning (issue #76): Prometheus is wired at
+# startup, no manual clicking in the UI.
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    # Prometheus serves under the /prometheus prefix (--web.external-url),
+    # so the API path is /prometheus/api/v1/...
+    url: http://prometheus:9090/prometheus
+    isDefault: true
+    editable: false
+    jsonData:
+      # Match Prometheus's scrape_interval so short windows stay honest.
+      timeInterval: 15s

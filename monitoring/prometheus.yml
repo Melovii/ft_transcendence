@@ -1,0 +1,58 @@
+# Prometheus — central metrics collection and storage (issues #73–79).
+#
+# Targets are compose DNS names on the `web` network: services and
+# exporters only. Prometheus never joins `db`, so it cannot reach
+# PostgreSQL directly even if misconfigured.
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - /etc/prometheus/alerts.yml
+
+scrape_configs:
+  # Prometheus itself. The external URL serves everything under the
+  # /prometheus prefix, including the scrape endpoint.
+  - job_name: prometheus
+    metrics_path: /prometheus/metrics
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Backend services. Platform convention (docs/NEW-SERVICE.md): /metrics on
+  # the service port, outside /api/v1 so the gateway never proxies it.
+  - job_name: auth-service
+    static_configs:
+      - targets: ["auth-service:8080"]
+
+  - job_name: user-service
+    static_configs:
+      - targets: ["user-service:8080"]
+
+  # Infrastructure exporters.
+  - job_name: postgres-exporter
+    static_configs:
+      - targets: ["postgres-exporter:9187"]
+
+  - job_name: node-exporter
+    static_configs:
+      - targets: ["node-exporter:9100"]
+
+  # End-to-end probe through the public TLS chain (issue #77's service-down
+  # signal that sees what a user sees): nginx, the certificate, routing and
+  # the backend. /api/v1/auth/session answers 401 without a session cookie,
+  # so any listed code means the chain is alive.
+  - job_name: gateway-probe
+    metrics_path: /probe
+    params:
+      module: [https_gateway]
+    static_configs:
+      - targets:
+          - https://gateway/api/v1/auth/session
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115

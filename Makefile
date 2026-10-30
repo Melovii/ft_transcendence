@@ -3,11 +3,13 @@
 
 COMPOSE := docker compose
 
-.PHONY: up down restart build logs psql ps cert restore clean help
+.PHONY: up down restart build logs psql ps cert monitoring-auth restore clean help
 
-up: cert ## Build and start the whole stack (detached)
+up: cert monitoring-auth ## Build and start the whole stack (detached)
 	$(COMPOSE) up -d --build
-	@echo "app:   https://localhost"
+	@echo "app:        https://localhost"
+	@echo "grafana:    https://localhost/grafana    (login: GRAFANA_ADMIN_USER)"
+	@echo "prometheus: https://localhost/prometheus  (basic auth: PROMETHEUS_USER)"
 	@echo "first run takes a few minutes to build images"
 
 down: ## Stop the stack (keeps data)
@@ -30,6 +32,9 @@ ps: ## Show service status
 
 cert: ## Generate the self-signed TLS cert if missing
 	@sh scripts/make-cert.sh
+
+monitoring-auth: ## Regenerate the basic-auth file for the Prometheus UI
+	@sh scripts/make-monitoring-auth.sh
 
 restore: ## Restore the latest backup into a FRESH database (destructive) — Phase 1
 	@echo "restore: not implemented yet (Phase 1 of the roadmap)"

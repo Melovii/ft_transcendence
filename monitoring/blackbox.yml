@@ -1,0 +1,15 @@
+# Blackbox exporter probes (used by the gateway-probe scrape job).
+modules:
+  https_gateway:
+    prober: http
+    timeout: 5s
+    http:
+      method: GET
+      preferred_ip_protocol: ip4
+      # The platform's certificate is self-signed on purpose; the probe checks
+      # the chain works, not the CA.
+      tls_config:
+        insecure_skip_verify: true
+      # 401 (no session cookie on /api/v1/auth/session) still proves the
+      # whole chain answered; 404/405 catch route drift without paging.
+      valid_status_codes: [200, 401, 404, 405]

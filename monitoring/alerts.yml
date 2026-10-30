@@ -1,0 +1,67 @@
+# Alerting rules (issue #77). Evaluated by Prometheus; firing and recovered
+# states are visible at https://localhost/prometheus/alerts and in the
+# overview dashboard's alert list. A notification channel (Alertmanager,
+# Grafana contact points) is deliberately out of scope for now.
+
+groups:
+  - name: services
+    rules:
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service {{ $labels.job }} is down"
+          description: "{{ $labels.instance }} has been unreachable for over a minute."
+
+      - alert: GatewayProbeFailed
+        expr: probe_success == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "The HTTPS gateway chain is failing"
+          description: "The blackbox probe of {{ $labels.instance }} fails: TLS, nginx or the backend is broken."
+
+      - alert: HighErrorRate
+        expr: |
+          sum by (service) (rate(http_requests_total{status=~"5.."}[5m]))
+            / sum by (service) (rate(http_requests_total[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High 5xx error rate on {{ $labels.service }}"
+          description: "More than 5% of requests answer 5xx ({{ $value | humanizePercentage }} over the last 5 minutes)."
+
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.95,
+            sum by (service, le) (rate(http_request_duration_seconds_bucket[5m]))) > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Slow responses on {{ $labels.service }}"
+          description: "The 95th percentile response time exceeded 1s over the last 5 minutes."
+
+  - name: infrastructure
+    rules:
+      - alert: HighCPU
+        expr: 100 * (1 - avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m]))) > 85
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage on {{ $labels.instance }}"
+          description: "CPU usage above 85% for 10 minutes."
+
+      - alert: LowMemory
+        expr: 100 * (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) < 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low memory on {{ $labels.instance }}"
+          description: "Less than 10% of memory remains available."

@@ -1,0 +1,14 @@
+# Dashboard provisioning (issue #79): dashboards load from JSON files at
+# startup, so they survive container restarts and redeploy reproducibly.
+apiVersion: 1
+
+providers:
+  - name: platform
+    orgId: 1
+    folder: ft_transcendence
+    folderUid: ftx
+    type: file
+    disableDeletion: true
+    updateIntervalSeconds: 30
+    options:
+      path: /var/lib/grafana/dashboards
