@@ -37,8 +37,8 @@ cert: ## Generate the self-signed TLS cert if missing
 monitoring-auth: ## Regenerate the basic-auth file for the Prometheus UI
 	@sh scripts/make-monitoring-auth.sh
 
-restore: ## Restore the latest backup into a FRESH database (destructive) — Phase 1
-	@echo "restore: not implemented yet (Phase 1 of the roadmap)"
+restore: ## Restore the latest backups into a FRESH Postgres (destructive) — docs/dr.md
+	@sh scripts/restore.sh
 
 clean: cert-clean ## Stop the stack and DELETE the database volume
 	$(COMPOSE) down -v

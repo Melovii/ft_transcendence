@@ -232,6 +232,31 @@ services:
       - web
     restart: unless-stopped
 
+  # ── backup service (Phase 1) ──────────────────────────────────────────────
+  # Nightly pg_dumpall + Elasticsearch snapshots into the shared `backups`
+  # volume, 7-day retention. Joined only to the networks of the things it
+  # backs up (db, logging) — no web access. The status service watches its
+  # artifacts read-only; restores go through scripts/restore.sh (docs/dr.md).
+  backup:
+    build:
+      context: .
+      dockerfile: backup/Dockerfile
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+    volumes:
+      - backups:/backups
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - db
+      - logging
+    restart: unless-stopped
+
   # ── ELK logging stack (issues #56–63) ─────────────────────────────────────
   # Everything lives on the internal `logging` network — no outbound route,
   # no published ports. Only Kibana also joins `web` so the gateway can
@@ -250,8 +275,13 @@ services:
       xpack.security.http.ssl.enabled: "false"
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
       ES_JAVA_OPTS: -Xms512m -Xmx512m
+      # Phase 1: root of the fs snapshot repository (a static setting, so
+      # ES registers it at boot). The backup service registers the repo
+      # in there; snapshot files land in the shared backups volume.
+      path.repo: /usr/share/elasticsearch/backups
     volumes:
       - esdata:/usr/share/elasticsearch/data
+      - backups:/usr/share/elasticsearch/backups
     healthcheck:
       test: ["CMD-SHELL", "curl -fs -u elastic:${ELASTIC_PASSWORD} http://localhost:9200/_cluster/health >/dev/null || exit 1"]
       interval: 10s
