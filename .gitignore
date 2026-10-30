@@ -11,3 +11,6 @@ dist-ssr
 # devops: generated TLS certs and database backups never enter git
 certs/
 backups/
+
+# devops: the 42 subject PDF must never be published (repo is public)
+en.subject.pdf
