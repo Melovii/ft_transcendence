@@ -115,6 +115,22 @@ scripts/restore.sh latest                       # restored DB boots + login work
 a hope, not a control); ransomware resilience — and why real-world backups must be
 immutable/offline (ransomware deletes reachable backups first).
 
+**Status: built and verified (2026-10-30), except the health endpoint.** The status
+service (`backend/status-service`) polls six targets on a 10s ticker and serves
+`/status` + `/status.json` through the gateway (no auth — it must stay reachable when
+the things it reports on are down); stopping auth-service flipped the page to DEGRADED
+within one poll and it recovered on restart. The backup service (`backup/`) runs
+nightly `pg_dumpall` + Elasticsearch snapshots into the shared `backups` volume, 7-day
+retention, both watched read-only by the status service (`platform_backup_age_seconds`
+feeds the BackupStale alert). `scripts/restore.sh` (`make restore`) was drilled end to
+end: wiped pgdata, replayed the dump into a fresh instance (both databases and
+`schema_migrations` intact, so the migrate job no-ops), restored the log indices from
+the snapshot with the write alias, and the stack came back UP. The procedure, RTO/RPO
+and the ransomware caveat are in `docs/dr.md`. The one open item is `GET /api/v1/health`
+itself: it is backend code (the bruno `00 - Contract & Health` contract) and stays with
+the backend team — until it lands, the status service probes auth-service through its
+`/metrics` endpoint.
+
 ---
 
 ## Phase 2 — Prometheus + Grafana (~2–3 days)
