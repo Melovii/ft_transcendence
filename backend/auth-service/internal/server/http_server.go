@@ -11,6 +11,7 @@ import (
 	"github.com/melmut-42/ft_transcendence/backend/auth-service/internal/middleware/requestid"
 	authrouter "github.com/melmut-42/ft_transcendence/backend/auth-service/internal/router"
 	"github.com/melmut-42/ft_transcendence/backend/shared/httpresponse"
+	"github.com/melmut-42/ft_transcendence/backend/shared/metrics"
 )
 
 const (
@@ -43,7 +44,7 @@ func New(port string, auth *controller.AuthController, logger *slog.Logger) *htt
 // newRouter wires auth routes and the common HTTP middleware.
 func newRouter(auth *controller.AuthController, logger *slog.Logger) *gin.Engine {
 	router := gin.New()
-	router.Use(requestid.Middleware(), requestLogger(logger), gin.CustomRecoveryWithWriter(io.Discard, func(c *gin.Context, _ any) {
+	router.Use(requestid.Middleware(), requestLogger(logger), metrics.Middleware("auth-service"), gin.CustomRecoveryWithWriter(io.Discard, func(c *gin.Context, _ any) {
 		logger.ErrorContext(c.Request.Context(), "http_panic", "request_id", requestid.Get(c))
 		authrouter.WriteError(c, httpresponse.InternalError())
 	}))
@@ -55,6 +56,9 @@ func newRouter(auth *controller.AuthController, logger *slog.Logger) *gin.Engine
 	router.NoMethod(authrouter.Wrap(func(c *gin.Context) error {
 		return &httpresponse.Error{Status: http.StatusMethodNotAllowed, Code: "METHOD_NOT_ALLOWED", Message: "The HTTP method is not allowed for this endpoint."}
 	}, nil))
+	// Orchestrator-facing endpoints: Prometheus scrape and health sit outside
+	// /api/v1 on purpose; the reverse proxy only exposes /api paths.
+	router.GET("/metrics", metrics.Handler())
 	auth.RegisterRoutes(router.Group("/api/v1/auth"))
 
 	return router
