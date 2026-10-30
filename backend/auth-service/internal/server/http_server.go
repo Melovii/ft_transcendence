@@ -59,6 +59,8 @@ func newRouter(auth *controller.AuthController, logger *slog.Logger) *gin.Engine
 	// Orchestrator-facing endpoints: Prometheus scrape and health sit outside
 	// /api/v1 on purpose; the reverse proxy only exposes /api paths.
 	router.GET("/metrics", metrics.Handler())
+	// The public health endpoint is proxied by the gateway like any API path.
+	router.GET("/api/v1/health", authrouter.Wrap(controller.Health, nil))
 	auth.RegisterRoutes(router.Group("/api/v1/auth"))
 
 	return router
