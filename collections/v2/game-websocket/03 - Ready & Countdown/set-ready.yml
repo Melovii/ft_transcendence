@@ -144,6 +144,7 @@ docs: |-
   ```json
     {
       "room_id": 1001,
+      "room_code": "ABCD12",
       "status": "WAITING",
       "player_count": 4,
       "max_players": 8,
@@ -182,6 +183,7 @@ docs: |-
   ```json
     {
       "room_id": 1001,
+      "room_code": "ABCD12",
       "status": "WAITING",
       "player_count": 4,
       "max_players": 8,

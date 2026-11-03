@@ -16,7 +16,7 @@ docs: |-
 
   ## Purpose and preconditions
 
-  Revokes the current session (`ft_session` and `ft_refresh`, from Register, Login, or Refresh) and clears both cookies. The user account and persistent statistics remain. Logout is legal regardless of room membership (`workspace.yml`, Session and Credential Model / Room Abandonment): if the user currently has `active_room_id` set and that room is `IN_GAME`, logout triggers the same `PLAYER_FORFEIT` lifecycle as an explicit `Leave room` call or an abandonment-timeout, synchronously, before the session is revoked — there is no `409 ALREADY_IN_ROOM` block here anymore. Logout also closes every open, authenticated WebSocket connection (room and chat) belonging to this session. In a Game v2 room, logout is a departure with reason `SESSION_ENDED` and follows the Game v2 leave rules instead of the forfeit: during `IN_GAME` a participant receives the leave penalty and team staffing is rechecked (`workspace.yml`, Leave Penalty).
+  Revokes the current session (`ft_session` and `ft_refresh`, from Register, Login, or Refresh) and clears both cookies. The user account and persistent statistics remain. Logout is legal regardless of room membership (`workspace.yml`, Session and Credential Model / Reconnect Grace Period and Abandonment). Departure follows the membership's `active_room_api_version`: legacy Game v1 `IN_GAME` uses `PLAYER_FORFEIT`; Game v2 follows its leave and staffing rules. There is no `409 ALREADY_IN_ROOM` block. Logout also closes every open, authenticated WebSocket connection (room and chat) belonging to this session. In a Game v2 room, logout is a departure with reason `SESSION_ENDED` and follows the Game v2 leave rules instead of the forfeit: during `IN_GAME` a participant receives the leave penalty and team staffing is rechecked (`workspace.yml`, Leave Penalty).
 
   ## Request parameters
 
@@ -26,7 +26,7 @@ docs: |-
 
   ## Success, state changes, and events
 
-  `204 No Content` has no body. It revokes both `ft_session` and `ft_refresh`, clears both cookies, and closes open sockets for this session. If the user was `IN_GAME`, the room's `game.ended` event (`end_reason: "PLAYER_FORFEIT"`) is emitted to the remaining room members as part of the same operation, before the response returns.
+  `204 No Content` has no body. It revokes both `ft_session` and `ft_refresh`, clears both cookies, and closes open sockets for this session. For legacy Game v1 `IN_GAME` membership, departure emits `game.ended` with `end_reason:"PLAYER_FORFEIT"`. For Game v2 membership, logout removes the member with reason `SESSION_ENDED`, rechecks staffing and records the existing eligible-participant penalty; it does not declare a forfeit.
 
   ## Errors
 
@@ -34,10 +34,10 @@ docs: |-
 examples:
   - name: Success - Session revoked, no active room
     request: {url: "{{baseUrl}}/api/{{apiVersion}}/auth/session", method: DELETE, headers: [{name: Accept, value: application/json, enabled: true}], params: [], body: {mode: none}}
-    response: {status: 204, headers: [], body: {type: text, data: ""}}
-  - name: Success - Session revoked, forfeits active game
+    response: {status: 204, headers: [{name: Set-Cookie, value: "ft_session=; Max-Age=0; HttpOnly; Secure; SameSite=Lax; Path=/"}, {name: Set-Cookie, value: "ft_refresh=; Max-Age=0; HttpOnly; Secure; SameSite=Lax; Path=/api/v1/auth/refresh"}], body: {type: text, data: ""}}
+  - name: Success - Session revoked, legacy Game v1 forfeit
     request: {url: "{{baseUrl}}/api/{{apiVersion}}/auth/session", method: DELETE, headers: [{name: Accept, value: application/json, enabled: true}], params: [], body: {mode: none}}
-    response: {status: 204, headers: [], body: {type: text, data: ""}}
+    response: {status: 204, headers: [{name: Set-Cookie, value: "ft_session=; Max-Age=0; HttpOnly; Secure; SameSite=Lax; Path=/"}, {name: Set-Cookie, value: "ft_refresh=; Max-Age=0; HttpOnly; Secure; SameSite=Lax; Path=/api/v1/auth/refresh"}], body: {type: text, data: ""}}
   - name: Error - Already revoked
     request: {url: "{{baseUrl}}/api/{{apiVersion}}/auth/session", method: DELETE, headers: [{name: Accept, value: application/json, enabled: true}, {name: Cookie, value: "ft_session=alreadyRevoked", enabled: true}], params: [], body: {mode: none}}
     response:

@@ -32,7 +32,7 @@ docs: |-
 
   ## Purpose and envelope
 
-  Defines all application error codes. An error is requester-only, changes no state, emits no success event, and keeps the socket open. The only exceptions are HTTP handshake rejection and optional close after repeated protocol abuse.
+  Defines all application error codes. Ordinary action errors are requester-only, change no state, emit no success event, and keep the socket open. Existing connection-ending exceptions are `UNAUTHORIZED` (`4401`), `NOT_ROOM_MEMBER` (`4403`), and `ROOM_NOT_FOUND` (`4404`), as listed below. HTTP handshake rejection and optional close after repeated protocol abuse are separate cases.
 
   The reference connects with path `room_id` (required positive integer, example `1001`), authenticated by the `ft_session` cookie alone. Its two disabled messages use the same client envelope documented below; one intentionally uses unsupported type `room.start`, and one intentionally omits `request_id`.
 
@@ -74,7 +74,7 @@ docs: |-
   | `CARD_ALREADY_REVEALED` | card was already revealed | unchanged; open |
   | `NO_GUESSES_REMAINING` | stale guess/pass after zero | unchanged; open |
   | `GAME_ALREADY_FINISHED` | game command after terminal result | unchanged; open |
-  | `NOT_PERMITTED` | chat message to a user who is not a friend and shares no active in-game room | unchanged; open |
+  | `NOT_PERMITTED` | chat message when users are neither friends nor co-members of a shared room in `WAITING`, `COUNTDOWN`, or `IN_GAME` | unchanged; open |
   | `USER_NOT_FOUND` | chat message `to_user_id` does not exist | unchanged; open |
 
   Room/game codes apply on `/ws/v1/rooms/{roomId}`; `NOT_PERMITTED` and `USER_NOT_FOUND` apply only on the chat socket `/ws/v1/chat` (see `08 - Chat/send-message.yml`).

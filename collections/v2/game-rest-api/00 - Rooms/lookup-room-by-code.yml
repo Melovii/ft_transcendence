@@ -33,7 +33,7 @@ docs: |-
   | `data.room_id` | integer | yes | no | positive | Resolved internal ID, pass to `Join room` |
   | `data.room_code` | string | yes | no | normalized uppercase | Echoed input |
   | `data.status` | string enum | yes | no | `WAITING`, `COUNTDOWN`, `IN_GAME`, `POST_GAME` | Shared lifecycle state; closed room codes no longer resolve |
-  | `data.player_count` | integer | yes | no | `>= 1` | Current membership count |
+  | `data.player_count` | integer | yes | no | `>= 0` | Current membership count; ordinary retained empty rooms may resolve |
   | `data.max_players` | integer | yes | no | `4..20` | Room capacity; the Join Room UI shows a full room before calling Join |
   | `data.joinable` | boolean | yes | no | `true`, `false` | True when `Join room` would accept a join now: `WAITING` with no pending `POST_GAME` member, or `IN_GAME` paused for players; and capacity available |
 

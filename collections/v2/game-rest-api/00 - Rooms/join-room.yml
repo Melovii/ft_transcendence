@@ -82,6 +82,7 @@ examples:
           {
             "data": {
               "room_id": 1001,
+              "room_code": "ABCD12",
               "status": "WAITING",
               "host_user_id": 42,
               "player_count": 2,
@@ -93,6 +94,7 @@ examples:
                 {
                   "user_id": 42,
                   "username": "player_one",
+                  "avatar_url": "/static/avatars/default/42.svg",
                   "team": null,
                   "role": null,
                   "ready": false,
@@ -103,6 +105,7 @@ examples:
                 {
                   "user_id": 43,
                   "username": "red_agent",
+                  "avatar_url": "/static/avatars/default/43.svg",
                   "team": null,
                   "role": null,
                   "ready": false,
@@ -126,6 +129,7 @@ examples:
           {
             "data": {
               "room_id": 1001,
+              "room_code": "ABCD12",
               "status": "WAITING",
               "host_user_id": 42,
               "player_count": 5,
@@ -137,6 +141,7 @@ examples:
                 {
                   "user_id": 42,
                   "username": "player_one",
+                  "avatar_url": "/static/avatars/default/42.svg",
                   "team": "RED",
                   "role": "SPYMASTER",
                   "ready": false,
@@ -147,6 +152,7 @@ examples:
                 {
                   "user_id": 43,
                   "username": "red_agent",
+                  "avatar_url": "/static/avatars/default/43.svg",
                   "team": "RED",
                   "role": "OPERATIVE",
                   "ready": false,
@@ -157,6 +163,7 @@ examples:
                 {
                   "user_id": 44,
                   "username": "blue_master",
+                  "avatar_url": "/static/avatars/default/44.svg",
                   "team": "BLUE",
                   "role": "SPYMASTER",
                   "ready": false,
@@ -167,6 +174,7 @@ examples:
                 {
                   "user_id": 45,
                   "username": "blue_agent",
+                  "avatar_url": "/static/avatars/default/45.svg",
                   "team": "BLUE",
                   "role": "OPERATIVE",
                   "ready": false,

@@ -57,6 +57,7 @@ docs: |-
       "payload": {
         "room": {
           "room_id": 1001,
+          "room_code": "ABCD12",
           "status": "COUNTDOWN",
           "host_user_id": 42,
           "player_count": 4,
@@ -69,6 +70,7 @@ docs: |-
             {
               "user_id": 42,
               "username": "player_one",
+              "avatar_url": "/static/avatars/default/42.svg",
               "team": "RED",
               "role": "SPYMASTER",
               "ready": true,
@@ -79,6 +81,7 @@ docs: |-
             {
               "user_id": 43,
               "username": "red_agent",
+              "avatar_url": "/static/avatars/default/43.svg",
               "team": "RED",
               "role": "OPERATIVE",
               "ready": true,
@@ -89,6 +92,7 @@ docs: |-
             {
               "user_id": 44,
               "username": "blue_master",
+              "avatar_url": "/static/avatars/default/44.svg",
               "team": "BLUE",
               "role": "SPYMASTER",
               "ready": true,
@@ -99,6 +103,7 @@ docs: |-
             {
               "user_id": 45,
               "username": "blue_agent",
+              "avatar_url": "/static/avatars/default/45.svg",
               "team": "BLUE",
               "role": "OPERATIVE",
               "ready": true,
@@ -178,6 +183,7 @@ docs: |-
       "payload": {
         "room": {
           "room_id": 1001,
+          "room_code": "ABCD12",
           "status": "WAITING",
           "host_user_id": 42,
           "player_count": 4,
@@ -187,6 +193,7 @@ docs: |-
             {
               "user_id": 42,
               "username": "player_one",
+              "avatar_url": "/static/avatars/default/42.svg",
               "team": "RED",
               "role": "SPYMASTER",
               "ready": true,
@@ -197,6 +204,7 @@ docs: |-
             {
               "user_id": 43,
               "username": "red_agent",
+              "avatar_url": "/static/avatars/default/43.svg",
               "team": "RED",
               "role": "OPERATIVE",
               "ready": false,
@@ -207,6 +215,7 @@ docs: |-
             {
               "user_id": 44,
               "username": "blue_master",
+              "avatar_url": "/static/avatars/default/44.svg",
               "team": "BLUE",
               "role": "SPYMASTER",
               "ready": true,
@@ -217,6 +226,7 @@ docs: |-
             {
               "user_id": 45,
               "username": "blue_agent",
+              "avatar_url": "/static/avatars/default/45.svg",
               "team": "BLUE",
               "role": "OPERATIVE",
               "ready": true,

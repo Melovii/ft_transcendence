@@ -40,7 +40,7 @@ docs: |-
 
   ## Post-game snapshot
 
-  This Spymaster-visible state follows the normal RED victory branch. The nine RED cards and five previously found BLUE cards are revealed. Spymasters continue to see the full map; an Operative projection MUST replace the colors of every remaining unrevealed card with `null`, even after `POST_GAME`.
+  This Spymaster-visible state follows the normal RED victory branch. The nine RED cards and five previously found BLUE cards are revealed. On competitive game completion, every user already in the room must see all card affiliations, including unguessed cards. Active gameplay continues to use role-specific filtering. Finished-board event/snapshot delivery and reconnect/history eligibility still require a reviewed contract update; these examples do not define that transport. Cancellation disclosure is unresolved, and later joiners must not automatically receive the previous full board.
 
   ```json
   {
@@ -50,6 +50,7 @@ docs: |-
     "sent_at":"2026-09-10T08:50:01Z",
     "payload":{"room":{
       "room_id":1001,
+      "room_code": "ABCD12",
       "status":"POST_GAME",
       "host_user_id":42,
       "player_count":4,
@@ -58,10 +59,10 @@ docs: |-
       "language": "en",
       "startable":false,
       "players":[
-        {"user_id":42,"username":"player_one","team":"RED","role":"SPYMASTER","ready":false,"state":"POST_GAME","is_host":true,"joined_at":"2026-09-10T08:41:00Z"},
-        {"user_id":43,"username":"red_agent","team":"RED","role":"OPERATIVE","ready":false,"state":"POST_GAME","is_host":false,"joined_at":"2026-09-10T08:41:20Z"},
-        {"user_id":44,"username":"blue_master","team":"BLUE","role":"SPYMASTER","ready":false,"state":"POST_GAME","is_host":false,"joined_at":"2026-09-10T08:41:30Z"},
-        {"user_id":45,"username":"blue_agent","team":"BLUE","role":"OPERATIVE","ready":false,"state":"POST_GAME","is_host":false,"joined_at":"2026-09-10T08:41:40Z"}
+        {"user_id":42,"username":"player_one","avatar_url": "/static/avatars/default/42.svg","team":"RED","role":"SPYMASTER","ready":false,"state":"POST_GAME","is_host":true,"joined_at":"2026-09-10T08:41:00Z"},
+        {"user_id":43,"username":"red_agent","avatar_url": "/static/avatars/default/43.svg","team":"RED","role":"OPERATIVE","ready":false,"state":"POST_GAME","is_host":false,"joined_at":"2026-09-10T08:41:20Z"},
+        {"user_id":44,"username":"blue_master","avatar_url": "/static/avatars/default/44.svg","team":"BLUE","role":"SPYMASTER","ready":false,"state":"POST_GAME","is_host":false,"joined_at":"2026-09-10T08:41:30Z"},
+        {"user_id":45,"username":"blue_agent","avatar_url": "/static/avatars/default/45.svg","team":"BLUE","role":"OPERATIVE","ready":false,"state":"POST_GAME","is_host":false,"joined_at":"2026-09-10T08:41:40Z"}
       ],
       "game":{
         "game_id":5001,

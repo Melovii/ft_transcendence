@@ -113,6 +113,7 @@ examples:
                 {
                   "user_id": 42,
                   "username": "player_one",
+                  "avatar_url": "/static/avatars/default/42.svg",
                   "team": null,
                   "role": null,
                   "ready": false,

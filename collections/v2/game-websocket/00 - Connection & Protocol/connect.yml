@@ -69,6 +69,7 @@ docs: |-
       "payload": {
         "room": {
           "room_id": 1001,
+          "room_code": "ABCD12",
           "status": "WAITING",
           "host_user_id": 42,
           "player_count": 1,
@@ -78,6 +79,7 @@ docs: |-
             {
               "user_id": 42,
               "username": "player_one",
+              "avatar_url": "/static/avatars/default/42.svg",
               "team": null,
               "role": null,
               "ready": false,

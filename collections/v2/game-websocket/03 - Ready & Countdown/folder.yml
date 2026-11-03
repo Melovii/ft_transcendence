@@ -5,4 +5,4 @@
 docs: |-
   # Ready and countdown
 
-  `ready=true` requires team, role, member state `IN_LOBBY`, and no pending `POST_GAME` members. The server automatically starts a three-second countdown when every start clause holds. Join, leave, kick, team, role, or ready changes can cancel it and return the room to `WAITING`.
+  `ready=true` requires team, role, member state `IN_LOBBY`, and no pending `POST_GAME` members. The server automatically starts a three-second countdown when every start clause holds. Leave, kick, team, role, or ready changes can cancel it and return the room to `WAITING`. New members cannot join after countdown starts; a rejected join does not cancel the countdown.

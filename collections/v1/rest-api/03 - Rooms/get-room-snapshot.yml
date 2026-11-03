@@ -76,7 +76,7 @@ docs: |-
   | `data.game.board[].revealed` | boolean | yes | no | `true`, `false` | Reveal state |
   | `data.game.board[].color` | enum or null | yes | yes | `RED`, `BLUE`, `NEUTRAL`, `ASSASSIN`, `null` | Null only for unrevealed cards hidden from an Operative; Spymasters always receive color |
   | `data.game.winner` | enum or null | yes | yes | `RED`, `BLUE`, `null` | Non-null only after terminal result |
-  | `data.game.end_reason` | enum or null | yes | yes | `ALL_TEAM_CARDS_REVEALED`, `ASSASSIN_REVEALED`, `null` | Terminal cause |
+  | `data.game.end_reason` | enum or null | yes | yes | `ALL_TEAM_CARDS_REVEALED`, `ASSASSIN_REVEALED`, `PLAYER_FORFEIT`, `null` | Legacy v1 terminal cause, including its existing forfeit outcome |
   | `data.game.started_at` | `string<date-time>` | yes | no | ISO 8601 UTC | Board creation/start time |
   | `data.game.finished_at` | `string<date-time>` or null | yes | yes | ISO 8601 UTC or `null` | Terminal time |
 

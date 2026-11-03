@@ -15,7 +15,7 @@ docs: |-
 
   During `IN_GAME`, play may continue only while RED and BLUE each have exactly one `SPYMASTER` and at least one `OPERATIVE`. Unseated members are ignored. A team becomes deficient when it loses its only Spymaster or its last Operative, whether by Leave room, logout, host kick, account deletion, or an expired reconnect grace period. The room then remains `IN_GAME`, the game changes to `PAUSED_FOR_PLAYERS`, and the server preserves the board, score, active team, clue, and remaining guesses.
 
-  Each deficient team owns an independent absolute deadline, 120 seconds by default and server-configurable. A second team becoming deficient later receives its own deadline; it does not reset the first team's timer. Clue, guess, and pass commands return `INVALID_GAME_PHASE` while paused.
+  Each deficient team owns an independent absolute deadline, 120 seconds by default and server-configurable. A second team becoming deficient later receives its own deadline; it does not reset the first team's timer. Clue, guess, and pass commands return the catalog-defined `INVALID_ROOM_STATE` while paused.
 
   `game.staffing.required` is the start of the shutdown countdown every remaining member sees. `departure` names the member whose removal made the team deficient and why, so the client can explain why the room may close. The server sends no per-second ticks: clients render the remaining time from the absolute `deadline_at`, correcting for clock skew with the event's `sent_at`, and never close the room themselves. A reconnect during the pause receives the same `staffing` object inside `room.state.payload.room.game`.
 

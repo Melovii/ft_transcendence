@@ -171,7 +171,7 @@ docs: |-
   | Result field | Type | Required | Nullable | Allowed values | Description |
   | --- | --- | ---: | ---: | --- | --- |
   | `ack.payload.user_id` | integer | yes | no | positive | Updated member |
-  | `ack.payload.team` | enum | yes | no | `RED`, `BLUE` | Existing selected team |
+  | `ack.payload.team` | enum | yes | no | `RED`, `BLUE` | Team accepted by the atomic claim |
   | `ack.payload.role` | enum | yes | no | `SPYMASTER`, `OPERATIVE` | Accepted role |
   | `ack.payload.ready` | boolean | yes | no | `false` | Reset confirmation |
   | `ack.payload.room_status` | enum | yes | no | `WAITING` | Post-command state |

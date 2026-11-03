@@ -82,7 +82,7 @@ docs: |-
   | `data.game.board[].card_id` | integer | yes | no | `1..25` unique | Slot identifier; carries zero affiliation information (`workspace.yml`, Card ID invariant) — the fixture example's `card_id`↔color pattern is illustrative only, not a rule |
   | `data.game.board[].word` | string | yes | no | fixture word | Visible to both roles |
   | `data.game.board[].revealed` | boolean | yes | no | `true`, `false` | Reveal state |
-  | `data.game.board[].color` | enum or null | yes | yes | `RED`, `BLUE`, `NEUTRAL`, `ASSASSIN`, `null` | Null only for unrevealed cards hidden from an Operative; Spymasters always receive color |
+  | `data.game.board[].color` | enum or null | yes | yes | `RED`, `BLUE`, `NEUTRAL`, `ASSASSIN`, `null` | During active gameplay, unrevealed colors are hidden from Operatives; finished visibility follows the documented completion requirement |
   | `data.game.winner` | enum or null | yes | yes | `RED`, `BLUE`, `null` | Non-null only after terminal result |
   | `data.game.end_reason` | enum or null | yes | yes | `ALL_TEAM_CARDS_REVEALED`, `ASSASSIN_REVEALED`, `INSUFFICIENT_PLAYERS`, `null` | Terminal cause; cancellation has no winner |
   | `data.game.staffing` | object | conditional | no | per-team missing roles/deadlines | Present in `PAUSED_FOR_PLAYERS`; the same shape as `game.staffing.required.payload.staffing`, so a reconnect restores the shutdown countdown |
@@ -97,7 +97,7 @@ docs: |-
   | `data.last_game.status` | enum | conditional | no | `GAME_FINISHED` | Previous game lifecycle state |
   | `data.last_game.winner` | enum | conditional | no | `RED`, `BLUE` | Winning team |
   | `data.last_game.loser` | enum | conditional | no | `RED`, `BLUE` | Losing team |
-  | `data.last_game.end_reason` | enum | conditional | no | `ALL_TEAM_CARDS_REVEALED`, `ASSASSIN_REVEALED`, `INSUFFICIENT_PLAYERS` | Terminal cause |
+  | `data.last_game.end_reason` | enum | conditional | no | `ALL_TEAM_CARDS_REVEALED`, `ASSASSIN_REVEALED` | Finalized competitive result; staffing cancellation creates no last_game result |
   | `data.last_game.score` | object | conditional | no | `{red, blue}` | Final revealed-card totals |
   | `data.last_game.finished_at` | `string<date-time>` | conditional | no | ISO 8601 UTC | Previous match end time |
   | `data.empty_since` | `string<date-time>` or null | yes | yes | ISO 8601 UTC | Set while no members remain |
@@ -111,7 +111,7 @@ docs: |-
 
   ## Errors and privacy invariant
 
-  `401 UNAUTHORIZED`, `404 ROOM_NOT_FOUND`, `403 NOT_ROOM_MEMBER`, `422 VALIDATION_ERROR`. Errors reveal no room state. The server projects every card for the authenticated viewer; an Operative never receives an unrevealed affiliation.
+  `401 UNAUTHORIZED`, `404 ROOM_NOT_FOUND`, `403 NOT_ROOM_MEMBER`, `422 VALIDATION_ERROR`. Errors reveal no room state. During active gameplay, the server projects every card for the authenticated viewer and never sends an Operative an unrevealed affiliation. Competitive completion must disclose all affiliations to users already in the room; exact result delivery/access needs contract review, and cancellation disclosure remains unresolved.
 examples:
   - name: Newly created room
     request: {url: "{{baseUrl}}/api/{{gameApiVersion}}/rooms/1001", method: GET, headers: [], params: [], body: {mode: none}}
@@ -124,6 +124,7 @@ examples:
           {
             "data": {
               "room_id": 1001,
+              "room_code": "ABCD12",
               "status": "WAITING",
               "host_user_id": 42,
               "player_count": 1,
@@ -135,6 +136,7 @@ examples:
                 {
                   "user_id": 42,
                   "username": "player_one",
+                  "avatar_url": "/static/avatars/default/42.svg",
                   "team": null,
                   "role": null,
                   "ready": false,
@@ -158,6 +160,7 @@ examples:
           {
             "data": {
               "room_id": 1001,
+              "room_code": "ABCD12",
               "status": "WAITING",
               "host_user_id": 42,
               "player_count": 4,
@@ -169,6 +172,7 @@ examples:
                 {
                   "user_id": 42,
                   "username": "player_one",
+                  "avatar_url": "/static/avatars/default/42.svg",
                   "team": null,
                   "role": null,
                   "ready": false,
@@ -179,6 +183,7 @@ examples:
                 {
                   "user_id": 43,
                   "username": "red_agent",
+                  "avatar_url": "/static/avatars/default/43.svg",
                   "team": null,
                   "role": null,
                   "ready": false,
@@ -189,6 +194,7 @@ examples:
                 {
                   "user_id": 44,
                   "username": "blue_master",
+                  "avatar_url": "/static/avatars/default/44.svg",
                   "team": null,
                   "role": null,
                   "ready": false,
@@ -199,6 +205,7 @@ examples:
                 {
                   "user_id": 45,
                   "username": "blue_agent",
+                  "avatar_url": "/static/avatars/default/45.svg",
                   "team": null,
                   "role": null,
                   "ready": false,
@@ -222,6 +229,7 @@ examples:
           {
             "data": {
               "room_id": 1001,
+              "room_code": "ABCD12",
               "status": "WAITING",
               "host_user_id": 42,
               "player_count": 4,
@@ -233,6 +241,7 @@ examples:
                 {
                   "user_id": 42,
                   "username": "player_one",
+                  "avatar_url": "/static/avatars/default/42.svg",
                   "team": "RED",
                   "role": "SPYMASTER",
                   "ready": false,
@@ -243,6 +252,7 @@ examples:
                 {
                   "user_id": 43,
                   "username": "red_agent",
+                  "avatar_url": "/static/avatars/default/43.svg",
                   "team": null,
                   "role": null,
                   "ready": false,
@@ -253,6 +263,7 @@ examples:
                 {
                   "user_id": 44,
                   "username": "blue_master",
+                  "avatar_url": "/static/avatars/default/44.svg",
                   "team": "BLUE",
                   "role": "SPYMASTER",
                   "ready": false,
@@ -263,6 +274,7 @@ examples:
                 {
                   "user_id": 45,
                   "username": "blue_agent",
+                  "avatar_url": "/static/avatars/default/45.svg",
                   "team": null,
                   "role": null,
                   "ready": false,
@@ -286,6 +298,7 @@ examples:
           {
             "data": {
               "room_id": 1001,
+              "room_code": "ABCD12",
               "status": "WAITING",
               "host_user_id": 42,
               "player_count": 4,
@@ -297,6 +310,7 @@ examples:
                 {
                   "user_id": 42,
                   "username": "player_one",
+                  "avatar_url": "/static/avatars/default/42.svg",
                   "team": "RED",
                   "role": "SPYMASTER",
                   "ready": true,
@@ -307,6 +321,7 @@ examples:
                 {
                   "user_id": 43,
                   "username": "red_agent",
+                  "avatar_url": "/static/avatars/default/43.svg",
                   "team": "RED",
                   "role": "OPERATIVE",
                   "ready": true,
@@ -317,6 +332,7 @@ examples:
                 {
                   "user_id": 44,
                   "username": "blue_master",
+                  "avatar_url": "/static/avatars/default/44.svg",
                   "team": "BLUE",
                   "role": "SPYMASTER",
                   "ready": true,
@@ -327,6 +343,7 @@ examples:
                 {
                   "user_id": 45,
                   "username": "blue_agent",
+                  "avatar_url": "/static/avatars/default/45.svg",
                   "team": "BLUE",
                   "role": "OPERATIVE",
                   "ready": false,
@@ -350,6 +367,7 @@ examples:
           {
             "data": {
               "room_id": 1001,
+              "room_code": "ABCD12",
               "status": "IN_GAME",
               "host_user_id": 42,
               "player_count": 4,
@@ -358,10 +376,10 @@ examples:
               "language": "en",
               "startable": false,
               "players": [
-                {"user_id":42,"username":"player_one","team":"RED","role":"SPYMASTER","ready":true,"state":"IN_GAME","is_host":true,"joined_at":"2026-09-10T08:41:00Z"},
-                {"user_id":43,"username":"red_agent","team":"RED","role":"OPERATIVE","ready":true,"state":"IN_GAME","is_host":false,"joined_at":"2026-09-10T08:41:20Z"},
-                {"user_id":44,"username":"blue_master","team":"BLUE","role":"SPYMASTER","ready":true,"state":"IN_GAME","is_host":false,"joined_at":"2026-09-10T08:41:30Z"},
-                {"user_id":45,"username":"blue_agent","team":"BLUE","role":"OPERATIVE","ready":true,"state":"IN_GAME","is_host":false,"joined_at":"2026-09-10T08:41:40Z"}
+                {"user_id":42,"username":"player_one","avatar_url": "/static/avatars/default/42.svg","team":"RED","role":"SPYMASTER","ready":true,"state":"IN_GAME","is_host":true,"joined_at":"2026-09-10T08:41:00Z"},
+                {"user_id":43,"username":"red_agent","avatar_url": "/static/avatars/default/43.svg","team":"RED","role":"OPERATIVE","ready":true,"state":"IN_GAME","is_host":false,"joined_at":"2026-09-10T08:41:20Z"},
+                {"user_id":44,"username":"blue_master","avatar_url": "/static/avatars/default/44.svg","team":"BLUE","role":"SPYMASTER","ready":true,"state":"IN_GAME","is_host":false,"joined_at":"2026-09-10T08:41:30Z"},
+                {"user_id":45,"username":"blue_agent","avatar_url": "/static/avatars/default/45.svg","team":"BLUE","role":"OPERATIVE","ready":true,"state":"IN_GAME","is_host":false,"joined_at":"2026-09-10T08:41:40Z"}
               ],
               "game": {
                 "game_id": 5001,

@@ -46,7 +46,7 @@ docs: |-
 
   ## State behavior and ordering
 
-  Join initializes team/role to null, ready false, and state `IN_LOBBY`. Leave clears the user's active room. Host transfer prefers the earliest-joined `IN_LOBBY` member, otherwise the earliest remaining member. Countdown removal first produces `room.countdown.cancelled`, then `room.player.left`, then `room.state`. A kick additionally closes the target's sockets with `4403`. During `IN_GAME`, a participant's `room.player.left` is followed by `game.staffing.required` when the departure leaves a team deficient. When a staffing deadline closes the room, no per-member `room.player.left` is sent; `room.closed` replaces them.
+  Join initializes team/role to null and ready false. Member state is `IN_LOBBY` for a permitted `WAITING` join and `IN_GAME` for a permitted join while gameplay is `PAUSED_FOR_PLAYERS`; `COUNTDOWN` rejects joins. Leave clears the user's active room. Host transfer prefers the earliest-joined `IN_LOBBY` member, otherwise the earliest remaining member. Countdown removal first produces `room.countdown.cancelled`, then `room.player.left`, then `room.state`. A kick additionally closes the target's sockets with `4403`. During `IN_GAME`, a participant's `room.player.left` is followed by `game.staffing.required` when the departure leaves a team deficient. When a staffing deadline closes the room, no per-member `room.player.left` is sent; `room.closed` replaces them.
 
   ## Concrete events
 
@@ -60,6 +60,7 @@ docs: |-
         "player": {
           "user_id": 43,
           "username": "red_agent",
+          "avatar_url": "/static/avatars/default/43.svg",
           "team": null,
           "role": null,
           "ready": false,
@@ -84,6 +85,7 @@ docs: |-
         "player": {
           "user_id": 42,
           "username": "player_one",
+          "avatar_url": "/static/avatars/default/42.svg",
           "team": "RED",
           "role": "SPYMASTER",
           "ready": false,
