@@ -1,8 +1,6 @@
 # ft_transcendence — Frontend
 
-React SPA for Codenames Online. This repository currently holds the **foundation only**:
-the structure, clients, stores, types and tokens that features are built on top of.
-Feature behavior is tracked in GitHub Issues.
+React SPA for Codenames Online, with feature flows, API clients, domain stores, design tokens and REST/WebSocket mocks. Source and mock behavior do not establish real backend integration or module completion. Feature work and integration are tracked in GitHub Issues.
 
 ## Stack
 
@@ -71,7 +69,7 @@ review rule.
 
 ## Contract sources
 
-- REST and WebSocket contracts: the `bruno` branch (`bruno/collections/`). Rooms and
+- REST and WebSocket contracts: the `bruno` branch (`collections/`). Rooms and
   games use the Game v2 contract as a pair: REST at `/api/v2/rooms` and the room socket
   at `/ws/v2/rooms/{room_id}`. Chat uses Chat v2; identity, profile and friends use v1.
 - Visual reference: the `ui-design` branch. Mockups are a visual reference for layout,
