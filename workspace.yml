@@ -38,7 +38,7 @@ docs: |-
 
   ## Source of Truth
 
-  Conflicts are resolved in this order: explicit product rules in the September 2026 contract brief; its game and UI flows; compatible established project naming; old Bruno material; current backend evidence; then the general school subject. This workspace specifies intended behavior even when implementation differs.
+  The official ft_transcendence subject defines mandatory requirements and evaluation constraints. Current agreed product and architecture decisions must satisfy those requirements. This workspace defines the intended REST and WebSocket contracts; source code establishes what is implemented. Report conflicts between these sources explicitly before changing behavior. Contract examples do not prove implementation or module completion.
 
   ## User Flow (Game v2)
 
@@ -139,7 +139,7 @@ docs: |-
 
   Register and Login set both cookies and return no token value in the response body — only `access_token_expires_at` (for client-side UX timers) and profile fields. `GET /api/v1/auth/session` and every other protected REST endpoint read `ft_session` only. `POST /api/v1/auth/refresh` reads `ft_refresh` only (scoped to that one path by `Path=/api/v1/auth/refresh`, so it is never sent on other requests), validates it, rotates it (single-use — the previous `ft_refresh` is revoked the instant a new one is issued), and reissues both cookies. Reuse of an already-rotated `ft_refresh` revokes the entire token family and forces re-login — this is the theft-detection behavior for a stolen refresh credential. The WebSocket upgrade (both the room socket and the chat socket) reads `ft_session` only, attached automatically by the browser on the same-origin request; there is no WebSocket-level refresh — an expired access token means the client calls `POST /api/v1/auth/refresh` over REST first, which reissues `ft_session`, then reconnects.
 
-  `DELETE /api/v1/auth/session` (logout) revokes both credentials server-side and clears both cookies, unconditionally — logout is never blocked by active room membership (see Room Abandonment below, which logout during `IN_GAME` now triggers instead of rejecting). Logout also closes every open, authenticated WebSocket connection for that session (room and chat).
+  `DELETE /api/v1/auth/session` (logout) revokes both credentials server-side and clears both cookies, unconditionally — logout is never blocked by active room membership (see Reconnect Grace Period and Abandonment for departure behavior). Logout also closes every open, authenticated WebSocket connection for that session (room and chat).
 
   Concrete states: `UNAUTHORIZED` (401) — the `ft_session` credential is missing, malformed, expired, or revoked; the client retries after `POST /api/v1/auth/refresh`. `SESSION_EXPIRED` (401, refresh endpoint only) — the `ft_refresh` credential is missing, expired, already rotated, or revoked; the client must log in again. A WebSocket handshake with a missing/invalid `ft_session` is rejected before the `101` upgrade; an already-open socket whose session is explicitly revoked (logout, or refresh-token-family revocation) is closed server-side with policy code `4401`. Ordinary access-token expiry does not by itself tear down an already-open game socket — refresh happens on the next REST call or on reconnect.
 
@@ -228,7 +228,7 @@ docs: |-
 
   ## REST vs WebSocket Responsibility
 
-  REST owns registration/session bootstrap (including refresh, logout, and Google OAuth), profile read/update, account deletion, user reports, avatar, friends (list/remove/search, friend requests), blocking, room creation, membership join/leave, snapshots, and match history. Once a member joins the realtime channel, team, role, readiness, countdown, clue, guess, pass, and live state propagation use WebSocket. Basic chat is a separate per-user WebSocket channel (`/ws/v1/chat`), independent of any room. REST and WebSocket share field names and domain enums, and identify the same session; both accept only the `ft_session` cookie — there is no header-based credential on either transport.
+  REST owns registration/session bootstrap (including refresh, logout, and Google OAuth), profile read/update, account deletion, user reports, avatar, friends (list/remove/search, friend requests), blocking, room creation, membership join/leave, snapshots, and match history. Once a member joins the realtime channel, team, role, readiness, countdown, clue, guess, pass, and live state propagation use WebSocket. Legacy Chat v1 uses a separate per-user WebSocket channel (`/ws/v1/chat`), independent of any room. Chat v2 uses channel REST resources and `/ws/v2/channels`, as described in Chat v2 Architecture. REST and WebSocket share field names and domain enums, and identify the same session; both accept only the `ft_session` cookie — there is no header-based credential on either transport.
 
   ## Multi-Tab / Multi-Socket
 
@@ -399,7 +399,7 @@ docs: |-
 
   ## Styling Solution
 
-  The frontend styles with CSS custom properties (design tokens) plus component-scoped CSS files, colocated in `shared/ui` and in each feature's `components/`. The tokens match the `ui-design/` system, whose color, type and spacing custom properties are defined in `styles.css`. The visual system is hand-built; no CSS or UI framework (Tailwind, MUI, Bootstrap) is used.
+  The frontend uses Tailwind CSS v4 utilities backed by the custom design tokens in `src/shared/styles/theme.css`. The stylesheet entry point, `src/shared/styles/index.css`, imports Tailwind's layers and the project's theme, base and utility styles. Shared UI components consume those tokens; there are no component-scoped CSS files. Font Awesome icons are rendered through `shared/ui/Icon`. The `ui-design` branch supplies the visual reference and token names.
 
   ## Profile Completion (Standard User Management — subject-mandatory)
 
@@ -423,7 +423,7 @@ docs: |-
 
   User Service owns `POST /api/v1/users/{user_id}/reports`, which lets a signed-in user report another user with a reason category (`HARASSMENT`, `CHEATING`, `OFFENSIVE_USERNAME`, `SPAM`, `OTHER`), optional free-text `details` (`0..500` characters), and an optional `room_id` for context. Reporting oneself returns `422 CANNOT_REPORT_SELF`. A reporter may file one report per target within a server-configured window (24 hours in examples); a repeat returns `409 ALREADY_REPORTED`. User stores the report for moderation and never notifies the reported user. **Unresolved:** how received reports are reviewed and acted on.
 
-  ## Match History and Stats (minor module: Game Statistics)
+  ## Match History and Stats
 
   Every competitive terminal transition (normal win or assassin) appends exactly one internal `match.finalized` record containing the final participating rosters, winner, end reason, score, and timestamps. `INSUFFICIENT_PLAYERS` appends an auditable `game.cancelled` lifecycle record but no `match.finalized`; it changes no wins, losses, matches played, level, or match history. Stats consumes finalized matches idempotently by `game_id`.
 

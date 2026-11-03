@@ -17,7 +17,7 @@ docs: |-
 
   ## Purpose and preconditions
 
-  Serves the Game Statistics module. Requires an active session. Reads from the Stats service's finalized match records (`workspace.yml`, Match History and Stats), one row per terminal `game.ended`.
+  Returns the authenticated user's supported match summaries. Requires an active session. Reads from the Stats service's finalized match records (`workspace.yml`, Match History and Stats), one row per terminal `game.ended`.
 
   ## Request parameters
 
