@@ -31,7 +31,7 @@ CREATE UNIQUE INDEX idx_rooms_active_room_code
 
 CREATE TABLE room_members (
     room_id BIGINT NOT NULL REFERENCES rooms (room_id) ON DELETE CASCADE,
-    user_id BIGINT NOT NULL PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+    user_id BIGINT NOT NULL PRIMARY KEY,
     state VARCHAR(16) NOT NULL DEFAULT 'IN_LOBBY',
     team VARCHAR(4),
     role VARCHAR(16),
