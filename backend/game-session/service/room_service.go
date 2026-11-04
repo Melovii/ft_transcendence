@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	room "backend/Room"
+	room "game-session/room"
 )
 
 func newRoomCode() (string, error) {

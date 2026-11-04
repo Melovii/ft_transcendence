@@ -3,8 +3,8 @@ package service
 import (
 	"errors"
 
-	game "backend/Game"
-	room "backend/Room"
+	game "game-session/game"
+	room "game-session/room"
 )
 
 var ErrRoomCodeTaken = errors.New("room code already in use")

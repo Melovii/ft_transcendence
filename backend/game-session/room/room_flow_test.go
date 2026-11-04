@@ -1,9 +1,9 @@
 package room
 
 import (
-	game "backend/Game"
 	"encoding/json"
 	"errors"
+	game "game-session/game"
 	"os"
 	"testing"
 	"time"
@@ -13,7 +13,7 @@ var flowNow = time.Date(2026, 10, 26, 10, 0, 0, 0, time.UTC)
 
 func loadFlowWordPack(t *testing.T) game.WordPack {
 	t.Helper()
-	data, err := os.ReadFile("../Game/wordpack.json")
+	data, err := os.ReadFile("../game/wordpack.json")
 	if err != nil {
 		t.Fatalf("read wordpack: %v", err)
 	}

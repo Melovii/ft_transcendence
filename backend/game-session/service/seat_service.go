@@ -3,8 +3,8 @@ package service
 import (
 	"time"
 
-	game "backend/Game"
-	room "backend/Room"
+	game "game-session/game"
+	room "game-session/room"
 )
 
 func (s *RoomService) SelectRole(roomID int64, userID int64, team game.Team, role game.Role, now time.Time) (room.SeatResult, error) {

@@ -1,7 +1,7 @@
 package room
 
 import (
-	game "backend/Game"
+	game "game-session/game"
 	"testing"
 	"time"
 )

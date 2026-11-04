@@ -4,8 +4,8 @@ import (
 	"errors"
 	"time"
 
-	game "backend/Game"
-	room "backend/Room"
+	game "game-session/game"
+	room "game-session/room"
 )
 
 func (s *RoomService) loadGame(roomID int64) (*room.Room, []room.RoomMember, *game.Game, error) {
