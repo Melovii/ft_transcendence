@@ -132,31 +132,56 @@ func TestExpireTurnIfDue(t *testing.T) {
 	}
 }
 
-func TestCommandAfterDeadlineIsRejected(t *testing.T) {
-	game := newTimedTestGame()
+func checkTurnPassedToBlue(t *testing.T, game *Game) {
+	t.Helper()
+	if game.currentTurn.Team != TeamBlue || game.currentTurn.Phase != PhaseWaitingForClue {
+		t.Fatalf("late command must pass the turn to blue, got %+v", game.currentTurn)
+	}
+}
+
+func TestLateCommandPassesTurn(t *testing.T) {
 	spymaster := &Player{UserID: 1, Team: TeamRed, Role: RoleSpymaster}
 	operative := &Player{UserID: 2, Team: TeamRed, Role: RoleOperative}
 	late := testNow.Add(testTimer)
 
-	before := cloneTestGame(game)
-	if _, err := game.GiveClue(spymaster, &Clue{Word: "hint", Number: 2}, late); !errors.Is(err, ErrNotYourTurn) {
-		t.Fatalf("expected ErrNotYourTurn for late clue, got %v", err)
+	game := newTimedTestGame()
+	if _, err := game.GiveClue(spymaster, &Clue{Word: "hint", Number: 2}, late); !errors.Is(err, ErrTurnExpired) {
+		t.Fatalf("expected ErrTurnExpired for late clue, got %v", err)
 	}
-	checkGameUnchanged(t, before, game)
+	checkTurnPassedToBlue(t, game)
 
+	game = newTimedTestGame()
 	if _, err := game.GiveClue(spymaster, &Clue{Word: "hint", Number: 2}, testNow); err != nil {
 		t.Fatalf("GiveClue: %v", err)
 	}
-	before = cloneTestGame(game)
-	if _, err := game.GuessCard(operative, 1, late); !errors.Is(err, ErrNotYourTurn) {
-		t.Fatalf("expected ErrNotYourTurn for late guess, got %v", err)
+	if _, err := game.GuessCard(operative, 1, late); !errors.Is(err, ErrTurnExpired) {
+		t.Fatalf("expected ErrTurnExpired for late guess, got %v", err)
 	}
-	checkGameUnchanged(t, before, game)
+	checkTurnPassedToBlue(t, game)
 
-	if _, err := game.PassTurn(operative, late); !errors.Is(err, ErrNotYourTurn) {
-		t.Fatalf("expected ErrNotYourTurn for late pass, got %v", err)
+	game = newTimedTestGame()
+	if _, err := game.GiveClue(spymaster, &Clue{Word: "hint", Number: 2}, testNow); err != nil {
+		t.Fatalf("GiveClue: %v", err)
 	}
-	checkGameUnchanged(t, before, game)
+	if _, err := game.PassTurn(operative, late); !errors.Is(err, ErrTurnExpired) {
+		t.Fatalf("expected ErrTurnExpired for late pass, got %v", err)
+	}
+	checkTurnPassedToBlue(t, game)
+}
+
+func TestOpponentCanActAfterDeadline(t *testing.T) {
+	blueSpymaster := &Player{UserID: 3, Team: TeamBlue, Role: RoleSpymaster}
+	late := testNow.Add(testTimer)
+
+	game := newTimedTestGame()
+	turn, err := game.GiveClue(blueSpymaster, &Clue{Word: "hint", Number: 1}, late)
+	if err != nil {
+		t.Fatalf("blue clue after red deadline must succeed, got %v", err)
+	}
+	if turn.Team != TeamBlue || turn.Phase != PhaseGuessing {
+		t.Fatalf("unexpected turn after late blue clue: %+v", turn)
+	}
+	checkDeadline(t, turn, late.Add(testTimer))
 }
 
 func TestPauseKeepsRemainingTime(t *testing.T) {

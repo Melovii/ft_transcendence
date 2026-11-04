@@ -113,19 +113,24 @@ func validateTurnAction(g *Game, player *Player, phase Phase, role Role, now tim
 	if player == nil {
 		return fmt.Errorf("%w: player is required", ErrInvalidArgument)
 	}
+	expired, err := g.PassTurnIfExpired(now)
+	if err != nil {
+		return err
+	}
 	switch {
 	case g.currentTurn.Phase == PhaseGameOver:
-		return ErrGameAlreadyFinished
-	case deadlinePassed(g.currentTurn.DeadlineAt, now):
-		return fmt.Errorf("%w: turn deadline has passed", ErrNotYourTurn)
+		err = ErrGameAlreadyFinished
 	case g.currentTurn.Phase != phase:
-		return fmt.Errorf("%w: expected %q, got %q", ErrInvalidRoomState, phase, g.currentTurn.Phase)
+		err = fmt.Errorf("%w: expected %q, got %q", ErrInvalidRoomState, phase, g.currentTurn.Phase)
 	case player.Team != g.currentTurn.Team:
-		return ErrNotYourTurn
+		err = ErrNotYourTurn
 	case player.Role != role:
-		return ErrRoleForbidden
+		err = ErrRoleForbidden
 	}
-	return nil
+	if err != nil && expired != nil {
+		return fmt.Errorf("%w (%w)", ErrTurnExpired, err)
+	}
+	return err
 }
 
 func validateClue(board *Board, clue *Clue) (Clue, error) {

@@ -29,4 +29,5 @@ var (
 	ErrClueInvalidFormat      = errors.New("INVALID_FORMAT")
 	ErrClueWordOnBoard        = errors.New("WORD_ON_BOARD")
 	ErrStaffingDeadlinePassed = errors.New("staffing deadline has passed")
+	ErrTurnExpired            = errors.New("TURN_EXPIRED")
 )
