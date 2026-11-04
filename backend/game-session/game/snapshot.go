@@ -25,21 +25,22 @@ func copyPtr[T any](value *T) *T {
 	return &valueCopy
 }
 
-func cardViewForRole(card card, role *Role) CardView {
+func cardViewForRole(card card, role *Role, status GameStatus) CardView {
 	view := newCardView(card)
-	if role != nil && *role == RoleSpymaster {
+	isSpymaster := role != nil && *role == RoleSpymaster
+	if isSpymaster || status == GameStatusFinished { //|| status != GameStatusInProgress - if game cancelled or finished, show colors
 		view.Color = &card.color
 	}
 	return view
 }
 
-func (b *Board) boardViewForRole(role *Role) ([]CardView, error) {
+func (b *Board) boardViewForRole(role *Role, status GameStatus) ([]CardView, error) {
 	if role != nil && *role != RoleOperative && *role != RoleSpymaster {
 		return nil, ErrInvalidRole
 	}
 	views := make([]CardView, len(b.cards))
 	for i := range b.cards {
-		view := cardViewForRole(b.cards[i], role)
+		view := cardViewForRole(b.cards[i], role, status)
 		views[i] = view
 	}
 	return views, nil
@@ -59,7 +60,7 @@ func (g *Game) staffingView() StaffingView {
 }
 
 func (g *Game) SnapshotForRole(role *Role) (GameSnapshot, error) {
-	view, err := g.board.boardViewForRole(role)
+	view, err := g.board.boardViewForRole(role, g.Status())
 	if err != nil {
 		return GameSnapshot{}, err
 	}
