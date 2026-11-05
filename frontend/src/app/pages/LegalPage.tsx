@@ -17,7 +17,7 @@ interface LegalSection {
 /** Date of the current version of both documents, shown as `legal.lastUpdated`. */
 const LAST_UPDATED = '2026-09-29';
 
-const REPOSITORY_URL = 'https://github.com/melmut-42/ft_transcendence';
+const REPOSITORY_URL = 'https://github.com/ygtdmr/ft_transcendence';
 
 /**
  * Shared screen for the Privacy Policy and Terms of Service: top bar, document card and
@@ -100,7 +100,7 @@ export function LegalPage({ document }: { document: LegalDocument }) {
                           aria-label={t('legal.repository')}
                           className={styles.inlineLink}
                         >
-                          github.com/melmut-42/ft_transcendence
+                          github.com/ygtdmr/ft_transcendence
                         </a>
                       )}
                     </div>
