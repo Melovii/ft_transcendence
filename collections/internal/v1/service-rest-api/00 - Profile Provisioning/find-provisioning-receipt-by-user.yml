@@ -1,0 +1,96 @@
+info:
+  name: Find provisioning receipt by user
+  type: http
+  seq: 3
+  tags: [internal, provisioning, recovery]
+http:
+  method: GET
+  url: "{{userInternalUrl}}/internal/v1/provisioning-operations?user_id=42"
+  headers:
+    - name: Authorization
+      value: "Bearer {{authToUserServiceCredential}}"
+    - name: Accept
+      value: application/json
+docs: |-
+  # Find provisioning receipt by user
+
+  Authenticated recovery for lost Auth operation context. Caller: `auth-service` only, scope `provisioning.read`. Returns the receipt of the single operation of record for `user_id`. Auth records the returned `operation_id` instead of generating a new one. Read-only: it never creates, changes or rebinds an operation.
+
+  ## Request parameters
+
+  | Parameter | Location | Required | Type | Allowed values | Nullable | Description | Example |
+  | --- | --- | ---: | --- | --- | ---: | --- | --- |
+  | `user_id` | query | yes | integer | positive | no | Auth-assigned user ID | `42` |
+  | `Authorization` | header | yes | string | `Bearer` + Auth-to-User credential | no | Service credential | local secret |
+
+  Any other query parameter returns `400 VALIDATION_ERROR`.
+
+  ## Responses
+
+  `200` returns the receipt described in the folder documentation. At most one operation exists per user, so the result is a single receipt, not a list.
+
+  ## Errors
+
+  | Status | Code | Condition | `details` |
+  | --- | --- | --- | --- |
+  | `400` | `VALIDATION_ERROR` | Missing `user_id` or unknown query parameter | `{ "field": string }` |
+  | `401` | `SERVICE_UNAUTHENTICATED` | Missing or unknown service credential | `{}` |
+  | `403` | `SERVICE_FORBIDDEN` | Caller lacks `provisioning.read` | `{}` |
+  | `404` | `PROVISIONING_NOT_FOUND` | No operation committed for this user | `{ "user_id": integer }` |
+  | `409` | `USER_DELETED` | Account deletion is recorded for this user | `{ "user_id": integer }` |
+  | `422` | `VALIDATION_ERROR` | `user_id` is not a positive integer | `{ "field": "user_id" }` |
+  | `500` | `INTERNAL_ERROR` | Unexpected failure | `{}` |
+  | `503` | `SERVICE_UNAVAILABLE` | Database unavailable | `{}` |
+
+  `404 PROVISIONING_NOT_FOUND` does not authorize Auth to invent a new operation for an account that already started provisioning. Resolving that case requires its own recovery decision.
+examples:
+  - name: Success
+    request: {url: "{{userInternalUrl}}/internal/v1/provisioning-operations?user_id=42", method: GET, headers: [], params: [], body: {mode: none}}
+    response:
+      status: 200
+      headers: [{name: Content-Type, value: application/json}]
+      body:
+        type: json
+        data: |-
+          {
+            "data": {
+              "operation_id": "6b1f0c2e-9a4d-4c7e-8f3b-2d5e7a9c1b40",
+              "user_id": 42,
+              "outcome": "PROVISIONED",
+              "completed_at": "2026-11-05T09:30:00.245789Z"
+            }
+          }
+  - name: Error - Not found
+    request: {url: "{{userInternalUrl}}/internal/v1/provisioning-operations?user_id=9999", method: GET, headers: [], params: [], body: {mode: none}}
+    response:
+      status: 404
+      headers: [{name: Content-Type, value: application/json}]
+      body:
+        type: json
+        data: |-
+          {
+            "error": {
+              "code": "PROVISIONING_NOT_FOUND",
+              "message": "No provisioning operation was found.",
+              "details": {
+                "user_id": 9999
+              }
+            }
+          }
+  - name: Error - Invalid user_id
+    request: {url: "{{userInternalUrl}}/internal/v1/provisioning-operations?user_id=zero", method: GET, headers: [], params: [], body: {mode: none}}
+    response:
+      status: 422
+      headers: [{name: Content-Type, value: application/json}]
+      body:
+        type: json
+        data: |-
+          {
+            "error": {
+              "code": "VALIDATION_ERROR",
+              "message": "user_id must be a positive integer.",
+              "details": {
+                "field": "user_id"
+              }
+            }
+          }

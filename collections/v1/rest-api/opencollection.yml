@@ -21,7 +21,7 @@ docs:
 
     ## Transport and session
 
-    Base URL: `{{baseUrl}}` (`http://localhost:3000` locally). JSON requests send `Content-Type: application/json`; JSON responses send the same media type. Protected endpoints require the `ft_session` cookie (HttpOnly, `Secure`, `SameSite=Lax`, `Path=/`) — sent automatically by a browser, and by Bruno through its cookie jar. There is no header-based credential and no token value in any response body; see `workspace.yml`, Session and Credential Model. `POST /api/v1/auth/refresh` reads the separate `ft_refresh` cookie (`Path=/api/v1/auth/refresh`) and reissues both cookies. Tokens are never URL parameters.
+    Base URL: `{{baseUrl}}` (`http://localhost:3000` locally). JSON requests send `Content-Type: application/json`; JSON responses send the same media type. Protected endpoints require the `ft_session` cookie (HttpOnly, `Secure`, `SameSite=Lax`, `Path=/`) — sent automatically by a browser, and by Bruno through its cookie jar. There is no header-based user credential and no token value in any response body; see `workspace.yml`, Session and Credential Model. `POST /api/v1/auth/refresh` reads the separate `ft_refresh` cookie (`Path=/api/v1/auth/refresh`) and reissues both cookies. Tokens are never URL parameters.
 
     ## Response envelopes
 

@@ -1,0 +1,86 @@
+opencollection: 1.0.0
+
+info:
+  name: Internal REST v1 - Services
+  version: 1.0.0-dev
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+docs:
+  content: |-
+    # ft_transcendence private service REST v1
+
+    Private service-to-service operations. Browsers, the SPA and the public reverse proxy never call these routes. This collection describes intended private contracts; it does not claim that a receiver or caller implements them yet.
+
+    ## Private listener and network boundary
+
+    Each receiving service serves `/internal/v1/*` only on a separate private listener (`INTERNAL_PORT`). That listener is attached only to the private service network and never to the network the public reverse proxy uses for browser traffic. Public listeners never serve `/internal/*`, and the public reverse proxy never forwards `/internal/*`. The private listener never serves public `/api/*` or `/ws/*` routes.
+
+    The initial deployment uses plaintext HTTP inside that isolated private service network. This is an explicit trust boundary that requires security review before release. TLS can be added to the private listener later without changing routes, payloads or credentials. External backend connections remain HTTPS/WSS.
+
+    ## Service authentication
+
+    Every private request carries exactly one credential for its caller/receiver relationship:
+
+    ```
+    Authorization: Bearer <service credential>
+    ```
+
+    - A credential is distinct for each authorized caller/receiver pair. No credential is shared by every service, and no caller presents one receiver's credential to another receiver.
+    - The receiver maps each accepted credential to exactly one caller identity and that caller's operation scopes for this receiver. Caller identity comes only from that mapping, never from a header, body field or network address.
+    - The receiver compares credentials in constant time and fails closed: an empty configuration or an unreadable secret accepts no caller.
+    - Credentials come from protected deployment configuration (mounted secret files). They are never hardcoded, committed, returned, logged, written to audit records or placed in URLs.
+    - Rotation: a receiver accepts at most two active credentials per caller. Install the new credential at the receiver, switch the caller, then remove the old credential. No rotation interval is specified.
+    - The service credential authenticates the calling service only. It never replaces the end user's session, user-level authorization or resource permission checks. Callers obtain an actor `user_id` from a validated session, never from browser input. The browser `ft_session` cookie, when an operation needs it, travels unchanged as a `Cookie` header next to the service credential and is never treated as a service credential.
+
+    | Status | Code | Meaning |
+    | --- | --- | --- |
+    | `401` | `SERVICE_UNAUTHENTICATED` | Missing, malformed or unknown service credential. Response includes `WWW-Authenticate: Bearer`. |
+    | `403` | `SERVICE_FORBIDDEN` | Known caller without the scope for the requested operation. |
+
+    Both errors have empty `details`, never echo the presented credential, and are distinct from user-level `UNAUTHORIZED` and domain `403` codes. Callers treat them as configuration faults: they fail closed and do not retry indefinitely.
+
+    ## Authorization matrix
+
+    Receivers enforce an allowlist per caller. A caller not listed for an operation receives `403 SERVICE_FORBIDDEN`.
+
+    | Receiver | Caller | Scope | Operation | Route |
+    | --- | --- | --- | --- | --- |
+    | `user-service` | `auth-service` | `profile.provision` | Provision profile | `PUT /internal/v1/provisioning-operations/{operation_id}` |
+    | `user-service` | `auth-service` | `provisioning.read` | Read provisioning receipt | `GET /internal/v1/provisioning-operations/{operation_id}`, `GET /internal/v1/provisioning-operations?user_id=` |
+    | `user-service` | `auth-service`, domain services | `profile.read` | Read canonical profile | not yet specified |
+    | `user-service` | `channel-service`, `game-session` | `friend.verdict` | Active-friend verdict | not yet specified |
+    | `auth-service` | `game-gateway`, `chat-gateway`, `web-bff`, protected services | `session.validate` | Validate session | not yet specified |
+    | `auth-service` | `user-service` | `account.metadata.read` | Read account metadata | not yet specified |
+    | `auth-service` | `user-service` | `account.deletion.begin`, `account.deletion.complete` | Begin/complete account deletion | not yet specified |
+
+    Operations without a route keep the semantics in `workspace.yml`, Auth and User Service Boundary. The exact callers of `profile.read`, `session.validate` and the other services' private operations (Game Session membership and lifecycle, Channel Service verdicts, gateway socket registries, Stats, Board Generator and deletion cleanup) are defined with their owning services before those callers are implemented.
+
+    ## Response envelopes and common errors
+
+    Every non-empty success is `{ "data": value }`. Every error is `{ "error": { "code": string, "message": string, "details": object } }`; `details` is always an object and may be empty. JSON is snake_case, timestamps are ISO 8601 UTC, and enums are UPPER_SNAKE_CASE.
+
+    | Status | Code | Meaning | Caller action |
+    | --- | --- | --- | --- |
+    | `400` | `VALIDATION_ERROR` | Malformed JSON, more than one JSON value, or unknown/missing body fields | Fix the caller; do not retry unchanged |
+    | `422` | `VALIDATION_ERROR` | Well-formed request with an invalid field value | Fix the caller; do not retry unchanged |
+    | `503` | `SERVICE_UNAVAILABLE` | The receiver or one of its dependencies is unavailable | Retry the identical request later |
+    | `500` | `INTERNAL_ERROR` | Unexpected receiver failure | Retry the identical request later |
+
+    A dependency failure is an availability failure. Receivers never turn it into a not-found, invalid-session, offline or no-friendship verdict. A network error or caller timeout means the outcome is unknown, not failed. Caller timeout values are configured per caller; no value is specified yet.
+
+    ## Environment
+
+    Select `local`. Set `userInternalUrl` to the User Service private listener and `authToUserServiceCredential` to the local Auth-to-User credential. Keep real credential values only in local, uncommitted environment configuration.
+  type: text/markdown
+bundled: false
+extensions: {}

@@ -1,0 +1,63 @@
+info:
+  name: 00 - Profile Provisioning
+  type: folder
+  seq: 0
+docs: |-
+  # Profile provisioning
+
+  User Service owns these operations. Only Auth Service may call them (scopes `profile.provision` and `provisioning.read`). Registration and first Google sign-in use them to create the canonical profile for an Auth-assigned `user_id`.
+
+  ## Operation identity
+
+  A provisioning operation is identified by `operation_id`, a UUID chosen by Auth. User normalizes it to lowercase. The canonical request identity is the tuple:
+
+  - `user_id`;
+  - `username` with surrounding whitespace removed and its letter case kept;
+  - `created_at` converted to UTC and truncated to microsecond precision.
+
+  Two requests with the same `operation_id` are identical only when this tuple is equal. A username that differs only in letter case is a different request.
+
+  ## Auth responsibilities
+
+  1. Before the first call, Auth durably stores `operation_id` and the canonical request in its own database.
+  2. Every retry, including after an Auth restart, sends the same `operation_id` and the same request. Auth never generates a new `operation_id` for a user it has already tried to provision.
+  3. Auth issues the first session cookies only after it receives a receipt (`201` or `200`) for the stored operation.
+  4. If Auth no longer has the stored operation, it reads `GET /internal/v1/provisioning-operations?user_id=` and records the returned `operation_id` as the operation of record. That read never creates, changes or rebinds an operation.
+
+  ## User decisions, in order
+
+  | Condition | Result |
+  | --- | --- |
+  | Account deletion is recorded for `user_id` | `409 USER_DELETED` |
+  | Same `operation_id`, same canonical request | `200` with the stored receipt |
+  | Same `operation_id`, different canonical request | `409 OPERATION_CONFLICT` |
+  | A profile or another operation already exists for `user_id` | `409 USER_ALREADY_PROVISIONED` |
+  | Another user holds the username (case-insensitive, trimmed) | `409 USERNAME_TAKEN` |
+  | Otherwise | Create the operation record, profile and deterministic default avatar in one transaction; `201` with the new receipt |
+
+  The operation record and the profile commit together, so a failed attempt never leaves a username reserved. Concurrent identical requests produce exactly one profile; concurrent requests for the same normalized username let at most one user succeed. A provisioning request never overwrites a profile, never repeats side effects and never recreates a deleted profile. The provisioning record outlives the profile for this purpose; its retention period after account deletion is not specified yet.
+
+  ## Receipt
+
+  The receipt is immutable. It is read from the stored operation record, never from the current profile, so a replay returns the same receipt even after the profile has changed. Current `username` and `avatar_url` come only from Read canonical profile.
+
+  | Field | Type | Required | Nullable | Allowed values | Description |
+  | --- | --- | ---: | ---: | --- | --- |
+  | `data.operation_id` | string | yes | no | lowercase UUID | Operation of record for this user |
+  | `data.user_id` | integer | yes | no | positive | Auth-assigned user ID |
+  | `data.outcome` | string enum | yes | no | `PROVISIONED` | The profile was created by this operation |
+  | `data.completed_at` | string | yes | no | ISO 8601 UTC | When the operation committed |
+
+  ## Retry rules for Auth
+
+  | Result | Retry the same request? | Auth action |
+  | --- | --- | --- |
+  | `201`, `200` | no | Profile is ready; continue registration |
+  | Network error, timeout, `500 INTERNAL_ERROR`, `503 SERVICE_UNAVAILABLE` | yes | Outcome unknown; retry the identical request or read the receipt by `operation_id` |
+  | `409 USERNAME_TAKEN`, `422 INVALID_USERNAME` | no | Registration fails; resume or compensate the Auth account reservation |
+  | `409 OPERATION_CONFLICT` | no | Caller defect; stop and investigate |
+  | `409 USER_ALREADY_PROVISIONED` | no | Use the receipt lookup by `user_id`; never send a new `operation_id` |
+  | `409 USER_DELETED` | no | Do not issue a session; the account is being deleted |
+  | `400`/`422 VALIDATION_ERROR`, `401 SERVICE_UNAUTHENTICATED`, `403 SERVICE_FORBIDDEN` | no | Caller or configuration fault; fail closed |
+
+  No retry interval or attempt limit is specified yet.

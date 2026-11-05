@@ -1,0 +1,93 @@
+info:
+  name: Get provisioning receipt
+  type: http
+  seq: 2
+  tags: [internal, provisioning]
+http:
+  method: GET
+  url: "{{userInternalUrl}}/internal/v1/provisioning-operations/6b1f0c2e-9a4d-4c7e-8f3b-2d5e7a9c1b40"
+  headers:
+    - name: Authorization
+      value: "Bearer {{authToUserServiceCredential}}"
+    - name: Accept
+      value: application/json
+docs: |-
+  # Get provisioning receipt
+
+  Reads the immutable receipt of one provisioning operation. Caller: `auth-service` only, scope `provisioning.read`. Auth uses it when a provisioning call timed out or its outcome is otherwise unknown. Read-only: it never creates, changes or rebinds an operation.
+
+  ## Request parameters
+
+  | Parameter | Location | Required | Type | Allowed values | Nullable | Description | Example |
+  | --- | --- | ---: | --- | --- | ---: | --- | --- |
+  | `operation_id` | path | yes | string | UUID; normalized to lowercase | no | Provisioning operation | `6b1f0c2e-9a4d-4c7e-8f3b-2d5e7a9c1b40` |
+  | `Authorization` | header | yes | string | `Bearer` + Auth-to-User credential | no | Service credential | local secret |
+
+  ## Responses
+
+  `200` returns the receipt described in the folder documentation.
+
+  ## Errors
+
+  | Status | Code | Condition | `details` |
+  | --- | --- | --- | --- |
+  | `401` | `SERVICE_UNAUTHENTICATED` | Missing or unknown service credential | `{}` |
+  | `403` | `SERVICE_FORBIDDEN` | Caller lacks `provisioning.read` | `{}` |
+  | `404` | `PROVISIONING_NOT_FOUND` | No operation with this `operation_id` committed | `{ "operation_id": string }` |
+  | `409` | `USER_DELETED` | Account deletion is recorded for the operation's user | `{ "user_id": integer }` |
+  | `422` | `VALIDATION_ERROR` | `operation_id` is not a UUID | `{ "field": "operation_id" }` |
+  | `500` | `INTERNAL_ERROR` | Unexpected failure | `{}` |
+  | `503` | `SERVICE_UNAVAILABLE` | Database unavailable | `{}` |
+
+  After `404 PROVISIONING_NOT_FOUND`, Auth may retry the same `PUT` with its stored request. `USER_DELETED` means the receipt no longer establishes profile readiness, so Auth issues no session.
+examples:
+  - name: Success
+    request: {url: "{{userInternalUrl}}/internal/v1/provisioning-operations/6b1f0c2e-9a4d-4c7e-8f3b-2d5e7a9c1b40", method: GET, headers: [], params: [], body: {mode: none}}
+    response:
+      status: 200
+      headers: [{name: Content-Type, value: application/json}]
+      body:
+        type: json
+        data: |-
+          {
+            "data": {
+              "operation_id": "6b1f0c2e-9a4d-4c7e-8f3b-2d5e7a9c1b40",
+              "user_id": 42,
+              "outcome": "PROVISIONED",
+              "completed_at": "2026-11-05T09:30:00.245789Z"
+            }
+          }
+  - name: Error - Not found
+    request: {url: "{{userInternalUrl}}/internal/v1/provisioning-operations/1d8e5b70-3c2a-4f96-8e41-a7b0c9d2e356", method: GET, headers: [], params: [], body: {mode: none}}
+    response:
+      status: 404
+      headers: [{name: Content-Type, value: application/json}]
+      body:
+        type: json
+        data: |-
+          {
+            "error": {
+              "code": "PROVISIONING_NOT_FOUND",
+              "message": "No provisioning operation was found.",
+              "details": {
+                "operation_id": "1d8e5b70-3c2a-4f96-8e41-a7b0c9d2e356"
+              }
+            }
+          }
+  - name: Error - User deleted
+    request: {url: "{{userInternalUrl}}/internal/v1/provisioning-operations/6b1f0c2e-9a4d-4c7e-8f3b-2d5e7a9c1b40", method: GET, headers: [], params: [], body: {mode: none}}
+    response:
+      status: 409
+      headers: [{name: Content-Type, value: application/json}]
+      body:
+        type: json
+        data: |-
+          {
+            "error": {
+              "code": "USER_DELETED",
+              "message": "Account deletion is recorded for this user.",
+              "details": {
+                "user_id": 42
+              }
+            }
+          }

@@ -7,6 +7,7 @@ This repository is the development, Git-native API contract for the `ft_transcen
 - `collections/v1/rest-api` / `collections/v1/websocket` — stable v1 contracts.
 - `collections/v2/game-rest-api` / `collections/v2/game-websocket` — v2 room and game lifecycle.
 - `collections/v2/chat-rest-api` / `collections/v2/chat-websocket` — durable Chat v2 channels and live gateway.
+- `collections/internal/v1/service-rest-api` — private service-to-service operations, service credentials and profile provisioning; never browser-facing.
 - `environments/local.yml` — safe localhost defaults and blank secret session values.
 - `workspace.yml` — product rules, state machines, fixtures, privacy, and protocol boundaries.
 
