@@ -48,3 +48,19 @@ variables:
     value: ""
     type: string
     description: "Local Auth-to-User service credential; set only in uncommitted local configuration"
+  - name: authInternalUrl
+    value: ""
+    type: string
+    description: "Auth Service private listener origin (INTERNAL_PORT); never routed through the public reverse proxy"
+  - name: userToAuthServiceCredential
+    value: ""
+    type: string
+    description: "Local User-to-Auth service credential; set only in uncommitted local configuration"
+  - name: gameGatewayToAuthServiceCredential
+    value: ""
+    type: string
+    description: "Local Game Gateway-to-Auth service credential; set only in uncommitted local configuration"
+  - name: channelToUserServiceCredential
+    value: ""
+    type: string
+    description: "Local Channel Service-to-User service credential; set only in uncommitted local configuration"

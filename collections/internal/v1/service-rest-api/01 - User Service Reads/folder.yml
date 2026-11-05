@@ -1,0 +1,10 @@
+info:
+  name: 01 - User Service Reads
+  type: folder
+  seq: 1
+docs: |-
+  # User Service reads
+
+  User Service answers these private reads from its own PostgreSQL records. Each request carries the caller's service credential and is authorized by scope (see the collection overview). The callers supply user IDs that they obtained from a validated session or from their own authoritative records, never from unvalidated browser input.
+
+  A dependency failure returns `503 SERVICE_UNAVAILABLE`. Callers never turn it into a missing user, a deleted user or a `false` friendship verdict.

@@ -1,0 +1,79 @@
+info:
+  name: Validate session
+  type: http
+  seq: 1
+  tags: [internal, session]
+http:
+  method: GET
+  url: "{{authInternalUrl}}/internal/v1/sessions/current"
+  headers:
+    - name: Authorization
+      value: "Bearer {{gameGatewayToAuthServiceCredential}}"
+    - name: Cookie
+      value: "ft_session=<forwarded browser access credential>"
+    - name: Accept
+      value: application/json
+docs: |-
+  # Validate session
+
+  Returns the current active-session verdict for the browser credential the caller received. Scope `session.validate`. Callers: `game-gateway`, `chat-gateway`, `web-bff` and protected services that receive browser requests. The verdict has no profile, room or presence dependency.
+
+  ## Request parameters
+
+  | Parameter | Location | Required | Type | Allowed values | Nullable | Description | Example |
+  | --- | --- | ---: | --- | --- | ---: | --- | --- |
+  | `Authorization` | header | yes | string | `Bearer` + the caller's credential for Auth Service | no | Service credential | local secret |
+  | `ft_session` cookie | `Cookie` header | yes | string | browser access credential, forwarded unchanged | no | Credential to validate | forwarded |
+
+  The caller forwards only `ft_session`. It never forwards `ft_refresh`, never moves the credential into another header, body or URL, and never logs it.
+
+  ## Response fields
+
+  | Field | Type | Required | Nullable | Allowed values | Description |
+  | --- | --- | ---: | ---: | --- | --- |
+  | `data.user_id` | integer | yes | no | positive | Authenticated user |
+  | `data.session_id` | string | yes | no | UUID | Authenticated session |
+  | `data.session_expires_at` | string | yes | no | ISO 8601 UTC | Expiry of the presented access credential |
+
+  ## Errors
+
+  | Status | Code | Condition | `details` |
+  | --- | --- | --- | --- |
+  | `401` | `SERVICE_UNAUTHENTICATED` | Missing or unknown service credential | `{}` |
+  | `401` | `UNAUTHORIZED` | `ft_session` missing, malformed, expired or revoked, or the account is not `ACTIVE` | `{}` |
+  | `403` | `SERVICE_FORBIDDEN` | Caller lacks `session.validate` | `{}` |
+  | `500` | `INTERNAL_ERROR` | Unexpected failure | `{}` |
+  | `503` | `SERVICE_UNAVAILABLE` | Database unavailable | `{}` |
+
+  `UNAUTHORIZED` is the user-session verdict; the caller maps it to its own public `401` or WebSocket close behavior. `SERVICE_UNAUTHENTICATED` is a caller configuration fault and is never shown to the browser as a logout. `503` is an availability failure, never a logout.
+examples:
+  - name: Success
+    request: {url: "{{authInternalUrl}}/internal/v1/sessions/current", method: GET, headers: [], params: [], body: {mode: none}}
+    response:
+      status: 200
+      headers: [{name: Content-Type, value: application/json}]
+      body:
+        type: json
+        data: |-
+          {
+            "data": {
+              "user_id": 42,
+              "session_id": "8f14e45f-ceea-4e6b-9c3a-2d1b5f7a9e01",
+              "session_expires_at": "2026-11-05T09:45:00Z"
+            }
+          }
+  - name: Error - Invalid session
+    request: {url: "{{authInternalUrl}}/internal/v1/sessions/current", method: GET, headers: [], params: [], body: {mode: none}}
+    response:
+      status: 401
+      headers: [{name: Content-Type, value: application/json}]
+      body:
+        type: json
+        data: |-
+          {
+            "error": {
+              "code": "UNAUTHORIZED",
+              "message": "The session is missing, expired or revoked.",
+              "details": {}
+            }
+          }
