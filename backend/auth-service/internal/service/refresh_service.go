@@ -38,10 +38,20 @@ func (s *AuthService) Refresh(ctx context.Context, raw string) (security.Credent
 	return s.finishRefresh(ctx, result)
 }
 
+// finishRefresh notifies Gateways after a committed reuse revocation.
+//
+// The family revocation and its notification record commit before this runs, and
+// DeliverPendingRevocations retries undelivered records. A Gateway outage therefore
+// still answers SESSION_EXPIRED, with the delivery error joined to it.
+// Missing revocation storage is a configuration fault and is returned unchanged.
 func (s *AuthService) finishRefresh(ctx context.Context, result refreshOutcome) (security.Credentials, error) {
 	if result.revoked != nil {
-		if err := s.notifySessionRevoked(ctx, result.revoked.UserID, result.revoked.ID); err != nil {
+		err := s.notifySessionRevoked(ctx, result.revoked.UserID, result.revoked.ID)
+		if errors.Is(err, ErrSessionUnavailable) {
 			return security.Credentials{}, err
+		}
+		if err != nil {
+			return security.Credentials{}, errors.Join(ErrSessionExpired, err)
 		}
 	}
 	if result.rejected {
