@@ -23,13 +23,14 @@ type Room struct {
 }
 
 type RoomMember struct {
-	RoomID   int64 `gorm:"autoIncrement:false"`
-	UserID   int64 `gorm:"primaryKey;autoIncrement:false"`
-	State    State `gorm:"default:IN_LOBBY"`
-	Team     *game.Team
-	Role     *game.Role
-	Ready    bool
-	JoinedAt time.Time `gorm:"autoCreateTime"`
+	RoomID      int64 `gorm:"autoIncrement:false"`
+	UserID      int64 `gorm:"primaryKey;autoIncrement:false"`
+	State       State `gorm:"default:IN_LOBBY"`
+	Team        *game.Team
+	Role        *game.Role
+	Ready       bool
+	JoinedAt    time.Time `gorm:"autoCreateTime"`
+	GraceEndsAt *time.Time
 }
 
 type Status string
