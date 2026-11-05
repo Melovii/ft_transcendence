@@ -1,8 +1,9 @@
 # Shared tests
 
-All tests live here: `unit` covers response formatting, logging, pagination and
-pool configuration; `integration` covers connection failures and real PostgreSQL
-connectivity. The timeout test starts a local TCP listener.
+All tests live here: `unit` covers response formatting, logging, configuration
+loading and secret redaction, the single-Go-version guard for `backend/go.work`,
+pagination and pool configuration; `integration` covers connection failures and
+real PostgreSQL connectivity. The timeout test starts a local TCP listener.
 
 Run from `backend/shared`:
 
