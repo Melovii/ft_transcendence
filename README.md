@@ -185,7 +185,7 @@ Each development branch tracks its own remote counterpart. `main` is the base an
 Each implementation branch documents its own setup. In short:
 
 ```bash
-git clone git@github.com:melmut-42/ft_transcendence.git
+git clone git@github.com:ygtdmr/ft_transcendence.git
 git checkout frontend   # frontend app
 git checkout backend    # backend services
 git checkout bruno      # API contracts
