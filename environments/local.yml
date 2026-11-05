@@ -40,3 +40,11 @@ variables:
     value: "7001"
     type: number
     description: "Current direct-chat channel ID"
+  - name: userInternalUrl
+    value: ""
+    type: string
+    description: "User Service private listener origin (INTERNAL_PORT); never routed through the public reverse proxy"
+  - name: authToUserServiceCredential
+    value: ""
+    type: string
+    description: "Local Auth-to-User service credential; set only in uncommitted local configuration"
