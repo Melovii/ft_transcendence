@@ -16,7 +16,7 @@ CREATE INDEX idx_outbox_events_pending
 
 CREATE TABLE command_ledger (
     room_id BIGINT NOT NULL,
-    session_id BIGINT NOT NULL,
+    session_id UUID NOT NULL,
     request_id VARCHAR(64) NOT NULL,
     command_hash TEXT NOT NULL,
     response JSONB NOT NULL,

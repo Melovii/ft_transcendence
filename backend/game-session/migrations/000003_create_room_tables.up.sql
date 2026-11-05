@@ -37,6 +37,7 @@ CREATE TABLE room_members (
     role VARCHAR(16),
     ready BOOLEAN NOT NULL DEFAULT false,
     joined_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    grace_ends_at TIMESTAMPTZ,
 
     CONSTRAINT chk_room_members_state CHECK (
         state IN ('IN_LOBBY', 'IN_GAME', 'POST_GAME')
