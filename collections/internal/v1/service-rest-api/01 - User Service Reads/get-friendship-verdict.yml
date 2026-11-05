@@ -1,0 +1,90 @@
+info:
+  name: Get friendship verdict
+  type: http
+  seq: 2
+  tags: [internal, social]
+http:
+  method: GET
+  url: "{{userInternalUrl}}/internal/v1/friendship-verdicts?actor_user_id=42&target_user_id=43"
+  headers:
+    - name: Authorization
+      value: "Bearer {{channelToUserServiceCredential}}"
+    - name: Accept
+      value: application/json
+docs: |-
+  # Get friendship verdict
+
+  Returns the current active-friendship verdict for one pair. Scope `friend.verdict`. Callers: `channel-service` for `DIRECT` channel access and `game-session` for friend-based room operations. The caller takes `actor_user_id` from the validated session of the user performing the action.
+
+  ## Request parameters
+
+  | Parameter | Location | Required | Type | Allowed values | Nullable | Description | Example |
+  | --- | --- | ---: | --- | --- | ---: | --- | --- |
+  | `actor_user_id` | query | yes | integer | positive | no | Authenticated acting user | `42` |
+  | `target_user_id` | query | yes | integer | positive, different from `actor_user_id` | no | Other user | `43` |
+  | `Authorization` | header | yes | string | `Bearer` + the caller's credential for User Service | no | Service credential | local secret |
+
+  A missing or unknown query parameter returns `400 VALIDATION_ERROR`.
+
+  ## Response fields
+
+  | Field | Type | Required | Nullable | Allowed values | Description |
+  | --- | --- | ---: | ---: | --- | --- |
+  | `data.active_friendship` | boolean | yes | no | `true`, `false` | `true` only while an active friendship exists, both accounts are active and neither user blocks the other |
+
+  `false` covers no friendship, a block in either direction, a deleting or deleted account and an unknown user. The response never states which of these applies, so it never reveals which side placed a block. Each call reflects current User records; a delayed event never replaces it.
+
+  ## Errors
+
+  | Status | Code | Condition | `details` |
+  | --- | --- | --- | --- |
+  | `400` | `VALIDATION_ERROR` | Missing or unknown query parameter | `{ "field": string }` |
+  | `401` | `SERVICE_UNAUTHENTICATED` | Missing or unknown service credential | `{}` |
+  | `403` | `SERVICE_FORBIDDEN` | Caller lacks `friend.verdict` | `{}` |
+  | `422` | `VALIDATION_ERROR` | An ID is not a positive integer, or both IDs are equal | `{ "field": string }` |
+  | `500` | `INTERNAL_ERROR` | Unexpected failure | `{}` |
+  | `503` | `SERVICE_UNAVAILABLE` | Database unavailable; never a `false` verdict | `{}` |
+examples:
+  - name: Success - active friends
+    request: {url: "{{userInternalUrl}}/internal/v1/friendship-verdicts?actor_user_id=42&target_user_id=43", method: GET, headers: [], params: [], body: {mode: none}}
+    response:
+      status: 200
+      headers: [{name: Content-Type, value: application/json}]
+      body:
+        type: json
+        data: |-
+          {
+            "data": {
+              "active_friendship": true
+            }
+          }
+  - name: Success - no active friendship
+    request: {url: "{{userInternalUrl}}/internal/v1/friendship-verdicts?actor_user_id=42&target_user_id=44", method: GET, headers: [], params: [], body: {mode: none}}
+    response:
+      status: 200
+      headers: [{name: Content-Type, value: application/json}]
+      body:
+        type: json
+        data: |-
+          {
+            "data": {
+              "active_friendship": false
+            }
+          }
+  - name: Error - Same user
+    request: {url: "{{userInternalUrl}}/internal/v1/friendship-verdicts?actor_user_id=42&target_user_id=42", method: GET, headers: [], params: [], body: {mode: none}}
+    response:
+      status: 422
+      headers: [{name: Content-Type, value: application/json}]
+      body:
+        type: json
+        data: |-
+          {
+            "error": {
+              "code": "VALIDATION_ERROR",
+              "message": "target_user_id must differ from actor_user_id.",
+              "details": {
+                "field": "target_user_id"
+              }
+            }
+          }

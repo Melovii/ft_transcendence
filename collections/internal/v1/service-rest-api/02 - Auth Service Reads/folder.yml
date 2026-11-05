@@ -1,0 +1,18 @@
+info:
+  name: 02 - Auth Service Reads
+  type: folder
+  seq: 2
+docs: |-
+  # Auth Service reads
+
+  Auth Service answers these private reads from its own PostgreSQL records. Each request carries the caller's service credential and is authorized by scope (see the collection overview).
+
+  Account status values:
+
+  | Value | Meaning |
+  | --- | --- |
+  | `ACTIVE` | Account and profile are ready; sessions may be issued and validated |
+  | `PROVISIONING` | Account exists but profile provisioning has not been confirmed; no session is valid |
+  | `DELETING` | Account deletion has begun; every session is revoked and no new one is issued |
+
+  After account deletion completes, Auth no longer holds the account and returns `404 USER_NOT_FOUND`. A dependency failure returns `503 SERVICE_UNAVAILABLE`; callers never turn it into an invalid session or a missing account.

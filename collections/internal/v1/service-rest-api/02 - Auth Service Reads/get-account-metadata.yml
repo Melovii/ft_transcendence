@@ -1,0 +1,78 @@
+info:
+  name: Get account metadata
+  type: http
+  seq: 2
+  tags: [internal, account]
+http:
+  method: GET
+  url: "{{authInternalUrl}}/internal/v1/accounts/42"
+  headers:
+    - name: Authorization
+      value: "Bearer {{userToAuthServiceCredential}}"
+    - name: Accept
+      value: application/json
+docs: |-
+  # Get account metadata
+
+  Returns Auth-owned account metadata for one user. Scope `account.metadata.read`. Caller: `user-service` only. User uses the login email only to compose the owner's own private profile (`GET /api/v1/users/me`); it never stores the email or returns it in any other response.
+
+  ## Request parameters
+
+  | Parameter | Location | Required | Type | Allowed values | Nullable | Description | Example |
+  | --- | --- | ---: | --- | --- | ---: | --- | --- |
+  | `user_id` | path | yes | integer | positive | no | Target account | `42` |
+  | `Authorization` | header | yes | string | `Bearer` + User-to-Auth credential | no | Service credential | local secret |
+
+  ## Response fields
+
+  | Field | Type | Required | Nullable | Allowed values | Description |
+  | --- | --- | ---: | ---: | --- | --- |
+  | `data.user_id` | integer | yes | no | positive | Account ID |
+  | `data.email` | string | yes | no | login email | Owner-only login email |
+  | `data.status` | string enum | yes | no | `ACTIVE`, `PROVISIONING`, `DELETING` | Account status (see folder documentation) |
+  | `data.created_at` | string | yes | no | ISO 8601 UTC | Account creation time |
+
+  ## Errors
+
+  | Status | Code | Condition | `details` |
+  | --- | --- | --- | --- |
+  | `401` | `SERVICE_UNAUTHENTICATED` | Missing or unknown service credential | `{}` |
+  | `403` | `SERVICE_FORBIDDEN` | Caller lacks `account.metadata.read` | `{}` |
+  | `404` | `USER_NOT_FOUND` | No account exists for `user_id` | `{ "user_id": integer }` |
+  | `422` | `VALIDATION_ERROR` | `user_id` is not a positive integer | `{ "field": "user_id" }` |
+  | `500` | `INTERNAL_ERROR` | Unexpected failure | `{}` |
+  | `503` | `SERVICE_UNAVAILABLE` | Database unavailable | `{}` |
+examples:
+  - name: Success
+    request: {url: "{{authInternalUrl}}/internal/v1/accounts/42", method: GET, headers: [], params: [], body: {mode: none}}
+    response:
+      status: 200
+      headers: [{name: Content-Type, value: application/json}]
+      body:
+        type: json
+        data: |-
+          {
+            "data": {
+              "user_id": 42,
+              "email": "player.one@example.com",
+              "status": "ACTIVE",
+              "created_at": "2026-11-05T09:30:00.123456Z"
+            }
+          }
+  - name: Error - User not found
+    request: {url: "{{authInternalUrl}}/internal/v1/accounts/9999", method: GET, headers: [], params: [], body: {mode: none}}
+    response:
+      status: 404
+      headers: [{name: Content-Type, value: application/json}]
+      body:
+        type: json
+        data: |-
+          {
+            "error": {
+              "code": "USER_NOT_FOUND",
+              "message": "User 9999 was not found.",
+              "details": {
+                "user_id": 9999
+              }
+            }
+          }

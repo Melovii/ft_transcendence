@@ -57,13 +57,13 @@ docs:
     | --- | --- | --- | --- | --- |
     | `user-service` | `auth-service` | `profile.provision` | Provision profile | `PUT /internal/v1/provisioning-operations/{operation_id}` |
     | `user-service` | `auth-service` | `provisioning.read` | Read provisioning receipt | `GET /internal/v1/provisioning-operations/{operation_id}`, `GET /internal/v1/provisioning-operations?user_id=` |
-    | `user-service` | `auth-service`, domain services | `profile.read` | Read canonical profile | not yet specified |
-    | `user-service` | `channel-service`, `game-session` | `friend.verdict` | Active-friend verdict | not yet specified |
-    | `auth-service` | `game-gateway`, `chat-gateway`, `web-bff`, protected services | `session.validate` | Validate session | not yet specified |
-    | `auth-service` | `user-service` | `account.metadata.read` | Read account metadata | not yet specified |
+    | `user-service` | `auth-service`, domain services | `profile.read` | Read canonical profile | `GET /internal/v1/profiles/{user_id}` |
+    | `user-service` | `channel-service`, `game-session` | `friend.verdict` | Active-friend verdict | `GET /internal/v1/friendship-verdicts?actor_user_id=&target_user_id=` |
+    | `auth-service` | `game-gateway`, `chat-gateway`, `web-bff`, protected services | `session.validate` | Validate session | `GET /internal/v1/sessions/current` |
+    | `auth-service` | `user-service` | `account.metadata.read` | Read account metadata | `GET /internal/v1/accounts/{user_id}` |
     | `auth-service` | `user-service` | `account.deletion.begin`, `account.deletion.complete` | Begin/complete account deletion | not yet specified |
 
-    Operations without a route keep the semantics in `workspace.yml`, Auth and User Service Boundary. The exact callers of `profile.read`, `session.validate` and the other services' private operations (Game Session membership and lifecycle, Channel Service verdicts, gateway socket registries, Stats, Board Generator and deletion cleanup) are defined with their owning services before those callers are implemented.
+    Operations without a route keep the semantics in `workspace.yml`, Auth and User Service Boundary. Account deletion routes are defined together with the account-deletion coordinator and its participants' cleanup contracts. The exact callers of `profile.read`, `session.validate` and the other services' private operations (Game Session membership and lifecycle, Channel Service verdicts, gateway socket registries, Stats, Board Generator and deletion cleanup) are defined with their owning services before those callers are implemented.
 
     ## Response envelopes and common errors
 
@@ -80,7 +80,7 @@ docs:
 
     ## Environment
 
-    Select `local`. Set `userInternalUrl` to the User Service private listener and `authToUserServiceCredential` to the local Auth-to-User credential. Keep real credential values only in local, uncommitted environment configuration.
+    Select `local`. Set `userInternalUrl` and `authInternalUrl` to the User and Auth private listeners, and each `<caller>To<Receiver>ServiceCredential` variable to the local credential for that pair. Keep real credential values only in local, uncommitted environment configuration.
   type: text/markdown
 bundled: false
 extensions: {}
